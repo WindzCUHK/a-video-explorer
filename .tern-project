@@ -1,0 +1,16 @@
+{
+	"exclude": ["node_modules/**"],
+	"libs": [
+		"browser",
+		"chai",
+		"chai"
+	],
+	"plugins": {
+		"es_modules": {},
+		"node": {},
+		"complete_strings": {},
+		"requirejs": {
+			"baseURL": "./app/js"
+		}
+	}
+}
