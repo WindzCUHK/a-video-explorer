@@ -1,4 +1,19 @@
-img {
-	max-width: 100px;
-	max-height: 100px;
+html, body {
+	position: relative;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+#content {
+	min-height: 100%;
+	width: 100%;
+	text-align: center;
+}
+
+.thumb-cover {
+	max-width: 256px;
+	max-height: 256px;
+	margin: 1ex;
 }
