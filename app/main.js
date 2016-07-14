@@ -19,7 +19,7 @@ app.on('ready', function() {
 
 	mainWindow.loadURL(`${rootPath}/index.html`);
 
-	// mainWindow.webContents.openDevTools();
+	mainWindow.webContents.openDevTools();
 
 	mainWindow.on('closed', () => {
 		// for multi-windows, delete it in array

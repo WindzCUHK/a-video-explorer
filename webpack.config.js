@@ -1,16 +1,24 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var BUILD_DIR = path.resolve(__dirname, 'app/js');
+var DIST_DIR = path.resolve(__dirname, 'app/dist');
+
 module.exports = {
+	stats: {
+		color: true,
+		reasons: true
+	},
+	devtool: 'source-map',
+
+
 	entry: [
-		'webpack-dev-server/client?http://localhost:8080',
-		'webpack/hot/only-dev-server',
-		'./src/main.js'
+		path.join(BUILD_DIR, 'main.js')
 	],
 	module: {
 		loaders: [
 			{
-				test: /\.js$/,
+				test: /\.jsx?$/,
 				exclude: /node_modules/,
 				loader: 'babel-loader',
 				query: {
@@ -20,12 +28,21 @@ module.exports = {
 		]
 	},
 	output: {
-		path: path.resolve(__dirname, 'dist'),
-		publicPath: '/assets/',
+		path: DIST_DIR,
 		filename: 'bundle.js'
 	},
-	devServer: {
-		contentBase: path.resolve(__dirname, 'dist'),
-		hot: true
-	}
+	externals: [
+		(function () {
+			var IGNORES = [
+				'fs',
+				'electron'
+			];
+			return function (context, request, callback) {
+				if (IGNORES.indexOf(request) >= 0) {
+					return callback(null, "require('" + request + "')");
+				}
+				return callback();
+			};
+		})()
+	]
 };

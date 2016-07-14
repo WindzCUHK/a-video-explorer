@@ -158,3 +158,17 @@ document.addEventListener('drop', event => {
 	event.preventDefault();
 	return false;
 }, false);
+
+
+
+
+import renderMain from './renderUI.jsx';
+renderMain(null, thumbnailBlock);
+
+
+
+
+
+
+
+
