@@ -121,11 +121,39 @@ function displayThumbnails(parentNode, folderPath) {
 	}
 }
 
+
+function renderPageByDirPath(targetPath) {
+	try {
+		const targetDirPath = normalizeDirPath(targetPath);
+		displayThumbnails(thumbnailBlock, targetDirPath);
+	} catch (err) {
+		window.alert(JSON.stringify(err));
+	}
+}
+function normalizeDirPath(targetPath) {
+
+	// check file exist and can access
+	fs.accessSync(targetPath);
+
+	// for non-directory, return its dir path
+	const stats = fs.lstatSync(targetPath);
+	if (!stats.isDirectory()) {
+		if (targetPath.indexOf('\\') < 0) {
+			return path.dirname(targetPath);
+		} else {
+			// path.dirname() will not work in Windows
+			return targetPath.substr(0, targetPath.lastIndexOf('\\'));
+		}
+		console.log(targetPath);
+		console.log(path.resolve(targetPath, '..\\'));
+	} else return targetPath;
+}
+
 const pathInput = document.getElementById('path-input');
 if (pathInput) {
 	pathInput.addEventListener("keyup", event => {
 		const targetPath = path.resolve(event.target.value);
-		displayThumbnails(thumbnailBlock, targetPath);
+		renderPageByDirPath(targetPath);
 	});
 }
 
@@ -138,9 +166,9 @@ ddLayer.ondragleave = ddLayer.ondragend = () => {
 };
 ddLayer.ondrop = event => {
 	event.preventDefault();
-	const targetPath = event.dataTransfer.files[0];
-	displayThumbnails(thumbnailBlock, targetPath.path);
-	console.log('File you dragged here is', targetPath.path);
+	const targetFile = event.dataTransfer.files[0];
+	renderPageByDirPath(targetFile.path);
+	console.log('File you dragged here is', targetFile.path);
 	return false;
 };
 
@@ -162,7 +190,7 @@ document.addEventListener('drop', event => {
 
 
 
-import renderMain from './renderUI.jsx';
+import renderMain from './index.jsx';
 renderMain(null, thumbnailBlock);
 
 
