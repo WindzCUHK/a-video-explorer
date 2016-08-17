@@ -10,7 +10,7 @@ electronReload(__dirname);
 const rootPath = `file://${__dirname}`;
 
 let mainWindow = null;
-app.on('ready', function() {
+function createWindow() {
 	mainWindow = new BrowserWindow({
 		width: 1024,
 		height: 768,
@@ -30,9 +30,9 @@ app.on('ready', function() {
 	mainWindow.webContents.on('will-navigate', (event) => {
 		event.preventDefault();
 	});
-});
+}
 
-
+app.on('ready', createWindow);
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
 		app.quit();
