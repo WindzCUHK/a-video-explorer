@@ -9,7 +9,6 @@ electronReload(__dirname);
 
 const rootPath = `file://${__dirname}`;
 
-
 function createWindow() {
 	mainWindow = new BrowserWindow({
 		width: 1024,
