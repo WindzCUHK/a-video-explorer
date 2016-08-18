@@ -39,18 +39,18 @@ function displayThumbnails(parentNode, folderPath) {
 	try {
 
 		// clear up block
-		while (parentNode.firstChild) parentNode.removeChild(parentNode.firstChild);
+		// while (parentNode.firstChild) parentNode.removeChild(parentNode.firstChild);
 
 		// list files in the folder
-		let files = fs.readdirSync(folderPath);
-		const torrentFolder = path.join(folderPath, 'torrent');
-		try {
-			fs.accessSync(torrentFolder);
-			const torrentFiles = fs.readdirSync(torrentFolder).map(tFile => {
-				return path.join(torrent, tFile);
-			});
-			files = files.concat(torrentFiles);
-		} catch (ex) {}
+		// let files = fs.readdirSync(folderPath);
+		// const torrentFolder = path.join(folderPath, 'torrent');
+		// try {
+		// 	fs.accessSync(torrentFolder);
+		// 	const torrentFiles = fs.readdirSync(torrentFolder).map(tFile => {
+		// 		return path.join(torrent, tFile);
+		// 	});
+		// 	files = files.concat(torrentFiles);
+		// } catch (ex) {}
 		
 		// separate images, video and other files
 		const imageVideoMap = {};
@@ -130,48 +130,14 @@ function renderPageByDirPath(targetPath) {
 		window.alert(JSON.stringify(err));
 	}
 }
-function normalizeDirPath(targetPath) {
 
-	// check file exist and can access
-	fs.accessSync(targetPath);
-
-	// for non-directory, return its dir path
-	const stats = fs.lstatSync(targetPath);
-	if (!stats.isDirectory()) {
-		if (targetPath.indexOf('\\') < 0) {
-			return path.dirname(targetPath);
-		} else {
-			// path.dirname() will not work in Windows
-			return targetPath.substr(0, targetPath.lastIndexOf('\\'));
-		}
-		console.log(targetPath);
-		console.log(path.resolve(targetPath, '..\\'));
-	} else return targetPath;
-}
-
-const pathInput = document.getElementById('path-input');
-if (pathInput) {
-	pathInput.addEventListener("keyup", event => {
-		const targetPath = path.resolve(event.target.value);
-		renderPageByDirPath(targetPath);
-	});
-}
-
-const ddLayer = document.getElementById('content');
-ddLayer.ondragover = () => {
-	return false;
-};
-ddLayer.ondragleave = ddLayer.ondragend = () => {
-	return false;
-};
-ddLayer.ondrop = event => {
-	event.preventDefault();
-	const targetFile = event.dataTransfer.files[0];
-	renderPageByDirPath(targetFile.path);
-	console.log('File you dragged here is', targetFile.path);
-	return false;
-};
-
+// const pathInput = document.getElementById('path-input');
+// if (pathInput) {
+// 	pathInput.addEventListener("keyup", event => {
+// 		const targetPath = path.resolve(event.target.value);
+// 		renderPageByDirPath(targetPath);
+// 	});
+// }
 
 
 /*|=======================================================|*/

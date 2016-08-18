@@ -4,16 +4,25 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as navigationActions from '../actions/navigation.js';
 
+function mapFilesToHtml(files) {
+	console.log(files);
+	if (!files) return (<p>No files</p>);
+	return files.map((f) => {
+		return (<p key={f.name}>{f.name}</p>);
+	});
+}
+
 class MainBlock extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 	render() {
-		const { currentPath, actions } = this.props;
+		// const { currentPath, actions } = this.props;
 		return (
 			<div>
+				<div onClick={() => {this.props.actions.changeDir('..')}}>{this.props.currentPath}</div>
 				<h1>Hello to react</h1>
-				<p onClick={() => {this.props.actions.changeDir('abc')}}>{this.props.currentPath}</p>
+				{mapFilesToHtml(this.props.files)}
 			</div>
 		);
 	}
@@ -25,9 +34,9 @@ MainBlock.propTypes = {
 };
 
 function mapStateToProps(state) {
-	console.log('mapStateToProps', state);
 	return {
-		currentPath: state.currentPath
+		currentPath: state.get('currentPath'),
+		files: state.get('files')
 	};
 }
 function mapDispatchToProps(dispatch) {
