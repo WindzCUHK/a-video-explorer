@@ -4,8 +4,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as navigationActions from '../actions/navigation.js';
 
+
 // other components
-import Thumbnail from './Thumbnail.jsx';
+import CoverThumbnail from './CoverThumbnail.jsx';
+import Item from './Item.jsx';
 
 // http://jaketrent.com/post/smart-dumb-components-react/
 // https://facebook.github.io/immutable-js/docs/#/Seq
@@ -30,11 +32,9 @@ function mapFilesToHtml(actions, files) {
 		// console.log(f.toJS());
 		switch (extDict[fileType]) {
 			case IMAGE:
-				return (<Thumbnail key={f.get('name')} actions={actions} file={f}/>);
-			case VIDEO:
-				return (<p key={f.get('name')}>{f.get('name')}</p>);
+				return (<CoverThumbnail key={f.get('path')} actions={actions} file={f} />);
 			default:
-				return (<p key={f.get('name')}>{f.get('name')}</p>);
+				return (<Item key={f.get('path')} file={f} />);
 		}
 	});
 }

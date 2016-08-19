@@ -12,7 +12,7 @@ html, body {
 	text-align: center;
 }
 
-.thumb-cover {
+.cover-thumbnail {
 	max-width: 256px;
 	max-height: 256px;
 	margin: 1ex;
