@@ -7,3 +7,10 @@ export function changeDir(newPath) {
 		newPath
 	};
 }
+
+export function openCover(file) {
+	return {
+		type: types.OPEN_COVER,
+		file
+	};
+}

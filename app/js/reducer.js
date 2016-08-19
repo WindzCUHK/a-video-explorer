@@ -12,6 +12,9 @@ export default (state, action) => {
 			// { pathError, currentPath, files }
 			const result = actionHandlers.changeDir(action.newPath);
 			return state.merge(result);
+		case types.OPEN_COVER:
+			console.log(action);
+			return state;
 	}
 
 	return state;

@@ -28149,6 +28149,9 @@
 				// { pathError, currentPath, files }
 				var result = actionHandlers.changeDir(action.newPath);
 				return state.merge(result);
+			case types.OPEN_COVER:
+				console.log(action);
+				return state;
 		}
 	
 		return state;
@@ -28164,6 +28167,7 @@
 	  value: true
 	});
 	var CHANGE_DIR = exports.CHANGE_DIR = 'CHANGE_DIR';
+	var OPEN_COVER = exports.OPEN_COVER = 'OPEN_COVER';
 
 /***/ },
 /* 203 */
@@ -28301,6 +28305,10 @@
 	
 	var navigationActions = _interopRequireWildcard(_navigation);
 	
+	var _Thumbnail = __webpack_require__(206);
+	
+	var _Thumbnail2 = _interopRequireDefault(_Thumbnail);
+	
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -28311,19 +28319,50 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	function mapFilesToHtml(files) {
-		console.log(files);
+	// other components
+	
+	
+	// http://jaketrent.com/post/smart-dumb-components-react/
+	// https://facebook.github.io/immutable-js/docs/#/Seq
+	
+	var IMAGE = "i";
+	var VIDEO = "v";
+	var extDict = {
+		"jpg": IMAGE,
+		"jpeg": IMAGE,
+		"png": IMAGE,
+		"bmp": IMAGE,
+		"avi": VIDEO,
+		"mp4": VIDEO,
+		"mkv": VIDEO,
+		"wmv": VIDEO
+	};
+	
+	function mapFilesToHtml(actions, files) {
 		if (!files) return _react2.default.createElement(
 			'p',
 			null,
 			'No files'
 		);
 		return files.map(function (f) {
-			return _react2.default.createElement(
-				'p',
-				{ key: f.name },
-				f.name
-			);
+			var fileType = f.get('ext') || '';
+			// console.log(f.toJS());
+			switch (extDict[fileType]) {
+				case IMAGE:
+					return _react2.default.createElement(_Thumbnail2.default, { key: f.get('name'), actions: actions, file: f });
+				case VIDEO:
+					return _react2.default.createElement(
+						'p',
+						{ key: f.get('name') },
+						f.get('name')
+					);
+				default:
+					return _react2.default.createElement(
+						'p',
+						{ key: f.get('name') },
+						f.get('name')
+					);
+			}
 		});
 	}
 	
@@ -28357,7 +28396,7 @@
 						null,
 						'Hello to react'
 					),
-					mapFilesToHtml(this.props.files)
+					mapFilesToHtml(this.props.actions, this.props.files)
 				);
 			}
 		}]);
@@ -28396,6 +28435,7 @@
 		value: true
 	});
 	exports.changeDir = changeDir;
+	exports.openCover = openCover;
 	
 	var _TYPES = __webpack_require__(202);
 	
@@ -28409,6 +28449,73 @@
 			newPath: newPath
 		};
 	}
+	
+	function openCover(file) {
+		return {
+			type: types.OPEN_COVER,
+			file: file
+		};
+	}
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(8);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Thumbnail = function (_React$Component) {
+		_inherits(Thumbnail, _React$Component);
+	
+		function Thumbnail(props) {
+			_classCallCheck(this, Thumbnail);
+	
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(Thumbnail).call(this, props));
+		}
+	
+		_createClass(Thumbnail, [{
+			key: 'render',
+			value: function render() {
+				var _this2 = this;
+	
+				// const { currentPath, actions } = this.props;
+				return _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement('img', {
+						className: 'thumb-cover',
+						title: this.props.file.get('name'),
+						src: this.props.file.get('path'),
+						onDoubleClick: function onDoubleClick() {
+							_this2.props.actions.openCover(_this2.props.file);
+						}
+					})
+				);
+			}
+		}]);
+	
+		return Thumbnail;
+	}(_react2.default.Component);
+	
+	exports.default = Thumbnail;
+	;
 
 /***/ }
 /******/ ]);
