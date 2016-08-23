@@ -17,3 +17,12 @@ html, body {
 	max-height: 256px;
 	margin: 1ex;
 }
+
+.item-block {
+	margin: 0.5ex;
+	padding: 0.5ex;
+	border: 1px solid #333;
+}
+.item-name {
+	margin-left: 1ex;
+}

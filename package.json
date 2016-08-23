@@ -26,6 +26,7 @@
     "webpack": "^1.13.1"
   },
   "dependencies": {
+    "diff": "^2.2.3",
     "font-awesome": "^4.6.3",
     "immutable": "^3.8.1",
     "react": "^15.2.1",
