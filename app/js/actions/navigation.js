@@ -8,9 +8,9 @@ export function changeDir(newPath) {
 	};
 }
 
-export function openCover(file) {
+export function openCover(filePath) {
 	return {
 		type: types.OPEN_COVER,
-		file
+		filePath
 	};
 }

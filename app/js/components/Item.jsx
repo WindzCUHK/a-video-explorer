@@ -18,10 +18,10 @@ export default class Thumbnail extends React.Component {
 	}
 	render() {
 		return (
-			<span className="item-block">
+			<div className="item-block file-block">
 				<FontAwesome name={this.mapFileToIconName(this.props.file)} />
 				<span className="item-name">{this.props.file.get('name')}</span>
-			</span>
+			</div>
 		);
 	}
 

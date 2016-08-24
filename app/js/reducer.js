@@ -13,7 +13,7 @@ export default (state, action) => {
 			const result = actionHandlers.changeDir(action.newPath);
 			return state.merge(result);
 		case types.OPEN_COVER:
-			console.log(action);
+			actionHandlers.openCover(action.filePath);
 			return state;
 	}
 

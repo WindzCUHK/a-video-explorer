@@ -1,22 +1,28 @@
 
 import fs from 'fs';
 import path from 'path';
+import {shell} from 'electron';
 import { diffChars } from 'diff';
 
-const IMAGE = "i";
-const VIDEO = "v";
-const extDict = {
-	"jpg": IMAGE,
-	"jpeg": IMAGE,
-	"png": IMAGE,
-	"bmp": IMAGE,
-	"avi": VIDEO,
-	"mp4": VIDEO,
-	"mkv": VIDEO,
-	"wmv": VIDEO
-};
+export function openCover(filePath) {
+	console.log(filePath);
+	console.log(shell.openItem(filePath));
+}
 
 export function changeDir(newPath) {
+
+	const IMAGE = "i";
+	const VIDEO = "v";
+	const extDict = {
+		"jpg": IMAGE,
+		"jpeg": IMAGE,
+		"png": IMAGE,
+		"bmp": IMAGE,
+		"avi": VIDEO,
+		"mp4": VIDEO,
+		"mkv": VIDEO,
+		"wmv": VIDEO
+	};
 
 	function normalizeDirPath(targetPath) {
 
@@ -83,6 +89,9 @@ export function changeDir(newPath) {
 
 
 	try {
+		/*|================================================================|*/
+		/*|                       load all sub-files                       |*/
+		/*|================================================================|*/
 		const files = {};
 		const targetDirPath = normalizeDirPath(newPath);
 		const allSubFiles = recursiveListDir([{
@@ -90,29 +99,22 @@ export function changeDir(newPath) {
 			path: targetDirPath
 		}]);
 
-		const images = allSubFiles.filter((f) => {
-			return extDict[f.ext] === IMAGE;
-		});
-		const videos = allSubFiles.filter((f) => {
-			return extDict[f.ext] === VIDEO;
-		});
+	/*|================================================================|*/
+	/*|                      bind image and video                      |*/
+	/*|================================================================|*/
 		const videosWithCover = [];
+		const images = allSubFiles.filter( f => extDict[f.ext] === IMAGE );
+		const videos = allSubFiles.filter( f => extDict[f.ext] === VIDEO );
+
 		images.forEach((image) => {
-
-
-
-
-
-			// const coveredVideo = image.coveredVideo = {};
-
-
-
-
-			
+			const coveredVideos = [];
 			videos.forEach((video) => {
 				if (image.name === video.name) {
 					// name equal
-					coveredVideo['same'] = video;
+					coveredVideos.push({
+						isEqual: true,
+						file: video
+					});
 					videosWithCover.push(video);
 				} else {
 					// console.log(image.name, video.name);
@@ -128,23 +130,34 @@ export function changeDir(newPath) {
 						const digitMatches = addedContent.match(digitFilter);
 						const letterMatches = addedContent.match(letterFilter);
 
+						// only different in digital part (exclude non-alphanumeric characters)
 						if (digitMatches && !letterMatches && digitMatches.length === 1) {
-							coveredVideo[digitMatches[0]] = video;
+							coveredVideos.push({
+								episode: digitMatches[0],
+								file: video
+							});
 							videosWithCover.push(video);
 						}
+						// only different in 1 letter (exclude non-alphanumeric characters)
 						if (letterMatches && !digitMatches && letterMatches.length === 1 && letterMatches[0].length === 1) {
-							coveredVideo[letterMatches[0]] = video;
+							coveredVideos.push({
+								episode: letterMatches[0],
+								file: video
+							});
 							videosWithCover.push(video);
 						}
 					}
 				}
 			});
+			if (coveredVideos.length > 0) image.coveredVideos = coveredVideos;
 		});
-		console.log('images', images);
+		// console.log('images', images);
 		// console.log('videos', videos.map( v => v.name ));
-		Array.prototype.diff = function(a) {
-			return this.filter(function(i) {return a.indexOf(i) < 0;});
+		const arrayDiff = (a, b) => {
+			return a.filter( e => b.indexOf(e) < 0 );
 		};
+		const allSubFilesWithVideoMerged = arrayDiff(allSubFiles, videosWithCover);
+		// console.log(videosWithCover);
 
 		// get all sub-dir paths
 		// const subDirPaths = {};
@@ -157,7 +170,7 @@ export function changeDir(newPath) {
 
 		return {
 			currentPath: targetDirPath,
-			files: allSubFiles
+			files: allSubFilesWithVideoMerged
 		};
 	} catch (pathError) {
 		return { pathError };

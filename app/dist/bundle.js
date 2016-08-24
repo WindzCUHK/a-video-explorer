@@ -28150,7 +28150,7 @@
 				var result = actionHandlers.changeDir(action.newPath);
 				return state.merge(result);
 			case types.OPEN_COVER:
-				console.log(action);
+				actionHandlers.openCover(action.filePath);
 				return state;
 		}
 	
@@ -28181,6 +28181,7 @@
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 	
+	exports.openCover = openCover;
 	exports.changeDir = changeDir;
 	
 	var _fs = __webpack_require__(2);
@@ -28191,24 +28192,31 @@
 	
 	var _path2 = _interopRequireDefault(_path);
 	
+	var _electron = __webpack_require__(5);
+	
 	var _diff = __webpack_require__(204);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var IMAGE = "i";
-	var VIDEO = "v";
-	var extDict = {
-		"jpg": IMAGE,
-		"jpeg": IMAGE,
-		"png": IMAGE,
-		"bmp": IMAGE,
-		"avi": VIDEO,
-		"mp4": VIDEO,
-		"mkv": VIDEO,
-		"wmv": VIDEO
-	};
+	function openCover(filePath) {
+		console.log(filePath);
+		console.log(_electron.shell.openItem(filePath));
+	}
 	
 	function changeDir(newPath) {
+	
+		var IMAGE = "i";
+		var VIDEO = "v";
+		var extDict = {
+			"jpg": IMAGE,
+			"jpeg": IMAGE,
+			"png": IMAGE,
+			"bmp": IMAGE,
+			"avi": VIDEO,
+			"mp4": VIDEO,
+			"mkv": VIDEO,
+			"wmv": VIDEO
+		};
 	
 		function normalizeDirPath(targetPath) {
 	
@@ -28276,6 +28284,9 @@
 	
 		try {
 			var _ret = function () {
+				/*|================================================================|*/
+				/*|                       load all sub-files                       |*/
+				/*|================================================================|*/
 				var files = {};
 				var targetDirPath = normalizeDirPath(newPath);
 				var allSubFiles = recursiveListDir([{
@@ -28283,21 +28294,26 @@
 					path: targetDirPath
 				}]);
 	
+				/*|================================================================|*/
+				/*|                      bind image and video                      |*/
+				/*|================================================================|*/
+				var videosWithCover = [];
 				var images = allSubFiles.filter(function (f) {
 					return extDict[f.ext] === IMAGE;
 				});
 				var videos = allSubFiles.filter(function (f) {
 					return extDict[f.ext] === VIDEO;
 				});
-				var videosWithCover = [];
+	
 				images.forEach(function (image) {
-	
-					// const coveredVideo = image.coveredVideo = {};
-	
+					var coveredVideos = [];
 					videos.forEach(function (video) {
 						if (image.name === video.name) {
 							// name equal
-							coveredVideo['same'] = video;
+							coveredVideos.push({
+								isEqual: true,
+								file: video
+							});
 							videosWithCover.push(video);
 						} else {
 							// console.log(image.name, video.name);
@@ -28317,25 +28333,36 @@
 								var digitMatches = addedContent.match(digitFilter);
 								var letterMatches = addedContent.match(letterFilter);
 	
+								// only different in digital part (exclude non-alphanumeric characters)
 								if (digitMatches && !letterMatches && digitMatches.length === 1) {
-									coveredVideo[digitMatches[0]] = video;
+									coveredVideos.push({
+										episode: digitMatches[0],
+										file: video
+									});
 									videosWithCover.push(video);
 								}
+								// only different in 1 letter (exclude non-alphanumeric characters)
 								if (letterMatches && !digitMatches && letterMatches.length === 1 && letterMatches[0].length === 1) {
-									coveredVideo[letterMatches[0]] = video;
+									coveredVideos.push({
+										episode: letterMatches[0],
+										file: video
+									});
 									videosWithCover.push(video);
 								}
 							}
 						}
 					});
+					if (coveredVideos.length > 0) image.coveredVideos = coveredVideos;
 				});
-				console.log('images', images);
+				// console.log('images', images);
 				// console.log('videos', videos.map( v => v.name ));
-				Array.prototype.diff = function (a) {
-					return this.filter(function (i) {
-						return a.indexOf(i) < 0;
+				var arrayDiff = function arrayDiff(a, b) {
+					return a.filter(function (e) {
+						return b.indexOf(e) < 0;
 					});
 				};
+				var allSubFilesWithVideoMerged = arrayDiff(allSubFiles, videosWithCover);
+				// console.log(videosWithCover);
 	
 				// get all sub-dir paths
 				// const subDirPaths = {};
@@ -28349,7 +28376,7 @@
 				return {
 					v: {
 						currentPath: targetDirPath,
-						files: allSubFiles
+						files: allSubFilesWithVideoMerged
 					}
 				};
 			}();
@@ -29771,10 +29798,10 @@
 		};
 	}
 	
-	function openCover(file) {
+	function openCover(filePath) {
 		return {
 			type: types.OPEN_COVER,
-			file: file
+			filePath: filePath
 		};
 	}
 
@@ -29794,6 +29821,10 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactFontawesome = __webpack_require__(223);
+	
+	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29801,6 +29832,39 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var renderBoundVideos = function renderBoundVideos(coveredVideos, openCover) {
+		var components = [];
+		if (coveredVideos) {
+			coveredVideos.forEach(function (cv) {
+				console.log(cv.get('file').get('path'));
+				if (cv.get('isEqual')) {
+					components.push(_react2.default.createElement(_reactFontawesome2.default, {
+						key: cv.get('file').get('path'),
+						className: 'episode-button',
+						name: 'video-camera',
+						onDoubleClick: function onDoubleClick(e) {
+							e.preventDefault();openCover(cv.get('file').get('path'));
+						}
+					}));
+				} else {
+					components.push(_react2.default.createElement(
+						'div',
+						{
+							key: cv.get('file').get('path'),
+							className: 'episode-button',
+							onDoubleClick: function onDoubleClick(e) {
+								e.preventDefault();openCover(cv.get('file').get('path'));
+							}
+						},
+						cv.get('episode')
+					));
+				}
+			});
+		}
+	
+		return components;
+	};
 	
 	var CoverThumbnail = function (_React$Component) {
 		_inherits(CoverThumbnail, _React$Component);
@@ -29814,19 +29878,24 @@
 		_createClass(CoverThumbnail, [{
 			key: 'render',
 			value: function render() {
-				var _this2 = this;
-	
 				return _react2.default.createElement(
-					'span',
-					null,
+					'div',
+					{ className: 'item-block cover-thumbnail-block' },
 					_react2.default.createElement('img', {
 						className: 'cover-thumbnail',
 						title: this.props.file.get('name'),
-						src: this.props.file.get('path'),
-						onDoubleClick: function onDoubleClick() {
-							_this2.props.actions.openCover(_this2.props.file);
-						}
-					})
+						src: this.props.file.get('path')
+					}),
+					_react2.default.createElement(
+						'div',
+						{ className: 'cover-name' },
+						this.props.file.get('name')
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'episode-block' },
+						renderBoundVideos(this.props.file.get('coveredVideos'), this.props.actions.openCover)
+					)
 				);
 			}
 		}]);
@@ -29889,8 +29958,8 @@
 			key: 'render',
 			value: function render() {
 				return _react2.default.createElement(
-					'span',
-					{ className: 'item-block' },
+					'div',
+					{ className: 'item-block file-block' },
 					_react2.default.createElement(_reactFontawesome2.default, { name: this.mapFileToIconName(this.props.file) }),
 					_react2.default.createElement(
 						'span',
