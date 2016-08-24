@@ -29663,7 +29663,7 @@
 	
 	var _CoverThumbnail2 = _interopRequireDefault(_CoverThumbnail);
 	
-	var _Item = __webpack_require__(222);
+	var _Item = __webpack_require__(223);
 	
 	var _Item2 = _interopRequireDefault(_Item);
 	
@@ -29821,7 +29821,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactFontawesome = __webpack_require__(223);
+	var _reactFontawesome = __webpack_require__(222);
 	
 	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
 	
@@ -29866,8 +29866,42 @@
 		return components;
 	};
 	
-	var CoverThumbnail = function (_React$Component) {
-		_inherits(CoverThumbnail, _React$Component);
+	// class VideoButton extends React.Component {
+	// 	render() {
+	// 		return (<FontAwesome
+	// 			key={cv.get('file').get('path')}
+	// 			className="episode-button"
+	// 			name='video-camera'
+	// 			onDoubleClick={(e) => {e.preventDefault();openCover(cv.get('file').get('path'))}}
+	// 		/>);
+	// 	}
+	// }
+	
+	var Tag = function (_React$Component) {
+		_inherits(Tag, _React$Component);
+	
+		function Tag() {
+			_classCallCheck(this, Tag);
+	
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(Tag).apply(this, arguments));
+		}
+	
+		_createClass(Tag, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'span',
+					{ className: 'tag' },
+					this.props.tag
+				);
+			}
+		}]);
+	
+		return Tag;
+	}(_react2.default.Component);
+	
+	var CoverThumbnail = function (_React$Component2) {
+		_inherits(CoverThumbnail, _React$Component2);
 	
 		function CoverThumbnail(props) {
 			_classCallCheck(this, CoverThumbnail);
@@ -29895,6 +29929,13 @@
 						'div',
 						{ className: 'episode-block' },
 						renderBoundVideos(this.props.file.get('coveredVideos'), this.props.actions.openCover)
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'tag-block' },
+						this.props.file.get('tags').map(function (tag) {
+							return _react2.default.createElement(Tag, { key: tag, tag: tag });
+						})
 					)
 				);
 			}
@@ -29908,76 +29949,6 @@
 
 /***/ },
 /* 222 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(8);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactFontawesome = __webpack_require__(223);
-	
-	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Thumbnail = function (_React$Component) {
-		_inherits(Thumbnail, _React$Component);
-	
-		function Thumbnail(props) {
-			_classCallCheck(this, Thumbnail);
-	
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(Thumbnail).call(this, props));
-		}
-	
-		_createClass(Thumbnail, [{
-			key: 'mapFileToIconName',
-			value: function mapFileToIconName(file) {
-				if (!file.get('isFile')) return 'folder';else {
-					var defaultIconName = 'file';
-					var fileExtDict = {
-						"txt": 'file-text'
-					};
-					return fileExtDict[file.get('ext')] || defaultIconName;
-				}
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					{ className: 'item-block file-block' },
-					_react2.default.createElement(_reactFontawesome2.default, { name: this.mapFileToIconName(this.props.file) }),
-					_react2.default.createElement(
-						'span',
-						{ className: 'item-name' },
-						this.props.file.get('name')
-					)
-				);
-			}
-		}]);
-	
-		return Thumbnail;
-	}(_react2.default.Component);
-	
-	exports.default = Thumbnail;
-	;
-
-/***/ },
-/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30095,6 +30066,76 @@
 	  }
 	});
 	module.exports = exports['default'];
+
+/***/ },
+/* 223 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(8);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactFontawesome = __webpack_require__(222);
+	
+	var _reactFontawesome2 = _interopRequireDefault(_reactFontawesome);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Thumbnail = function (_React$Component) {
+		_inherits(Thumbnail, _React$Component);
+	
+		function Thumbnail(props) {
+			_classCallCheck(this, Thumbnail);
+	
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(Thumbnail).call(this, props));
+		}
+	
+		_createClass(Thumbnail, [{
+			key: 'mapFileToIconName',
+			value: function mapFileToIconName(file) {
+				if (!file.get('isFile')) return 'folder';else {
+					var defaultIconName = 'file';
+					var fileExtDict = {
+						"txt": 'file-text'
+					};
+					return fileExtDict[file.get('ext')] || defaultIconName;
+				}
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'div',
+					{ className: 'item-block file-block' },
+					_react2.default.createElement(_reactFontawesome2.default, { name: this.mapFileToIconName(this.props.file) }),
+					_react2.default.createElement(
+						'span',
+						{ className: 'item-name' },
+						this.props.file.get('name')
+					)
+				);
+			}
+		}]);
+	
+		return Thumbnail;
+	}(_react2.default.Component);
+	
+	exports.default = Thumbnail;
+	;
 
 /***/ }
 /******/ ]);

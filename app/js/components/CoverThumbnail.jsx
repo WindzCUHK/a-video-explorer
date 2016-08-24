@@ -27,6 +27,23 @@ const renderBoundVideos = (coveredVideos, openCover) => {
 	return components;
 };
 
+// class VideoButton extends React.Component {
+// 	render() {
+// 		return (<FontAwesome
+// 			key={cv.get('file').get('path')}
+// 			className="episode-button"
+// 			name='video-camera'
+// 			onDoubleClick={(e) => {e.preventDefault();openCover(cv.get('file').get('path'))}}
+// 		/>);
+// 	}
+// }
+
+class Tag extends React.Component {
+	render() {
+		return (<span className="tag">{this.props.tag}</span>);
+	}
+}
+
 export default class CoverThumbnail extends React.Component {
 	constructor(props) {
 		super(props);
@@ -42,6 +59,11 @@ export default class CoverThumbnail extends React.Component {
 				<div className="cover-name">{this.props.file.get('name')}</div>
 				<div className="episode-block">
 					{renderBoundVideos(this.props.file.get('coveredVideos'), this.props.actions.openCover)}
+				</div>
+				<div className="tag-block">
+					{this.props.file.get('tags').map((tag) => {
+						return <Tag key={tag} tag={tag} />;
+					})}
 				</div>
 			</div>
 		);
