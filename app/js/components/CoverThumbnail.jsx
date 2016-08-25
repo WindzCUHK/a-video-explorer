@@ -2,41 +2,23 @@
 import React from 'react';
 import FontAwesome from 'react-fontawesome';
 
-const renderBoundVideos = (coveredVideos, openCover) => {
-	const components = [];
-	if (coveredVideos) {
-		coveredVideos.forEach((cv) => {
-			console.log(cv.get('file').get('path'));
-			if (cv.get('isEqual')) {
-				components.push(<FontAwesome
-					key={cv.get('file').get('path')}
-					className="episode-button"
-					name='video-camera'
-					onDoubleClick={(e) => {e.preventDefault();openCover(cv.get('file').get('path'))}}
-				/>);
-			} else {
-				components.push(<div
-					key={cv.get('file').get('path')}
-					className="episode-button"
-					onDoubleClick={(e) => {e.preventDefault();openCover(cv.get('file').get('path'))}}
-				>{cv.get('episode')}</div>);
-			}
-		});
+class VideoButton extends React.Component {
+	render() {
+		const isEqual = this.props.coveredVideo.get('isEqual');
+		const episode = this.props.coveredVideo.get('episode');
+		const videoPath = this.props.coveredVideo.get('file').get('path');
+		const openVideo = (event) => {
+			event.preventDefault();
+			this.props.openCover(videoPath);
+		};
+
+		if (isEqual) {
+			return (<FontAwesome className="episode-button" name='video-camera' onDoubleClick={openVideo} />);
+		} else {
+			return (<div className="episode-button" onDoubleClick={openVideo}>{episode}</div>);
+		}
 	}
-
-	return components;
-};
-
-// class VideoButton extends React.Component {
-// 	render() {
-// 		return (<FontAwesome
-// 			key={cv.get('file').get('path')}
-// 			className="episode-button"
-// 			name='video-camera'
-// 			onDoubleClick={(e) => {e.preventDefault();openCover(cv.get('file').get('path'))}}
-// 		/>);
-// 	}
-// }
+}
 
 class Tag extends React.Component {
 	render() {
@@ -58,11 +40,14 @@ export default class CoverThumbnail extends React.Component {
 				/>
 				<div className="cover-name">{this.props.file.get('name')}</div>
 				<div className="episode-block">
-					{renderBoundVideos(this.props.file.get('coveredVideos'), this.props.actions.openCover)}
+					{this.props.file.get('coveredVideos').map((cv) => {
+						const videoPath = cv.get('file').get('path');
+						return (<VideoButton key={videoPath} coveredVideo={cv} openCover={this.props.actions.openCover} />);
+					})}
 				</div>
 				<div className="tag-block">
 					{this.props.file.get('tags').map((tag) => {
-						return <Tag key={tag} tag={tag} />;
+						return (<Tag key={tag} tag={tag} />);
 					})}
 				</div>
 			</div>

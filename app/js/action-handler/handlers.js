@@ -125,6 +125,16 @@ export function changeDir(newPath) {
 
 						const addedContent = diffAdded[0].value;
 
+						// prefix match
+						coveredVideos.push({
+							episode: addedContent,
+							file: video
+						});
+						videosWithCover.push(video);
+						
+
+						/*
+
 						const digitFilter = /\d+/g;
 						const letterFilter = /[a-z]+/gi;
 						const digitMatches = addedContent.match(digitFilter);
@@ -146,6 +156,8 @@ export function changeDir(newPath) {
 							});
 							videosWithCover.push(video);
 						}
+
+						*/
 					}
 				}
 			});
