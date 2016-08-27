@@ -161,7 +161,7 @@ export function changeDir(newPath) {
 					}
 				}
 			});
-			if (coveredVideos.length > 0) image.coveredVideos = coveredVideos;
+			image.coveredVideos = coveredVideos;
 		});
 		// console.log('images', images);
 		// console.log('videos', videos.map( v => v.name ));
