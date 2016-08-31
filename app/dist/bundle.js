@@ -28328,31 +28328,39 @@
 	
 								var addedContent = diffAdded[0].value;
 	
-								var digitFilter = /\d+/g;
-								var letterFilter = /[a-z]+/gi;
-								var digitMatches = addedContent.match(digitFilter);
-								var letterMatches = addedContent.match(letterFilter);
+								// prefix match
+								coveredVideos.push({
+									episode: addedContent,
+									file: video
+								});
+								videosWithCover.push(video);
 	
-								// only different in digital part (exclude non-alphanumeric characters)
-								if (digitMatches && !letterMatches && digitMatches.length === 1) {
-									coveredVideos.push({
-										episode: digitMatches[0],
-										file: video
-									});
-									videosWithCover.push(video);
-								}
-								// only different in 1 letter (exclude non-alphanumeric characters)
-								if (letterMatches && !digitMatches && letterMatches.length === 1 && letterMatches[0].length === 1) {
-									coveredVideos.push({
-										episode: letterMatches[0],
-										file: video
-									});
-									videosWithCover.push(video);
-								}
+								/*
+	       		const digitFilter = /\d+/g;
+	       const letterFilter = /[a-z]+/gi;
+	       const digitMatches = addedContent.match(digitFilter);
+	       const letterMatches = addedContent.match(letterFilter);
+	       		// only different in digital part (exclude non-alphanumeric characters)
+	       if (digitMatches && !letterMatches && digitMatches.length === 1) {
+	       	coveredVideos.push({
+	       		episode: digitMatches[0],
+	       		file: video
+	       	});
+	       	videosWithCover.push(video);
+	       }
+	       // only different in 1 letter (exclude non-alphanumeric characters)
+	       if (letterMatches && !digitMatches && letterMatches.length === 1 && letterMatches[0].length === 1) {
+	       	coveredVideos.push({
+	       		episode: letterMatches[0],
+	       		file: video
+	       	});
+	       	videosWithCover.push(video);
+	       }
+	       		*/
 							}
 						}
 					});
-					if (coveredVideos.length > 0) image.coveredVideos = coveredVideos;
+					image.coveredVideos = coveredVideos;
 				});
 				// console.log('images', images);
 				// console.log('videos', videos.map( v => v.name ));
@@ -29696,24 +29704,6 @@
 		"wmv": VIDEO
 	};
 	
-	function mapFilesToHtml(actions, files) {
-		if (!files) return _react2.default.createElement(
-			'p',
-			null,
-			'No files'
-		);
-		return files.map(function (f) {
-			var fileType = f.get('ext') || '';
-			// console.log(f.toJS());
-			switch (extDict[fileType]) {
-				case IMAGE:
-					return _react2.default.createElement(_CoverThumbnail2.default, { key: f.get('path'), actions: actions, file: f });
-				default:
-					return _react2.default.createElement(_Item2.default, { key: f.get('path'), file: f });
-			}
-		});
-	}
-	
 	var MainBlock = function (_React$Component) {
 		_inherits(MainBlock, _React$Component);
 	
@@ -29724,11 +29714,33 @@
 		}
 	
 		_createClass(MainBlock, [{
+			key: 'getImageFilter',
+			value: function getImageFilter(revert) {
+				return function (f) {
+					var fileType = f.get('ext') || '';
+					return extDict[fileType] === IMAGE !== revert;
+				};
+			}
+		}, {
+			key: 'mergeTags',
+			value: function mergeTags() {
+				if (!this.props.files) return [];
+				return Object.keys(this.props.files.map(function (f) {
+					return f.get('tags');
+				}).reduce(function (mergedTags, tags) {
+					tags.forEach(function (t) {
+						mergedTags[t] = true;
+					});
+					return mergedTags;
+				}, {}));
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				var _this2 = this;
 	
 				// const { currentPath, actions } = this.props;
+				var files = this.props.files || [];
 				return _react2.default.createElement(
 					'div',
 					null,
@@ -29744,7 +29756,18 @@
 						null,
 						'Hello to react'
 					),
-					mapFilesToHtml(this.props.actions, this.props.files)
+					files.length === 0 ? _react2.default.createElement(
+						'p',
+						null,
+						'No files'
+					) : null,
+					console.log(this.mergeTags()),
+					files.filter(this.getImageFilter(false)).map(function (imageFile) {
+						return _react2.default.createElement(_CoverThumbnail2.default, { key: imageFile.get('path'), actions: _this2.props.actions, file: imageFile });
+					}),
+					files.filter(this.getImageFilter(true)).map(function (file) {
+						return _react2.default.createElement(_Item2.default, { key: file.get('path'), file: file });
+					})
 				);
 			}
 		}]);
@@ -29833,52 +29856,45 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var renderBoundVideos = function renderBoundVideos(coveredVideos, openCover) {
-		var components = [];
-		if (coveredVideos) {
-			coveredVideos.forEach(function (cv) {
-				console.log(cv.get('file').get('path'));
-				if (cv.get('isEqual')) {
-					components.push(_react2.default.createElement(_reactFontawesome2.default, {
-						key: cv.get('file').get('path'),
-						className: 'episode-button',
-						name: 'video-camera',
-						onDoubleClick: function onDoubleClick(e) {
-							e.preventDefault();openCover(cv.get('file').get('path'));
-						}
-					}));
-				} else {
-					components.push(_react2.default.createElement(
-						'div',
-						{
-							key: cv.get('file').get('path'),
-							className: 'episode-button',
-							onDoubleClick: function onDoubleClick(e) {
-								e.preventDefault();openCover(cv.get('file').get('path'));
-							}
-						},
-						cv.get('episode')
-					));
-				}
-			});
+	var VideoButton = function (_React$Component) {
+		_inherits(VideoButton, _React$Component);
+	
+		function VideoButton() {
+			_classCallCheck(this, VideoButton);
+	
+			return _possibleConstructorReturn(this, Object.getPrototypeOf(VideoButton).apply(this, arguments));
 		}
 	
-		return components;
-	};
+		_createClass(VideoButton, [{
+			key: 'render',
+			value: function render() {
+				var _this2 = this;
 	
-	// class VideoButton extends React.Component {
-	// 	render() {
-	// 		return (<FontAwesome
-	// 			key={cv.get('file').get('path')}
-	// 			className="episode-button"
-	// 			name='video-camera'
-	// 			onDoubleClick={(e) => {e.preventDefault();openCover(cv.get('file').get('path'))}}
-	// 		/>);
-	// 	}
-	// }
+				var isEqual = this.props.coveredVideo.get('isEqual');
+				var episode = this.props.coveredVideo.get('episode');
+				var videoPath = this.props.coveredVideo.get('file').get('path');
+				var openVideo = function openVideo(event) {
+					event.preventDefault();
+					_this2.props.openCover(videoPath);
+				};
 	
-	var Tag = function (_React$Component) {
-		_inherits(Tag, _React$Component);
+				if (isEqual) {
+					return _react2.default.createElement(_reactFontawesome2.default, { className: 'episode-button', name: 'video-camera', onDoubleClick: openVideo });
+				} else {
+					return _react2.default.createElement(
+						'div',
+						{ className: 'episode-button', onDoubleClick: openVideo },
+						episode
+					);
+				}
+			}
+		}]);
+	
+		return VideoButton;
+	}(_react2.default.Component);
+	
+	var Tag = function (_React$Component2) {
+		_inherits(Tag, _React$Component2);
 	
 		function Tag() {
 			_classCallCheck(this, Tag);
@@ -29900,8 +29916,8 @@
 		return Tag;
 	}(_react2.default.Component);
 	
-	var CoverThumbnail = function (_React$Component2) {
-		_inherits(CoverThumbnail, _React$Component2);
+	var CoverThumbnail = function (_React$Component3) {
+		_inherits(CoverThumbnail, _React$Component3);
 	
 		function CoverThumbnail(props) {
 			_classCallCheck(this, CoverThumbnail);
@@ -29912,6 +29928,8 @@
 		_createClass(CoverThumbnail, [{
 			key: 'render',
 			value: function render() {
+				var _this5 = this;
+	
 				return _react2.default.createElement(
 					'div',
 					{ className: 'item-block cover-thumbnail-block' },
@@ -29928,7 +29946,10 @@
 					_react2.default.createElement(
 						'div',
 						{ className: 'episode-block' },
-						renderBoundVideos(this.props.file.get('coveredVideos'), this.props.actions.openCover)
+						this.props.file.get('coveredVideos').map(function (cv) {
+							var videoPath = cv.get('file').get('path');
+							return _react2.default.createElement(VideoButton, { key: videoPath, coveredVideo: cv, openCover: _this5.props.actions.openCover });
+						})
 					),
 					_react2.default.createElement(
 						'div',

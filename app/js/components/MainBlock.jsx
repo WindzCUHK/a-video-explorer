@@ -25,31 +25,45 @@ const extDict = {
 	"wmv": VIDEO
 };
 
-function mapFilesToHtml(actions, files) {
-	if (!files) return (<p>No files</p>);
-	return files.map((f) => {
-		const fileType = f.get('ext') || '';
-		// console.log(f.toJS());
-		switch (extDict[fileType]) {
-			case IMAGE:
-				return (<CoverThumbnail key={f.get('path')} actions={actions} file={f} />);
-			default:
-				return (<Item key={f.get('path')} file={f} />);
-		}
-	});
-}
-
 class MainBlock extends React.Component {
 	constructor(props) {
 		super(props);
 	}
+	getImageFilter(revert) {
+		return (f) => {
+			const fileType = f.get('ext') || '';
+			return ((extDict[fileType] === IMAGE) !== revert);
+		};
+	}
+	mergeTags() {
+		if (!this.props.files) return [];
+		return Object.keys(this.props.files.map((f) => {
+			return f.get('tags');
+		}).reduce((mergedTags, tags) => {
+			tags.forEach((t) => {
+				mergedTags[t] = true;
+			});
+			return mergedTags;
+		}, {}));
+	}
 	render() {
 		// const { currentPath, actions } = this.props;
+		const files = this.props.files || [];
 		return (
 			<div>
 				<div onClick={() => {this.props.actions.changeDir('..')}}>{this.props.currentPath}</div>
 				<h1>Hello to react</h1>
-				{mapFilesToHtml(this.props.actions, this.props.files)}
+
+				{(files.length === 0) ? (<p>No files</p>) : null}
+
+				{console.log(this.mergeTags())}
+
+				{files.filter(this.getImageFilter(false)).map((imageFile) => {
+					return (<CoverThumbnail key={imageFile.get('path')} actions={this.props.actions} file={imageFile} />);
+				})}
+				{files.filter(this.getImageFilter(true)).map((file) => {
+					return (<Item key={file.get('path')} file={file} />);
+				})}
 			</div>
 		);
 	}

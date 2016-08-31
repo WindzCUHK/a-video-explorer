@@ -13,7 +13,7 @@ function createWindow() {
 	mainWindow = new BrowserWindow({
 		width: 1024,
 		height: 768,
-		fullscreen: false
+		fullscreen: true
 	});
 
 	mainWindow.loadURL(`${rootPath}/index.html`);
