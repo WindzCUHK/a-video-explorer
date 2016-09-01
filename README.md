@@ -30,3 +30,13 @@
 - extra
     + http://tutorialzine.com/2015/12/creating-your-first-desktop-app-with-html-js-and-electron/
     + https://github.com/Unitech/pm2
+
+
+## mock up
+![mock up](https://raw.githubusercontent.com/WindzCUHK/a-video-explorer/master/mockup.png)
+
+- some useful style
+- http://codepen.io/teeganlincoln/pen/MaNxBv
+- http://codepen.io/Vince_Brown/pen/bNNpmY
+- http://codepen.io/Joshuasm32/pen/ruyhc
+- http://codepen.io/dudleystorey/pen/XJWqgz
