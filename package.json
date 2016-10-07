@@ -21,18 +21,29 @@
     "chai": "^3.5.0",
     "electron-prebuilt": "^1.2.6",
     "electron-reload": "^1.0.0",
-    "mocha": "^2.5.3",
-    "react-hot-loader": "^1.3.0",
+    "mocha": "^3.1.0",
+    "react-hot-loader": "^3.0.0-beta.5",
     "webpack": "^1.13.1"
   },
   "dependencies": {
-    "diff": "^2.2.3",
+    "babel-core": "6.17.0",
+    "babel-loader": "6.2.5",
+    "babel-preset-es2015": "6.16.0",
+    "babel-preset-react": "6.16.0",
+    "babel-register": "6.16.3",
+    "diff": "^3.0.0",
+    "electron-prebuilt": "1.4.3",
+    "electron-reload": "1.0.2",
     "font-awesome": "^4.6.3",
+    "grommet": "0.6.12",
     "immutable": "^3.8.1",
-    "react": "^15.2.1",
-    "react-dom": "^15.2.1",
-    "react-fontawesome": "^1.1.0",
+    "material-ui": "0.16.0",
+    "react": "15.3.2",
+    "react-dom": "15.3.2",
+    "react-fontawesome": "1.2.0",
     "react-redux": "^4.4.5",
-    "redux": "^3.5.2"
+    "react-tap-event-plugin": "1.0.0",
+    "redux": "3.6.0",
+    "webpack": "1.13.2"
   }
 }

@@ -2,6 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import {shell} from 'electron';
 
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
 
 const thumbnailBlock = document.getElementById('content');
 const state = {

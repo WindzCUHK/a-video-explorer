@@ -2,6 +2,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { TextField } from 'material-ui';
+import Box from 'grommet/components/Box';
+import Header from 'grommet/components/Header';
+import Title from 'grommet/components/Title';
 import * as navigationActions from '../actions/navigation.js';
 
 
@@ -46,13 +50,20 @@ class MainBlock extends React.Component {
 			return mergedTags;
 		}, {}));
 	}
+	textChanged(proxy, text) {
+		console.log(proxy, text);
+	}
 	render() {
 		// const { currentPath, actions } = this.props;
 		const files = this.props.files || [];
 		return (
 			<div>
-				<div onClick={() => {this.props.actions.changeDir('..')}}>{this.props.currentPath}</div>
-				<h1>Hello to react</h1>
+				<Header pad={{horizontal: 'medium'}} size="medium" onClick={() => {this.props.actions.changeDir('..')}}>
+					<Title>{this.props.currentPath}</Title>
+				</Header>
+				<Box pad={{horizontal: 'medium', vertical: 'none'}}>
+					<TextField  hintText="Cover Name" floatingLabelText="Search" fullWidth={true} onChange={this.textChanged} />
+				</Box>
 
 				{(files.length === 0) ? (<p>No files</p>) : null}
 

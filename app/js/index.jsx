@@ -4,6 +4,10 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import {MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+
 import reducer from './reducer.js';
 import MainBlock from './components/MainBlock.jsx';
 import * as navigationActions from './actions/navigation.js';
@@ -17,7 +21,9 @@ const store = createStore(reducer, Immutable.Map({
 export default function renderMain(state, containerElement) {
 	render(
 		<Provider store={store}>
-			<MainBlock />
+			<MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+				<MainBlock />
+			</MuiThemeProvider>
 		</Provider>,
 		containerElement
 	);
