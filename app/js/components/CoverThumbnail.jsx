@@ -1,6 +1,8 @@
 
 import React from 'react';
 import FontAwesome from 'react-fontawesome';
+import Image from 'grommet/components/Image';
+import Tile from 'grommet/components/Tile';
 
 class VideoButton extends React.Component {
 	render() {
@@ -32,12 +34,21 @@ export default class CoverThumbnail extends React.Component {
 	}
 	render() {
 		return (
-			<div className="item-block cover-thumbnail-block">
-				<img
+			// <div className="item-block cover-thumbnail-block">
+				/*<img
 					className="cover-thumbnail"
 					title={this.props.file.get('name')}
 					src={this.props.file.get('path')}
+				/>*/
+			<Tile wide={true}>
+				<Image
+					alt={this.props.file.get('name')}
+					src={this.props.file.get('path')}
+					size="large"
+					fit="contain"
 				/>
+
+
 				<div className="cover-name">{this.props.file.get('name')}</div>
 				<div className="episode-block">
 					{this.props.file.get('coveredVideos').map((cv) => {
@@ -50,7 +61,8 @@ export default class CoverThumbnail extends React.Component {
 						return (<Tag key={tag} tag={tag} />);
 					})}
 				</div>
-			</div>
+			</Tile>
+			// </div>
 		);
 	}
 };

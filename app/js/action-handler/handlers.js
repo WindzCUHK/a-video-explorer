@@ -68,9 +68,9 @@ export function changeDir(newPath) {
 		});
 	}
 
-	function recursiveListDir(dirs) {
+	function recursiveListDir(dirs, level) {
 
-		if (dirs.length === 0) return [];
+		if (dirs.length === 0 || level === 0) return [];
 
 		// list all files in current level
 		let files = [];
@@ -82,7 +82,7 @@ export function changeDir(newPath) {
 
 		// filter all directories in sub-level, list all sub-level files
 		const subDirs = files.filter( f => !f.isFile );
-		const subFiles = recursiveListDir(subDirs);
+		const subFiles = recursiveListDir(subDirs, level - 1);
 
 		return files.concat(subFiles);
 	};
@@ -97,7 +97,7 @@ export function changeDir(newPath) {
 		const allSubFiles = recursiveListDir([{
 			isFile: false,
 			path: targetDirPath
-		}]);
+		}], 2);
 
 	/*|================================================================|*/
 	/*|                      bind image and video                      |*/
@@ -181,6 +181,7 @@ export function changeDir(newPath) {
 		// console.log(Object.keys(subDirPaths));
 
 		return {
+			pathError: null,
 			currentPath: targetDirPath,
 			files: allSubFilesWithVideoMerged
 		};

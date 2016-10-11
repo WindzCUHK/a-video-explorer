@@ -13,7 +13,7 @@ import MainBlock from './components/MainBlock.jsx';
 import * as navigationActions from './actions/navigation.js';
 
 const store = createStore(reducer, Immutable.Map({
-	currentPath: '.'
+	currentPath: 'C:/Users/windz.fan/Git/a-video-explorer'
 }));
 
 

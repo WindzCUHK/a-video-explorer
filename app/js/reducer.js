@@ -9,7 +9,8 @@ export default (state, action) => {
 
 	switch (action.type) {
 		case types.CHANGE_DIR:
-			// { pathError, currentPath, files }
+			// state = { pathError, currentPath, files }
+
 			const result = actionHandlers.changeDir(action.newPath);
 			return state.merge(result);
 		case types.OPEN_COVER:

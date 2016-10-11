@@ -1,5 +1,10 @@
 
 @import 'https://fonts.googleapis.com/css?family=Roboto';
+
+html {
+	overflow: auto;
+}
+
 /*
 html, body {
 	position: relative;
