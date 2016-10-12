@@ -51,6 +51,10 @@ class MainBlock extends React.Component {
 			return ((extDict[fileType] === IMAGE) !== revert);
 		};
 	}
+	filterByName(f) {
+		if (this.props.ui.nameFilter.length === 0) return true;
+		else return (f.get('name').indexOf(this.props.ui.nameFilter) !== -1);
+	}
 	mergeTags() {
 		if (!this.props.files) return [];
 		return Object.keys(this.props.files.map((f) => {
@@ -95,10 +99,10 @@ class MainBlock extends React.Component {
 							<TextField  hintText="Cover Name" floatingLabelText="Search" fullWidth={true} onChange={this.textChanged} />
 						</Box>
 
+						{(files.length === 0) ? (<p>No files</p>) : null}
 						<Tiles fill={true} selectable={true} size="small">
-							{(files.length === 0) ? (<p>No files</p>) : null}
 
-							{files.filter(this.getImageFilter(false)).map((imageFile) => {
+							{files.filter(this.getImageFilter(false)).filter(this.filterByName.bind(this)).map((imageFile) => {
 								return (<CoverThumbnail key={imageFile.get('path')} actions={this.props.actions} file={imageFile} />);
 							})}
 							{files.filter(this.getImageFilter(true)).map((file) => {
@@ -119,8 +123,9 @@ MainBlock.propTypes = {
 
 function mapStateToProps(state) {
 	return {
-		pathError: state.get('pathError'),
+		ui: state.get('ui'),
 		currentPath: state.get('currentPath'),
+		pathError: state.get('pathError'),
 		files: state.get('files')
 	};
 }
