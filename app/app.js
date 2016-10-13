@@ -1,4 +1,6 @@
 
+import path from 'path';
+
 import electron from 'electron';
 import electronReload from 'electron-reload';
 
@@ -43,3 +45,7 @@ app.on('activate', () => {
 		createWindow();
 	}
 });
+
+
+
+// console.log(app.getPath('home'));

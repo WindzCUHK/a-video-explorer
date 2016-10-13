@@ -83,7 +83,7 @@ class MainBlock extends React.Component {
 						<Header pad="small">
 							<SearchInput placeHolder="Search tag" onDOMChange={function (event) {console.log(event.target.value);}}/>
 						</Header>
-						<Menu primary={true} pad="small">
+						<Menu pad="small" size="small" className="tag-menu">
 							{this.mergeTags().map((tag) => {
 								return <Anchor href="#" key={tag}>{tag}</Anchor>;
 							})}

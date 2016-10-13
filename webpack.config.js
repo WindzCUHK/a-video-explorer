@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 
-var BUILD_DIR = path.resolve(__dirname, 'app/js');
+var BUILD_DIR = path.resolve(__dirname, 'client-js');
 var DIST_DIR = path.resolve(__dirname, 'app/dist');
 
 module.exports = {
@@ -34,6 +34,7 @@ module.exports = {
 	externals: [
 		(function () {
 			var IGNORES = [
+				'path',
 				'fs',
 				'electron'
 			];

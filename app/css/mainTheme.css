@@ -5,6 +5,17 @@ html {
 	overflow: auto;
 }
 
+.tag-menu {
+	width: 100%;
+}
+
+.cover-title-block {
+	opacity: 0.7;
+}
+.cover-title {
+	padding: 1ex;
+	font-size: small;
+}
 /*
 html, body {
 	position: relative;
