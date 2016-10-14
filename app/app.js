@@ -20,7 +20,8 @@ function createWindow() {
 
 	mainWindow.loadURL(`${rootPath}/index.html`);
 
-	mainWindow.webContents.openDevTools();
+	console.log(process.argv);
+	if (process.argv[2] !== 'noDebug') mainWindow.webContents.openDevTools();
 
 	mainWindow.on('closed', () => {
 		// for multi-windows, delete it in array

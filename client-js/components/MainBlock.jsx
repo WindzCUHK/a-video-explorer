@@ -53,9 +53,9 @@ class MainBlock extends React.Component {
 		};
 	}
 	filterByName(f) {
-		const nameFilter = this.props.ui.get('nameFilter');
+		const nameFilter = this.props.ui.get('nameFilter').toLowerCase();
 		if (nameFilter.length === 0) return true;
-		else return (f.get('name').indexOf(nameFilter) !== -1);
+		else return (f.get('name').toLowerCase().indexOf(nameFilter) !== -1);
 	}
 	mergeTags() {
 		if (!this.props.files) return [];
@@ -105,7 +105,7 @@ class MainBlock extends React.Component {
 						</Box>
 
 						{(files.length === 0) ? (<p>No files</p>) : null}
-						<Tiles fill={true} selectable={true} size="small">
+						<Tiles fill={true} selectable={true}>
 
 							{files.filter(this.getImageFilter(false)).filter(this.filterByName.bind(this)).map((imageFile) => {
 								return (<CoverThumbnail key={imageFile.get('path')} actions={this.props.action.navigation} file={imageFile} />);

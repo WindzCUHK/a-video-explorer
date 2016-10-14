@@ -37823,8 +37823,8 @@
 		}, {
 			key: 'filterByName',
 			value: function filterByName(f) {
-				var nameFilter = this.props.ui.get('nameFilter');
-				if (nameFilter.length === 0) return true;else return f.get('name').indexOf(nameFilter) !== -1;
+				var nameFilter = this.props.ui.get('nameFilter').toLowerCase();
+				if (nameFilter.length === 0) return true;else return f.get('name').toLowerCase().indexOf(nameFilter) !== -1;
 			}
 		}, {
 			key: 'mergeTags',
@@ -37920,7 +37920,7 @@
 							) : null,
 							_react2.default.createElement(
 								_Tiles2.default,
-								{ fill: true, selectable: true, size: 'small' },
+								{ fill: true, selectable: true },
 								files.filter(this.getImageFilter(false)).filter(this.filterByName.bind(this)).map(function (imageFile) {
 									return _react2.default.createElement(_CoverThumbnail2.default, { key: imageFile.get('path'), actions: _this2.props.action.navigation, file: imageFile });
 								}),
@@ -89982,8 +89982,6 @@
 		}, {
 			key: 'scrollEpisode',
 			value: function scrollEpisode(syntheticEvent) {
-				syntheticEvent.stopPropagation();
-				syntheticEvent.preventDefault();
 				var element = this.refs['episode-block'].boxContainerRef;
 				element.scrollLeft += syntheticEvent.deltaY * 3;
 	
@@ -89994,6 +89992,14 @@
 				if (isLeftMost && isRightMost) return;else {
 					leftArrow.classList.toggle('hidden', !isLeftMost);
 					rightArrow.classList.toggle('hidden', !isRightMost);
+				}
+	
+				var isScrollHandled = !isLeftMost && !isRightMost;
+				isScrollHandled |= syntheticEvent.deltaY < 0 && !isLeftMost;
+				isScrollHandled |= syntheticEvent.deltaY > 0 && !isRightMost;
+				if (isScrollHandled) {
+					syntheticEvent.stopPropagation();
+					syntheticEvent.preventDefault();
 				}
 			}
 		}, {
@@ -90010,7 +90016,7 @@
 	
 				return _react2.default.createElement(
 					_Tile2.default,
-					{ wide: true, align: 'center', justify: 'center' },
+					{ align: 'center', justify: 'center', size: 'auto', className: 'cover-tile' },
 					_react2.default.createElement(
 						_Article2.default,
 						{ full: 'horizontal', align: 'center', justify: 'center' },

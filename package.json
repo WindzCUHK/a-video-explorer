@@ -5,6 +5,7 @@
   "main": "app-main.js",
   "scripts": {
     "start": "electron .",
+    "use": "electron . noDebug",
     "test": "mocha --compilers js:babel-register",
     "build": "webpack --progress --colors",
     "build:watch": "npm run build -- --watch"

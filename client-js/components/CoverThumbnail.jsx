@@ -42,8 +42,6 @@ export default class CoverThumbnail extends React.Component {
 		return encodeURI((targetPath.indexOf('\\') >= 0) ? targetPath.replace(/\\/g, '/') : targetPath);
 	}
 	scrollEpisode(syntheticEvent) {
-		syntheticEvent.stopPropagation();
-		syntheticEvent.preventDefault();
 		const element = this.refs['episode-block'].boxContainerRef;
 		element.scrollLeft += syntheticEvent.deltaY * 3;
 
@@ -55,6 +53,15 @@ export default class CoverThumbnail extends React.Component {
 		else {
 			leftArrow.classList.toggle('hidden', !isLeftMost);
 			rightArrow.classList.toggle('hidden', !isRightMost);
+
+		}
+
+		let isScrollHandled = !isLeftMost && !isRightMost;
+		isScrollHandled |= (syntheticEvent.deltaY < 0) && !isLeftMost;
+		isScrollHandled |= (syntheticEvent.deltaY > 0) && !isRightMost;
+		if (isScrollHandled) {
+			syntheticEvent.stopPropagation();
+			syntheticEvent.preventDefault();
 		}
 	}
 	isEpisodeBlockBoundary(isLeft) {
@@ -65,7 +72,7 @@ export default class CoverThumbnail extends React.Component {
 	}
 	render() {
 		return (
-			<Tile wide={true} align="center" justify="center">
+			<Tile align="center" justify="center" size="auto" className="cover-tile">
 				<Article full="horizontal" align="center" justify="center">
 					<Header float={true} basis="xsmall" size="small" align="center" justify="center" colorIndex="neutral-2" className="cover-title-block">
 						<Headline size="small" margin="none" align="center" className="cover-title">

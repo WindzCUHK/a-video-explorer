@@ -1,2 +1,2 @@
 cd "`dirname "$0"`"
-npm run start
+npm run use
