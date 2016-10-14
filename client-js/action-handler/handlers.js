@@ -186,6 +186,9 @@ export function changeDir(newPath) {
 			files: allSubFilesWithVideoMerged
 		};
 	} catch (pathError) {
-		return { pathError };
+		return {
+			pathError,
+			currentPath: 'unknown path'
+		};
 	}
 };

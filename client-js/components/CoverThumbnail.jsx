@@ -41,20 +41,32 @@ export default class CoverThumbnail extends React.Component {
 	normalizeURI(targetPath) {
 		return encodeURI((targetPath.indexOf('\\') >= 0) ? targetPath.replace(/\\/g, '/') : targetPath);
 	}
-	scrollEpisode(proxy, unknown, event) {
-		console.log(proxy.deltaMode, proxy.deltaX, proxy.deltaY, proxy.deltaZ);
-		console.log(event.deltaX);
+	scrollEpisode(syntheticEvent) {
+		syntheticEvent.stopPropagation();
+		syntheticEvent.preventDefault();
+		const element = this.refs['episode-block'].boxContainerRef;
+		element.scrollLeft += syntheticEvent.deltaY * 3;
+
+		const leftArrow = this.refs['episode-arrow-left'];
+		const rightArrow = this.refs['episode-arrow-right'];
+		const isLeftMost = this.isEpisodeBlockBoundary(true);
+		const isRightMost = this.isEpisodeBlockBoundary(false);
+		if (isLeftMost && isRightMost) return;
+		else {
+			leftArrow.classList.toggle('hidden', !isLeftMost);
+			rightArrow.classList.toggle('hidden', !isRightMost);
+		}
+	}
+	isEpisodeBlockBoundary(isLeft) {
+		const element = this.refs['episode-block'].boxContainerRef;
+
+		if (isLeft) return element.scrollLeft === 0;
+		else return element.scrollWidth === element.scrollLeft + element.clientWidth;
 	}
 	render() {
 		return (
-			// <div className="item-block cover-thumbnail-block">
-				/*<img
-					className="cover-thumbnail"
-					title={this.props.file.get('name')}
-					src={this.props.file.get('path')}
-				/>*/
 			<Tile wide={true} align="center" justify="center">
-				<Article full="horizontal">
+				<Article full="horizontal" align="center" justify="center">
 					<Header float={true} basis="xsmall" size="small" align="center" justify="center" colorIndex="neutral-2" className="cover-title-block">
 						<Headline size="small" margin="none" align="center" className="cover-title">
 							{this.props.file.get('name')}
@@ -67,11 +79,19 @@ export default class CoverThumbnail extends React.Component {
 						fit="contain"
 					/>
 
-					<Box direction="row" onWheel={this.scrollEpisode}>
-						{this.props.file.get('coveredVideos').map((cv, index) => {
-							const videoPath = cv.get('file').get('path');
-							return (<VideoButton key={videoPath} coveredVideo={cv} openCover={this.props.actions.openCover} index={index} />);
-						})}
+					<Box full="horizontal" direction="row" onWheel={this.scrollEpisode.bind(this)} ref="episode-block" className="episode-block">
+						<Box direction="row" flex="grow" className="episode-arrow-block">
+							<div className="episode-arrow episode-arrow-left hidden" ref="episode-arrow-left">
+								<FontAwesome name='step-backward' />
+							</div>
+							<div className="episode-arrow episode-arrow-right hidden" ref="episode-arrow-right">
+								<FontAwesome name='step-forward' />
+							</div>
+							{this.props.file.get('coveredVideos').map((cv, index) => {
+								const videoPath = cv.get('file').get('path');
+								return (<VideoButton key={videoPath} coveredVideo={cv} openCover={this.props.actions.openCover} index={index} />);
+							})}
+						</Box>
 					</Box>
 					<div className="tag-block">
 						{this.props.file.get('tags').map((tag) => {
@@ -80,7 +100,10 @@ export default class CoverThumbnail extends React.Component {
 					</div>
 				</Article>
 			</Tile>
-			// </div>
 		);
+	}
+
+	componentDidMount() {
+		this.refs['episode-block'].props.onWheel(new WheelEvent('wheel'));
 	}
 };

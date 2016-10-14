@@ -15,13 +15,13 @@ import MainBlock from './components/MainBlock.jsx';
 import * as navigationActions from './actions/navigation.js';
 
 const store = createStore(reducer, Immutable.Map({
-	ui: {
+	ui: Immutable.Map({
 		nameFilter: '',
 		tagsFilter: []
-	}
+	})
 }));
 
-const defaultDir = 'C:/Users/windz.fan/Git/a-video-explorer/test-pic';
+const defaultDir = (navigator.platform === 'MacIntel') ? '/Users/windz/Downloads/CC' : 'C:/Users/windz.fan/Git/a-video-explorer/test-pic';
 store.dispatch(navigationActions.changeDir(defaultDir));
 
 

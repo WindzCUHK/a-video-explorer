@@ -19,6 +19,7 @@ import Tiles from 'grommet/components/Tiles';
 import Title from 'grommet/components/Title';
 
 import * as navigationActions from '../actions/navigation.js';
+import * as uiActions from '../actions/ui.js';
 
 
 // other components
@@ -52,11 +53,9 @@ class MainBlock extends React.Component {
 		};
 	}
 	filterByName(f) {
-		if (this.props.ui.nameFilter.length === 0) return true;
-		else return (f.get('name').indexOf(this.props.ui.nameFilter) !== -1);
-	}
-	changeImageNameFilter(event) {
-		console.log(event.target.value);
+		const nameFilter = this.props.ui.get('nameFilter');
+		if (nameFilter.length === 0) return true;
+		else return (f.get('name').indexOf(nameFilter) !== -1);
 	}
 	mergeTags() {
 		if (!this.props.files) return [];
@@ -70,21 +69,24 @@ class MainBlock extends React.Component {
 		}, {}));
 	}
 	textChanged(proxy, text) {
-		console.log(proxy, text);
+		this.props.action.ui.changeCoverNameFilter(text);
+	}
+	tagFilterChanged(event) {
+		console.log(event.target.value);
 	}
 	getParentDirPath() {
 		// path.resolve() not work in windows, 'C:/' => '/C:/'
 		return path.join(this.props.currentPath, '..');
 	}
 	render() {
-		// const { currentPath, actions } = this.props;
+		// const { currentPath, action } = this.props;
 		const files = this.props.files || [];
 		return (
 			<App centered={false}>
 				<Split flex="right">
 					<Sidebar size="small" colorIndex="neutral-1" full={true} fixed={true}>
 						<Header pad="small">
-							<SearchInput placeHolder="Search tag" onDOMChange={this.changeImageNameFilter}/>
+							<SearchInput placeHolder="Search tag" onDOMChange={this.tagFilterChanged.bind(this)}/>
 						</Header>
 						<Menu pad="small" size="small" className="tag-menu">
 							{this.mergeTags().map((tag) => {
@@ -95,18 +97,18 @@ class MainBlock extends React.Component {
 					</Sidebar>
 					<Article>
 						{(this.props.pathError) ? <Notification status="critical" message={this.props.pathError.message} /> : ''}
-						<Header pad={{horizontal: 'medium'}} size="medium" onClick={() => {this.props.actions.changeDir(this.getParentDirPath())}}>
+						<Header pad={{horizontal: 'medium'}} size="medium" onClick={() => {this.props.action.navigation.changeDir(this.getParentDirPath())}}>
 							<Title>{this.props.currentPath}</Title>
 						</Header>
 						<Box pad={{horizontal: 'medium', vertical: 'none'}}>
-							<TextField  hintText="Cover Name" floatingLabelText="Search" fullWidth={true} onChange={this.textChanged} />
+							<TextField  hintText="Cover Name" floatingLabelText="Search" fullWidth={true} onChange={this.textChanged.bind(this)} />
 						</Box>
 
 						{(files.length === 0) ? (<p>No files</p>) : null}
 						<Tiles fill={true} selectable={true} size="small">
 
 							{files.filter(this.getImageFilter(false)).filter(this.filterByName.bind(this)).map((imageFile) => {
-								return (<CoverThumbnail key={imageFile.get('path')} actions={this.props.actions} file={imageFile} />);
+								return (<CoverThumbnail key={imageFile.get('path')} actions={this.props.action.navigation} file={imageFile} />);
 							})}
 							{files.filter(this.getImageFilter(true)).map((file) => {
 								return (<Item key={file.get('path')} file={file} />);
@@ -121,7 +123,7 @@ class MainBlock extends React.Component {
 
 MainBlock.propTypes = {
 	currentPath: React.PropTypes.string.isRequired,
-	actions: React.PropTypes.object.isRequired
+	action: React.PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -134,7 +136,10 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
 	return {
-		actions: bindActionCreators(navigationActions, dispatch)
+		action: {
+			navigation: bindActionCreators(navigationActions, dispatch),
+			ui: bindActionCreators(uiActions, dispatch)
+		}
 	};
 }
 

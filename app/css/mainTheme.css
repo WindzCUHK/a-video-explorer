@@ -5,6 +5,10 @@ html {
 	overflow: auto;
 }
 
+.hidden {
+	display: none;
+}
+
 .tag-menu {
 	width: 100%;
 }
@@ -16,8 +20,39 @@ html {
 	padding: 1ex;
 	font-size: small;
 }
-.episode-button {
+.episode-block {
+	/* need to set this, so that can set scrollLeft */
+	overflow: hidden;
+}
+.episode-arrow-block {
+	position: relative;
+	/* override grommet css */
 	min-width: auto;
+}
+.episode-arrow {
+	position: absolute;
+	margin: auto; top: 0; bottom: 0;
+	height: 1em;
+
+	opacity: 0.7;
+	font-size: 200%;
+}
+.episode-arrow-left {
+	left: 0.3ex;
+}
+.episode-arrow-right {
+	right: 0.3ex;
+}
+.episode-button {
+	white-space: nowrap;
+	/* override grommet css */
+	min-width: auto;
+
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-ms-user-select: none;
 }
 /*
 html, body {

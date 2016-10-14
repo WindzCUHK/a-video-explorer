@@ -19,7 +19,9 @@ export default (state, action) => {
 
 		case types.CHANGE_COVER_NAME_FILTER:
 			return state.merge({
-				
+				ui: {
+					nameFilter: action.coverNameFilter
+				}
 			});
 	}
 
