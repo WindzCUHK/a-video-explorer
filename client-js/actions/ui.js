@@ -1,10 +1,10 @@
 
 import * as types from './TYPES.js';
 
-export function changeCoverNameFilter(newPath) {
+export function changeCoverNameFilter(coverNameFilter) {
 	return {
 		type: types.CHANGE_COVER_NAME_FILTER,
-		newPath
+		coverNameFilter
 	};
 }
 

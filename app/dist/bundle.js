@@ -36187,6 +36187,9 @@
 			case types.OPEN_COVER:
 				actionHandlers.openCover(action.filePath);
 				return state;
+	
+			case types.CHANGE_COVER_NAME_FILTER:
+				return state.merge({});
 		}
 	
 		return state;
@@ -37770,7 +37773,7 @@
 	
 	var _CoverThumbnail2 = _interopRequireDefault(_CoverThumbnail);
 	
-	var _Item = __webpack_require__(686);
+	var _Item = __webpack_require__(687);
 	
 	var _Item2 = _interopRequireDefault(_Item);
 	
@@ -37826,6 +37829,11 @@
 				if (this.props.ui.nameFilter.length === 0) return true;else return f.get('name').indexOf(this.props.ui.nameFilter) !== -1;
 			}
 		}, {
+			key: 'changeImageNameFilter',
+			value: function changeImageNameFilter(event) {
+				console.log(event.target.value);
+			}
+		}, {
 			key: 'mergeTags',
 			value: function mergeTags() {
 				if (!this.props.files) return [];
@@ -37868,9 +37876,7 @@
 							_react2.default.createElement(
 								_Header2.default,
 								{ pad: 'small' },
-								_react2.default.createElement(_SearchInput2.default, { placeHolder: 'Search tag', onDOMChange: function onDOMChange(event) {
-										console.log(event.target.value);
-									} })
+								_react2.default.createElement(_SearchInput2.default, { placeHolder: 'Search tag', onDOMChange: this.changeImageNameFilter })
 							),
 							_react2.default.createElement(
 								_Menu2.default,
@@ -89570,15 +89576,15 @@
 	
 	var _Header2 = _interopRequireDefault(_Header);
 	
-	var _Headline = __webpack_require__(688);
+	var _Headline = __webpack_require__(683);
 	
 	var _Headline2 = _interopRequireDefault(_Headline);
 	
-	var _Image = __webpack_require__(683);
+	var _Image = __webpack_require__(684);
 	
 	var _Image2 = _interopRequireDefault(_Image);
 	
-	var _Tile = __webpack_require__(685);
+	var _Tile = __webpack_require__(686);
 	
 	var _Tile2 = _interopRequireDefault(_Tile);
 	
@@ -89619,7 +89625,7 @@
 	
 				return _react2.default.createElement(
 					_Box2.default,
-					{ pad: 'small', full: false, flex: true, align: 'center', justify: 'center', colorIndex: "neutral-" + (index % 3 + 1) + "-a", onDoubleClick: openVideo },
+					{ pad: 'small', full: false, flex: 'grow', align: 'center', justify: 'center', colorIndex: "neutral-" + (index % 3 + 1) + "-a", onDoubleClick: openVideo, className: 'episode-button' },
 					_react2.default.createElement(
 						'span',
 						null,
@@ -89670,6 +89676,12 @@
 				return encodeURI(targetPath.indexOf('\\') >= 0 ? targetPath.replace(/\\/g, '/') : targetPath);
 			}
 		}, {
+			key: 'scrollEpisode',
+			value: function scrollEpisode(proxy, unknown, event) {
+				console.log(proxy.deltaMode, proxy.deltaX, proxy.deltaY, proxy.deltaZ);
+				console.log(event.deltaX);
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 				var _this5 = this;
@@ -89686,7 +89698,7 @@
 						{ wide: true, align: 'center', justify: 'center' },
 						_react2.default.createElement(
 							_Article2.default,
-							null,
+							{ full: 'horizontal' },
 							_react2.default.createElement(
 								_Header2.default,
 								{ float: true, basis: 'xsmall', size: 'small', align: 'center', justify: 'center', colorIndex: 'neutral-2', className: 'cover-title-block' },
@@ -89703,16 +89715,12 @@
 								fit: 'contain'
 							}),
 							_react2.default.createElement(
-								'div',
-								{ className: 'episode-block' },
-								_react2.default.createElement(
-									_Box2.default,
-									{ direction: 'row' },
-									this.props.file.get('coveredVideos').map(function (cv, index) {
-										var videoPath = cv.get('file').get('path');
-										return _react2.default.createElement(VideoButton, { key: videoPath, coveredVideo: cv, openCover: _this5.props.actions.openCover, index: index });
-									})
-								)
+								_Box2.default,
+								{ direction: 'row', onWheel: this.scrollEpisode },
+								this.props.file.get('coveredVideos').map(function (cv, index) {
+									var videoPath = cv.get('file').get('path');
+									return _react2.default.createElement(VideoButton, { key: videoPath, coveredVideo: cv, openCover: _this5.props.actions.openCover, index: index });
+								})
 							),
 							_react2.default.createElement(
 								'div',
@@ -89886,11 +89894,98 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _classnames2 = __webpack_require__(590);
+	
+	var _classnames3 = _interopRequireDefault(_classnames2);
+	
+	var _CSSClassnames = __webpack_require__(615);
+	
+	var _CSSClassnames2 = _interopRequireDefault(_CSSClassnames);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var CLASS_ROOT = _CSSClassnames2.default.HEADLINE; // (C) Copyright 2014-2016 Hewlett Packard Enterprise Development LP
+	
+	var Headline = function (_Component) {
+	  (0, _inherits3.default)(Headline, _Component);
+	
+	  function Headline() {
+	    (0, _classCallCheck3.default)(this, Headline);
+	    return (0, _possibleConstructorReturn3.default)(this, (Headline.__proto__ || (0, _getPrototypeOf2.default)(Headline)).apply(this, arguments));
+	  }
+	
+	  (0, _createClass3.default)(Headline, [{
+	    key: 'render',
+	    value: function render() {
+	      var _classnames;
+	
+	      var classes = (0, _classnames3.default)(CLASS_ROOT, (_classnames = {}, (0, _defineProperty3.default)(_classnames, CLASS_ROOT + '--' + this.props.size, this.props.size), (0, _defineProperty3.default)(_classnames, CLASS_ROOT + '--align-' + this.props.align, this.props.align), (0, _defineProperty3.default)(_classnames, CLASS_ROOT + '--margin-' + this.props.margin, this.props.margin), (0, _defineProperty3.default)(_classnames, CLASS_ROOT + '--strong', this.props.strong), _classnames), this.props.className);
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: classes },
+	        this.props.children
+	      );
+	    }
+	  }]);
+	  return Headline;
+	}(_react.Component);
+	
+	Headline.displayName = 'Headline';
+	exports.default = Headline;
+	;
+	
+	Headline.propTypes = {
+	  align: _react.PropTypes.oneOf(['start', 'center', 'end']),
+	  margin: _react.PropTypes.oneOf(['none', 'small', 'medium', 'large']),
+	  size: _react.PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),
+	  strong: _react.PropTypes.bool
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 684 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _defineProperty2 = __webpack_require__(517);
+	
+	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+	
+	var _getPrototypeOf = __webpack_require__(210);
+	
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+	
+	var _classCallCheck2 = __webpack_require__(236);
+	
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+	
+	var _createClass2 = __webpack_require__(237);
+	
+	var _createClass3 = _interopRequireDefault(_createClass2);
+	
+	var _possibleConstructorReturn2 = __webpack_require__(241);
+	
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+	
+	var _inherits2 = __webpack_require__(288);
+	
+	var _inherits3 = _interopRequireDefault(_inherits2);
+	
+	var _react = __webpack_require__(33);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
 	var _classnames3 = __webpack_require__(590);
 	
 	var _classnames4 = _interopRequireDefault(_classnames3);
 	
-	var _Label = __webpack_require__(684);
+	var _Label = __webpack_require__(685);
 	
 	var _Label2 = _interopRequireDefault(_Label);
 	
@@ -89971,7 +90066,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 684 */
+/* 685 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -90082,7 +90177,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 685 */
+/* 686 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -90224,7 +90319,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 686 */
+/* 687 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -90292,94 +90387,6 @@
 	
 	exports.default = Thumbnail;
 	;
-
-/***/ },
-/* 687 */,
-/* 688 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _defineProperty2 = __webpack_require__(517);
-	
-	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-	
-	var _getPrototypeOf = __webpack_require__(210);
-	
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-	
-	var _classCallCheck2 = __webpack_require__(236);
-	
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-	
-	var _createClass2 = __webpack_require__(237);
-	
-	var _createClass3 = _interopRequireDefault(_createClass2);
-	
-	var _possibleConstructorReturn2 = __webpack_require__(241);
-	
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-	
-	var _inherits2 = __webpack_require__(288);
-	
-	var _inherits3 = _interopRequireDefault(_inherits2);
-	
-	var _react = __webpack_require__(33);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _classnames2 = __webpack_require__(590);
-	
-	var _classnames3 = _interopRequireDefault(_classnames2);
-	
-	var _CSSClassnames = __webpack_require__(615);
-	
-	var _CSSClassnames2 = _interopRequireDefault(_CSSClassnames);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var CLASS_ROOT = _CSSClassnames2.default.HEADLINE; // (C) Copyright 2014-2016 Hewlett Packard Enterprise Development LP
-	
-	var Headline = function (_Component) {
-	  (0, _inherits3.default)(Headline, _Component);
-	
-	  function Headline() {
-	    (0, _classCallCheck3.default)(this, Headline);
-	    return (0, _possibleConstructorReturn3.default)(this, (Headline.__proto__ || (0, _getPrototypeOf2.default)(Headline)).apply(this, arguments));
-	  }
-	
-	  (0, _createClass3.default)(Headline, [{
-	    key: 'render',
-	    value: function render() {
-	      var _classnames;
-	
-	      var classes = (0, _classnames3.default)(CLASS_ROOT, (_classnames = {}, (0, _defineProperty3.default)(_classnames, CLASS_ROOT + '--' + this.props.size, this.props.size), (0, _defineProperty3.default)(_classnames, CLASS_ROOT + '--align-' + this.props.align, this.props.align), (0, _defineProperty3.default)(_classnames, CLASS_ROOT + '--margin-' + this.props.margin, this.props.margin), (0, _defineProperty3.default)(_classnames, CLASS_ROOT + '--strong', this.props.strong), _classnames), this.props.className);
-	
-	      return _react2.default.createElement(
-	        'div',
-	        { className: classes },
-	        this.props.children
-	      );
-	    }
-	  }]);
-	  return Headline;
-	}(_react.Component);
-	
-	Headline.displayName = 'Headline';
-	exports.default = Headline;
-	;
-	
-	Headline.propTypes = {
-	  align: _react.PropTypes.oneOf(['start', 'center', 'end']),
-	  margin: _react.PropTypes.oneOf(['none', 'small', 'medium', 'large']),
-	  size: _react.PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),
-	  strong: _react.PropTypes.bool
-	};
-	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);

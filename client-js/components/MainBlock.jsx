@@ -55,6 +55,9 @@ class MainBlock extends React.Component {
 		if (this.props.ui.nameFilter.length === 0) return true;
 		else return (f.get('name').indexOf(this.props.ui.nameFilter) !== -1);
 	}
+	changeImageNameFilter(event) {
+		console.log(event.target.value);
+	}
 	mergeTags() {
 		if (!this.props.files) return [];
 		return Object.keys(this.props.files.map((f) => {
@@ -81,7 +84,7 @@ class MainBlock extends React.Component {
 				<Split flex="right">
 					<Sidebar size="small" colorIndex="neutral-1" full={true} fixed={true}>
 						<Header pad="small">
-							<SearchInput placeHolder="Search tag" onDOMChange={function (event) {console.log(event.target.value);}}/>
+							<SearchInput placeHolder="Search tag" onDOMChange={this.changeImageNameFilter}/>
 						</Header>
 						<Menu pad="small" size="small" className="tag-menu">
 							{this.mergeTags().map((tag) => {

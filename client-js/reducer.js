@@ -16,6 +16,11 @@ export default (state, action) => {
 		case types.OPEN_COVER:
 			actionHandlers.openCover(action.filePath);
 			return state;
+
+		case types.CHANGE_COVER_NAME_FILTER:
+			return state.merge({
+				
+			});
 	}
 
 	return state;

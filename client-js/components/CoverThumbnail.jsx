@@ -21,7 +21,7 @@ class VideoButton extends React.Component {
 		const index = this.props.index;
 
 		return (
-			<Box pad="small" full={false} flex={true} align="center" justify="center" colorIndex={"neutral-" + (index % 3 + 1) + "-a"} onDoubleClick={openVideo}>
+			<Box pad="small" full={false} flex="grow" align="center" justify="center" colorIndex={"neutral-" + (index % 3 + 1) + "-a"} onDoubleClick={openVideo} className="episode-button">
 				<span>{(isEqual) ? (<FontAwesome name='video-camera' />) : episode}</span>
 			</Box>
 		);
@@ -41,6 +41,10 @@ export default class CoverThumbnail extends React.Component {
 	normalizeURI(targetPath) {
 		return encodeURI((targetPath.indexOf('\\') >= 0) ? targetPath.replace(/\\/g, '/') : targetPath);
 	}
+	scrollEpisode(proxy, unknown, event) {
+		console.log(proxy.deltaMode, proxy.deltaX, proxy.deltaY, proxy.deltaZ);
+		console.log(event.deltaX);
+	}
 	render() {
 		return (
 			// <div className="item-block cover-thumbnail-block">
@@ -50,7 +54,7 @@ export default class CoverThumbnail extends React.Component {
 					src={this.props.file.get('path')}
 				/>*/
 			<Tile wide={true} align="center" justify="center">
-				<Article>
+				<Article full="horizontal">
 					<Header float={true} basis="xsmall" size="small" align="center" justify="center" colorIndex="neutral-2" className="cover-title-block">
 						<Headline size="small" margin="none" align="center" className="cover-title">
 							{this.props.file.get('name')}
@@ -63,14 +67,12 @@ export default class CoverThumbnail extends React.Component {
 						fit="contain"
 					/>
 
-					<div className="episode-block">
-					<Box direction="row">
+					<Box direction="row" onWheel={this.scrollEpisode}>
 						{this.props.file.get('coveredVideos').map((cv, index) => {
 							const videoPath = cv.get('file').get('path');
 							return (<VideoButton key={videoPath} coveredVideo={cv} openCover={this.props.actions.openCover} index={index} />);
 						})}
 					</Box>
-					</div>
 					<div className="tag-block">
 						{this.props.file.get('tags').map((tag) => {
 							return (<Tag key={tag} tag={tag} />);

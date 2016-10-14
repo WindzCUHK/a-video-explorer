@@ -16,6 +16,9 @@ html {
 	padding: 1ex;
 	font-size: small;
 }
+.episode-button {
+	min-width: auto;
+}
 /*
 html, body {
 	position: relative;
