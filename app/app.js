@@ -20,7 +20,6 @@ function createWindow() {
 
 	mainWindow.loadURL(`${rootPath}/index.html`);
 
-	console.log(process.argv);
 	if (process.argv[2] !== 'noDebug') mainWindow.webContents.openDevTools();
 
 	mainWindow.on('closed', () => {
