@@ -14,10 +14,14 @@ import reducer from './reducer.js';
 import MainBlock from './components/MainBlock.jsx';
 import * as navigationActions from './actions/navigation.js';
 
+/*|================================================================|*/
+/*|                          Redux Store                           |*/
+/*|================================================================|*/
 const store = createStore(reducer, Immutable.Map({
 	ui: Immutable.Map({
 		nameFilter: '',
-		tagsFilter: []
+		tagFilter: '',
+		filterTagSet: Immutable.Set()
 	})
 }));
 
@@ -26,7 +30,12 @@ store.dispatch(navigationActions.changeDir(defaultDir));
 
 
 
+/*|================================================================|*/
+/*|                         Rendering Main                         |*/
+/*|================================================================|*/
 export default function renderMain(state, containerElement) {
+
+	// react root
 	render(
 		<Provider store={store}>
 			<MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>

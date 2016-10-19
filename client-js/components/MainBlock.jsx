@@ -1,28 +1,23 @@
 
-import path from 'path';
 
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { TextField } from 'material-ui';
-import Anchor from 'grommet/components/Anchor';
 import Article from 'grommet/components/Article';
 import App from 'grommet/components/App';
-import Box from 'grommet/components/Box';
-import Header from 'grommet/components/Header';
-import Menu from 'grommet/components/Menu';
 import Notification from 'grommet/components/Notification';
-import SearchInput from 'grommet/components/SearchInput';
-import Sidebar from 'grommet/components/Sidebar';
 import Split from 'grommet/components/Split';
 import Tiles from 'grommet/components/Tiles';
-import Title from 'grommet/components/Title';
 
 import * as navigationActions from '../actions/navigation.js';
 import * as uiActions from '../actions/ui.js';
 
+// my components
+import TagsBar from './TagsBar.jsx';
+import FilterBar from './FilterBar.jsx';
+import Breadcrumb from './Breadcrumb.jsx';
 
-// other components
+// TODO: rewrite below
 import CoverThumbnail from './CoverThumbnail.jsx';
 import Item from './Item.jsx';
 
@@ -71,38 +66,23 @@ class MainBlock extends React.Component {
 	textChanged(proxy, text) {
 		this.props.action.ui.changeCoverNameFilter(text);
 	}
-	tagFilterChanged(event) {
-		console.log(event.target.value);
-	}
-	getParentDirPath() {
-		// path.resolve() not work in windows, 'C:/' => '/C:/'
-		return path.join(this.props.currentPath, '..');
-	}
 	render() {
+		console.log('render MainBlock');
 		// const { currentPath, action } = this.props;
 		const files = this.props.files || [];
 		return (
 			<App centered={false}>
 				<Split flex="right">
-					<Sidebar size="small" colorIndex="neutral-1" full={true} fixed={true}>
-						<Header pad="small">
-							<SearchInput placeHolder="Search tag" onDOMChange={this.tagFilterChanged.bind(this)}/>
-						</Header>
-						<Menu pad="small" size="small" className="tag-menu">
-							{this.mergeTags().map((tag) => {
-								return <Anchor href="#" key={tag}>{tag}</Anchor>;
-							})}
-							<Anchor href="#">(dummy tag)</Anchor>
-						</Menu>
-					</Sidebar>
+					<TagsBar tags={this.mergeTags.bind(this)()} />
 					<Article>
-						{(this.props.pathError) ? <Notification status="critical" message={this.props.pathError.message} /> : ''}
-						<Header pad={{horizontal: 'medium'}} size="medium" onClick={() => {this.props.action.navigation.changeDir(this.getParentDirPath())}}>
-							<Title>{this.props.currentPath}</Title>
-						</Header>
-						<Box pad={{horizontal: 'medium', vertical: 'none'}}>
-							<TextField  hintText="Cover Name" floatingLabelText="Search" fullWidth={true} onChange={this.textChanged.bind(this)} />
-						</Box>
+						{(this.props.pathError) ? <Notification status="critical" message={this.props.pathError.message} /> : null}
+						<FilterBar />
+						<Breadcrumb />
+
+
+
+
+
 
 						{(files.length === 0) ? (<p>No files</p>) : null}
 						<Tiles fill={true} selectable={true}>
@@ -114,6 +94,13 @@ class MainBlock extends React.Component {
 								return (<Item key={file.get('path')} file={file} />);
 							})}
 						</Tiles>
+
+
+
+
+
+
+
 					</Article>
 				</Split>
 			</App>

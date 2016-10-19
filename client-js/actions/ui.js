@@ -6,18 +6,25 @@ export function changeCoverNameFilter(coverNameFilter) {
 		type: types.CHANGE_COVER_NAME_FILTER,
 		coverNameFilter
 	};
-}
+};
 
-export function addCoverFilterTag(filePath) {
+export function changeTagFilter(tagFilter) {
+	return {
+		type: types.CHANGE_TAG_FILTER,
+		tagFilter
+	};
+};
+
+export function addCoverFilterTag(tag) {
 	return {
 		type: types.ADD_COVER_FILTER_TAG,
-		filePath
+		tag
 	};
-}
+};
 
-export function removeCoverFilterTag(filePath) {
+export function deleteCoverFilterTag(tag) {
 	return {
-		type: types.REMOVE_COVER_FILTER_TAG,
-		filePath
+		type: types.DELETE_COVER_FILTER_TAG,
+		tag
 	};
-}
+};

@@ -1,17 +1,42 @@
-import fs from 'fs';
-import path from 'path';
-import {shell} from 'electron';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
+
+import renderMain from './index.jsx';
+
+/*|=======================================================|*/
+/*|         prevent electron open file directly           |*/
+/*|=======================================================|*/
+document.addEventListener('dragover', event => {
+	event.preventDefault();
+	return false;
+}, false);
+
+document.addEventListener('drop', event => {
+	event.preventDefault();
+	return false;
+}, false);
+
+
+
+/*|================================================================|*/
+/*|                        React Rendering                         |*/
+/*|================================================================|*/
 injectTapEventPlugin();
 
-
 const thumbnailBlock = document.getElementById('content');
+renderMain(null, thumbnailBlock);
+
+
+
+/*
+import fs from 'fs';
+import path from 'path';
+import { shell } from 'electron';
+
 const state = {
 	currentPath: "../assets/",
 	imageVideoMap: null
 }
-
 function openVideoFromCover(event) {
 	const videoList = state.imageVideoMap[event.target.dataset.nameKey];
 	const targetVideoName = videoList[0];
@@ -123,8 +148,6 @@ function displayThumbnails(parentNode, folderPath) {
 		console.error(ex);
 	}
 }
-
-
 function renderPageByDirPath(targetPath) {
 	try {
 		const targetDirPath = normalizeDirPath(targetPath);
@@ -133,34 +156,14 @@ function renderPageByDirPath(targetPath) {
 		window.alert(JSON.stringify(err));
 	}
 }
-
-// const pathInput = document.getElementById('path-input');
-// if (pathInput) {
-// 	pathInput.addEventListener("keyup", event => {
-// 		const targetPath = path.resolve(event.target.value);
-// 		renderPageByDirPath(targetPath);
-// 	});
-// }
-
-
-/*|=======================================================|*/
-/*|         prevent electron open file directly           |*/
-/*|=======================================================|*/
-document.addEventListener('dragover', event => {
-	event.preventDefault();
-	return false;
-}, false);
-
-document.addEventListener('drop', event => {
-	event.preventDefault();
-	return false;
-}, false);
-
-
-
-
-import renderMain from './index.jsx';
-renderMain(null, thumbnailBlock);
+const pathInput = document.getElementById('path-input');
+if (pathInput) {
+	pathInput.addEventListener("keyup", event => {
+		const targetPath = path.resolve(event.target.value);
+		renderPageByDirPath(targetPath);
+	});
+}
+*/
 
 
 

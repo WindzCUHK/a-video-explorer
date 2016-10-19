@@ -6,11 +6,11 @@ export function changeDir(newPath) {
 		type: types.CHANGE_DIR,
 		newPath
 	};
-}
+};
 
 export function openCover(filePath) {
 	return {
 		type: types.OPEN_COVER,
 		filePath
 	};
-}
+};

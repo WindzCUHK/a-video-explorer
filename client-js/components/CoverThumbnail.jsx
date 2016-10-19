@@ -1,5 +1,8 @@
 
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import FontAwesome from 'react-fontawesome';
 import Article from 'grommet/components/Article';
 import Box from 'grommet/components/Box';
@@ -34,7 +37,7 @@ class Tag extends React.Component {
 	}
 }
 
-export default class CoverThumbnail extends React.Component {
+class CoverThumbnail extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -70,9 +73,19 @@ export default class CoverThumbnail extends React.Component {
 		if (isLeft) return element.scrollLeft === 0;
 		else return element.scrollWidth === element.scrollLeft + element.clientWidth;
 	}
+	isTagMatch() {
+		const fileTags = this.props.file.get('tags');
+		const filterTagSet = this.props.filterTagSet;
+
+		if (filterTagSet.isEmpty()) return true;
+		else {
+			return fileTags.some( tag => filterTagSet.has(tag) );
+			// return fileTags.some( tag => filterTagSet.includes(tag) );
+		}
+	}
 	render() {
 		return (
-			<Tile align="center" justify="center" size="auto" className="cover-tile">
+			<Tile align="center" justify="center" size="auto" className={"cover-tile" + " " + ((this.isTagMatch.bind(this)()) ? "" : "hidden")}>
 				<Article full="horizontal" align="center" justify="center">
 					<Header float={true} basis="xsmall" size="small" align="center" justify="center" colorIndex="neutral-2" className="cover-title-block">
 						<Headline size="small" margin="none" align="center" className="cover-title">
@@ -114,3 +127,16 @@ export default class CoverThumbnail extends React.Component {
 		this.refs['episode-block'].props.onWheel(new WheelEvent('wheel'));
 	}
 };
+
+function mapStateToProps(state) {
+	return {
+		filterTagSet: state.get('ui').get('filterTagSet')
+	};
+}
+function mapDispatchToProps(dispatch) {
+	return {
+		// action: bindActionCreators(uiActions, dispatch)
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoverThumbnail);
