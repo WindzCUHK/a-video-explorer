@@ -29,7 +29,7 @@ class FilterBar extends React.Component {
 				{this.props.filterTagSet.map((tag) => {
 					return (
 						<Box key={tag} align="center" justify="center" pad="small">
-							<Chip style={{"WebkitAppearance": "initial"}} onRequestDelete={this.onDeleteTag.bind(this, tag)}>
+							<Chip style={{"WebkitAppearance": "initial"}} onTouchTap={this.onDeleteTag.bind(this, tag)}>
 								{tag}
 							</Chip>
 						</Box>

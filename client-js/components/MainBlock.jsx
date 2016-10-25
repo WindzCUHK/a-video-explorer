@@ -24,24 +24,25 @@ import Item from './Item.jsx';
 // http://jaketrent.com/post/smart-dumb-components-react/
 // https://facebook.github.io/immutable-js/docs/#/Seq
 
-const IMAGE = "i";
-const VIDEO = "v";
-const extDict = {
-	"jpg": IMAGE,
-	"jpeg": IMAGE,
-	"png": IMAGE,
-	"bmp": IMAGE,
-	"avi": VIDEO,
-	"mp4": VIDEO,
-	"mkv": VIDEO,
-	"wmv": VIDEO
-};
-
 class MainBlock extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 	getImageFilter(revert) {
+
+
+		const IMAGE = "i";
+		const VIDEO = "v";
+		const extDict = {
+			"jpg": IMAGE,
+			"jpeg": IMAGE,
+			"png": IMAGE,
+			"bmp": IMAGE,
+			"avi": VIDEO,
+			"mp4": VIDEO,
+			"mkv": VIDEO,
+			"wmv": VIDEO
+		};
 		return (f) => {
 			const fileType = f.get('ext') || '';
 			return ((extDict[fileType] === IMAGE) !== revert);

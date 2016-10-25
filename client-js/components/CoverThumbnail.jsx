@@ -12,7 +12,7 @@ import Image from 'grommet/components/Image';
 import Tile from 'grommet/components/Tile';
 import Tiles from 'grommet/components/Tiles';
 
-class VideoButton extends React.Component {
+class VideoButton extends React.PureComponent {
 	render() {
 		const isEqual = this.props.coveredVideo.get('isEqual');
 		const episode = this.props.coveredVideo.get('episode');
