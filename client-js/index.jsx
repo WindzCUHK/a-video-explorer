@@ -21,7 +21,8 @@ const store = createStore(reducer, Immutable.Map({
 	ui: Immutable.Map({
 		nameFilter: '',
 		tagFilter: '',
-		filterTagSet: Immutable.Set()
+		filterTagSet: Immutable.Set(),
+		isShownTagsBar: true
 	})
 }));
 
@@ -57,6 +58,7 @@ export default function renderMain(state, containerElement) {
 	ddLayer.ondrop = event => {
 		event.preventDefault();
 		const targetFile = event.dataTransfer.files[0];
+		if (!targetFile) return false;
 
 		store.dispatch(navigationActions.changeDir(targetFile.path));
 

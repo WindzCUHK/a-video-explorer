@@ -31,13 +31,13 @@ class VideoButton extends React.PureComponent {
 	}
 }
 
-class Tag extends React.Component {
+class Tag extends React.PureComponent {
 	render() {
 		return (<span className="tag">{this.props.tag}</span>);
 	}
 }
 
-class CoverThumbnail extends React.Component {
+class CoverThumbnail extends React.PureComponent {
 	constructor(props) {
 		super(props);
 	}
@@ -73,28 +73,19 @@ class CoverThumbnail extends React.Component {
 		if (isLeft) return element.scrollLeft === 0;
 		else return element.scrollWidth === element.scrollLeft + element.clientWidth;
 	}
-	isTagMatch() {
-		const fileTags = this.props.file.get('tags');
-		const filterTagSet = this.props.filterTagSet;
-
-		if (filterTagSet.isEmpty()) return true;
-		else {
-			return fileTags.some( tag => filterTagSet.has(tag) );
-			// return fileTags.some( tag => filterTagSet.includes(tag) );
-		}
-	}
 	render() {
+		console.log('render CoverThumbnail');
 		return (
-			<Tile align="center" justify="center" size="auto" className={"cover-tile" + " " + ((this.isTagMatch.bind(this)()) ? "" : "hidden")}>
+			<Tile align="center" justify="center" size="auto" className={"cover-tile" + " " + ((this.props.isShown) ? "" : "hidden")}>
 				<Article full="horizontal" align="center" justify="center">
 					<Header float={true} basis="xsmall" size="small" align="center" justify="center" colorIndex="neutral-2" className="cover-title-block">
 						<Headline size="small" margin="none" align="center" className="cover-title">
-							{this.props.file.get('name')}
+							{this.props.cover.get('name')}
 						</Headline>
 					</Header>
 					<Image
-						alt={this.props.file.get('name')}
-						src={this.normalizeURI(this.props.file.get('path'))}
+						alt={this.props.cover.get('name')}
+						src={this.normalizeURI(this.props.cover.get('path'))}
 						size="large"
 						fit="contain"
 					/>
@@ -107,14 +98,14 @@ class CoverThumbnail extends React.Component {
 							<div className="episode-arrow episode-arrow-right hidden" ref="episode-arrow-right">
 								<FontAwesome name='step-forward' />
 							</div>
-							{this.props.file.get('coveredVideos').map((cv, index) => {
+							{this.props.cover.get('coveredVideos').map((cv, index) => {
 								const videoPath = cv.get('file').get('path');
 								return (<VideoButton key={videoPath} coveredVideo={cv} openCover={this.props.actions.openCover} index={index} />);
 							})}
 						</Box>
 					</Box>
 					<div className="tag-block">
-						{this.props.file.get('tags').map((tag) => {
+						{this.props.cover.get('tags').map((tag) => {
 							return (<Tag key={tag} tag={tag} />);
 						})}
 					</div>

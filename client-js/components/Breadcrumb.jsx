@@ -11,7 +11,7 @@ import NextIcon from 'grommet/components/icons/base/Next';
 
 import * as navigationActions from '../actions/navigation.js';
 
-class Breadcrumb extends React.Component {
+class Breadcrumb extends React.PureComponent {
 	constructor(props) {
 		super(props);
 	}
@@ -40,7 +40,8 @@ class Breadcrumb extends React.Component {
 		this.props.action.changeDir(dirPath);
 	}
 	render() {
-		console.log(JSON.stringify(this.getAllDirAndItsPath()));
+		console.log('render Breadcrumb');
+		// console.log(JSON.stringify(this.getAllDirAndItsPath()));
 		const dirAndItsPaths = this.getAllDirAndItsPath();
 		return (
 			<Header pad={{horizontal: 'medium'}} size="medium">

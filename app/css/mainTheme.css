@@ -8,7 +8,21 @@ html {
 .hidden {
 	display: none;
 }
-
+/*
+.tags-bar-container {
+	transition: all 500ms ease-in-out;
+	-webkit-transition: all 500ms ease-in-out;
+	overflow: auto;
+	flex-basis: 256px;
+	max-width: 256px;
+	flex: 1;
+}
+.hidden-tags-bar {
+	flex: 0.0000001;
+	flex-basis: 1px;
+	max-width: 1px;
+}
+*/
 .tag-menu {
 	width: 100%;
 }

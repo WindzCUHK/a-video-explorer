@@ -99,9 +99,9 @@ export function changeDir(newPath) {
 			path: targetDirPath
 		}], 2);
 
-	/*|================================================================|*/
-	/*|                      bind image and video                      |*/
-	/*|================================================================|*/
+		/*|================================================================|*/
+		/*|                      bind image and video                      |*/
+		/*|================================================================|*/
 		const videosWithCover = [];
 		const images = allSubFiles.filter( f => extDict[f.ext] === IMAGE );
 		const videos = allSubFiles.filter( f => extDict[f.ext] === VIDEO );
@@ -180,15 +180,30 @@ export function changeDir(newPath) {
 		// });
 		// console.log(Object.keys(subDirPaths));
 
+		function mergeFileTags(files) {
+			if (!files) return [];
+			return Object.keys(files.map((f) => {
+				return f['tags'];
+			}).reduce((mergedTags, tags) => {
+				tags.forEach((t) => {
+					mergedTags[t] = true;
+				});
+				return mergedTags;
+			}, {}));
+		}
+
 		return {
 			pathError: null,
 			currentPath: targetDirPath,
-			files: allSubFilesWithVideoMerged
+			files: allSubFilesWithVideoMerged,
+			fileTags: mergeFileTags(allSubFilesWithVideoMerged)
 		};
 	} catch (pathError) {
 		return {
 			pathError,
-			currentPath: 'unknown path'
+			currentPath: 'unknown path',
+			files: [],
+			fileTags: []
 		};
 	}
 };

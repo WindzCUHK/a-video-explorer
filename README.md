@@ -40,3 +40,6 @@
 - http://codepen.io/Vince_Brown/pen/bNNpmY
 - http://codepen.io/Joshuasm32/pen/ruyhc
 - http://codepen.io/dudleystorey/pen/XJWqgz
+
+# TODO
+- define react propTypes for components

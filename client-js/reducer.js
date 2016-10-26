@@ -39,6 +39,11 @@ export default (state, action) => {
 			map1 = state.set('ui', map2);
 			return map1;
 		
+		case types.TOGGLE_TAGS_BAR:
+			const isShownTagsBar = !state.get('ui').get('isShownTagsBar');
+			map2 = state.get('ui').set('isShownTagsBar', isShownTagsBar);
+			map1 = state.set('ui', map2);
+			return map1;
 	}
 
 	return state;

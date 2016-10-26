@@ -4,11 +4,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Box from 'grommet/components/Box';
+import Menu from 'grommet/components/icons/base/Menu';
 import { TextField, Chip } from 'material-ui';
 
 import * as uiActions from '../actions/ui.js';
 
-class FilterBar extends React.Component {
+class FilterBar extends React.PureComponent {
 	constructor(props) {
 		super(props);
 	}
@@ -21,8 +22,12 @@ class FilterBar extends React.Component {
 		this.props.action.deleteCoverFilterTag(tag);
 	}
 	render() {
+		console.log('render FilterBar');
 		return (
 			<Box pad={{horizontal: 'medium', vertical: 'none'}} direction="row">
+				<Box align="center" justify="end" pad="small" onClick={this.props.action.toggleTagsBar}>
+					<Menu />
+				</Box>
 				<Box flex={true}>
 					<TextField  hintText="Cover Name" floatingLabelText="Search" fullWidth={true} onChange={this.onTextChanged.bind(this)} />
 				</Box>
@@ -41,7 +46,7 @@ class FilterBar extends React.Component {
 }
 
 FilterBar.propTypes = {
-	filterTagSet: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+	// filterTagSet: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
 	action: React.PropTypes.shape({
 		changeCoverNameFilter: React.PropTypes.func.isRequired,
 		deleteCoverFilterTag: React.PropTypes.func.isRequired
@@ -50,7 +55,7 @@ FilterBar.propTypes = {
 
 function mapStateToProps(state) {
 	return {
-		filterTagSet: state.get('ui').get('filterTagSet').toArray()
+		filterTagSet: state.get('ui').get('filterTagSet')
 	};
 }
 function mapDispatchToProps(dispatch) {

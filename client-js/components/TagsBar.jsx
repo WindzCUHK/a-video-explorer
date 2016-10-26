@@ -11,7 +11,7 @@ import Anchor from 'grommet/components/Anchor';
 
 import * as uiActions from '../actions/ui.js';
 
-class TagsBar extends React.Component {
+class TagsBar extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
@@ -22,7 +22,6 @@ class TagsBar extends React.Component {
 		else return (tag.toLowerCase().indexOf(tagFilter) !== -1);
 	}
 	onSearchInputChanged(event) {
-		console.log(event.target.value);
 		this.props.action.changeTagFilter(event.target.value);
 	}
 	onTagClick(syntheticEvent) {
@@ -58,7 +57,7 @@ class TagsBar extends React.Component {
 }
 
 TagsBar.propTypes = {
-	tags: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+	// tags: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
 
 	tagFilter: React.PropTypes.string.isRequired,
 	action: React.PropTypes.shape({
@@ -69,6 +68,7 @@ TagsBar.propTypes = {
 
 function mapStateToProps(state) {
 	return {
+		tags: state.get('fileTags'),
 		tagFilter: state.get('ui').get('tagFilter')
 	};
 }

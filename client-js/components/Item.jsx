@@ -2,7 +2,7 @@
 import React from 'react';
 import FontAwesome from 'react-fontawesome';
 
-export default class Thumbnail extends React.Component {
+export default class Thumbnail extends React.PureComponent {
 	constructor(props) {
 		super(props);
 	}

@@ -1,13 +1,13 @@
 
-
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Article from 'grommet/components/Article';
+
 import App from 'grommet/components/App';
+import Article from 'grommet/components/Article';
+import Box from 'grommet/components/Box';
 import Notification from 'grommet/components/Notification';
 import Split from 'grommet/components/Split';
-import Tiles from 'grommet/components/Tiles';
 
 import * as navigationActions from '../actions/navigation.js';
 import * as uiActions from '../actions/ui.js';
@@ -16,119 +16,62 @@ import * as uiActions from '../actions/ui.js';
 import TagsBar from './TagsBar.jsx';
 import FilterBar from './FilterBar.jsx';
 import Breadcrumb from './Breadcrumb.jsx';
-
-// TODO: rewrite below
-import CoverThumbnail from './CoverThumbnail.jsx';
-import Item from './Item.jsx';
+import CoverGrid from './CoverGrid.jsx';
 
 // http://jaketrent.com/post/smart-dumb-components-react/
 // https://facebook.github.io/immutable-js/docs/#/Seq
 
-class MainBlock extends React.Component {
+class MainBlock extends React.PureComponent {
 	constructor(props) {
 		super(props);
 	}
-	getImageFilter(revert) {
-
-
-		const IMAGE = "i";
-		const VIDEO = "v";
-		const extDict = {
-			"jpg": IMAGE,
-			"jpeg": IMAGE,
-			"png": IMAGE,
-			"bmp": IMAGE,
-			"avi": VIDEO,
-			"mp4": VIDEO,
-			"mkv": VIDEO,
-			"wmv": VIDEO
-		};
-		return (f) => {
-			const fileType = f.get('ext') || '';
-			return ((extDict[fileType] === IMAGE) !== revert);
-		};
-	}
-	filterByName(f) {
-		const nameFilter = this.props.ui.get('nameFilter').toLowerCase();
-		if (nameFilter.length === 0) return true;
-		else return (f.get('name').toLowerCase().indexOf(nameFilter) !== -1);
-	}
-	mergeTags() {
-		if (!this.props.files) return [];
-		return Object.keys(this.props.files.map((f) => {
-			return f.get('tags');
-		}).reduce((mergedTags, tags) => {
-			tags.forEach((t) => {
-				mergedTags[t] = true;
-			});
-			return mergedTags;
-		}, {}));
-	}
-	textChanged(proxy, text) {
-		this.props.action.ui.changeCoverNameFilter(text);
-	}
 	render() {
 		console.log('render MainBlock');
-		// const { currentPath, action } = this.props;
-		const files = this.props.files || [];
 		return (
 			<App centered={false}>
-				<Split flex="right">
-					<TagsBar tags={this.mergeTags.bind(this)()} />
-					<Article>
-						{(this.props.pathError) ? <Notification status="critical" message={this.props.pathError.message} /> : null}
-						<FilterBar />
-						<Breadcrumb />
+				<Box flex={true} direction="row" full={true}>
+					<Box flex={false} className={(this.props.isShownTagsBar ? "" : "hidden")}>
+						<TagsBar />
+					</Box>
+					<Box flex={true}>
+						<Article>
+							{(this.props.pathError) ? <Notification status="critical" message={this.props.pathError.message} /> : null}
+							<FilterBar />
+							<Breadcrumb />
 
 
 
+							<CoverGrid />
 
 
 
-						{(files.length === 0) ? (<p>No files</p>) : null}
-						<Tiles fill={true} selectable={true}>
-
-							{files.filter(this.getImageFilter(false)).filter(this.filterByName.bind(this)).map((imageFile) => {
-								return (<CoverThumbnail key={imageFile.get('path')} actions={this.props.action.navigation} file={imageFile} />);
-							})}
-							{files.filter(this.getImageFilter(true)).map((file) => {
-								return (<Item key={file.get('path')} file={file} />);
-							})}
-						</Tiles>
-
-
-
-
-
-
-
-					</Article>
-				</Split>
+						</Article>
+					</Box>
+				</Box>
 			</App>
 		);
 	}
+
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	console.log('old prop', this.props);
+	// 	console.log('new prop', nextProps);
+	// 	console.log('old state', this.state);
+	// 	console.log('new state', nextState);
+
+	// 	return false;
+	// }
 };
 
 MainBlock.propTypes = {
-	currentPath: React.PropTypes.string.isRequired,
-	action: React.PropTypes.object.isRequired
+	pathError: React.PropTypes.object,
+	isShownTagsBar: React.PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
 	return {
-		ui: state.get('ui'),
-		currentPath: state.get('currentPath'),
 		pathError: state.get('pathError'),
-		files: state.get('files')
-	};
-}
-function mapDispatchToProps(dispatch) {
-	return {
-		action: {
-			navigation: bindActionCreators(navigationActions, dispatch),
-			ui: bindActionCreators(uiActions, dispatch)
-		}
+		isShownTagsBar: state.get('ui').get('isShownTagsBar')
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainBlock);
+export default connect(mapStateToProps)(MainBlock);
