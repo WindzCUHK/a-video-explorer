@@ -21,8 +21,7 @@ const store = createStore(reducer, Immutable.Map({
 	ui: Immutable.Map({
 		nameFilter: '',
 		tagFilter: '',
-		filterTagSet: Immutable.Set(),
-		isShownTagsBar: true
+		filterTagSet: Immutable.Set()
 	})
 }));
 

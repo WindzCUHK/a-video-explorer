@@ -34,22 +34,22 @@ class TagsBar extends React.PureComponent {
 	render() {
 		console.log('render TagsBar');
 		return (
-			<Sidebar size="small" colorIndex="neutral-1" full={true} fixed={true}>
-				<Header pad="small">
+			<Sidebar size="small" colorIndex="neutral-1" full={true} fixed={true} className="tags-bar-container">
+				<Header pad={{horizontal: "small"}}>
 					<SearchInput placeHolder="Search tag" onDOMChange={this.onSearchInputChanged.bind(this)} />
 				</Header>
 				<Menu pad="small" size="small" className="tag-menu">
 					{this.props.tags.map((tag) => {
 						return (
 							<Anchor href="#" key={tag}
-								className={(this.isFilteredTag.bind(this)(tag)) ? '' : 'hidden'}
+								className={'tag-item ' + ((this.isFilteredTag.bind(this)(tag)) ? '' : 'hidden')}
 								onClick={this.onTagClick.bind(this)}
 							>
 								{tag}
 							</Anchor>
 						);
 					})}
-					<Anchor href="#">(dummy tag)</Anchor>
+					{/*<Anchor className='tag-item' href="#">#dummy tag</Anchor>*/}
 				</Menu>
 			</Sidebar>
 		);

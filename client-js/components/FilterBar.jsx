@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Box from 'grommet/components/Box';
-import Menu from 'grommet/components/icons/base/Menu';
+import Search from 'grommet/components/icons/base/Search';
 import { TextField, Chip } from 'material-ui';
 
 import * as uiActions from '../actions/ui.js';
@@ -25,8 +25,8 @@ class FilterBar extends React.PureComponent {
 		console.log('render FilterBar');
 		return (
 			<Box pad={{horizontal: 'medium', vertical: 'none'}} direction="row">
-				<Box align="center" justify="end" pad="small" onClick={this.props.action.toggleTagsBar}>
-					<Menu />
+				<Box align="center" justify="end" pad="small">
+					<Search />
 				</Box>
 				<Box flex={true}>
 					<TextField  hintText="Cover Name" floatingLabelText="Search" fullWidth={true} onChange={this.onTextChanged.bind(this)} />

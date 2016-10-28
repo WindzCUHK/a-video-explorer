@@ -5,27 +5,70 @@ html {
 	overflow: auto;
 }
 
+.tags-bar-container:hover .grommetux-search-input {
+	font-size: 1.5rem !important;
+}
+.tags-bar-container:hover .grommetux-search-input__input {
+	border: 1px solid rgba(0,0,0,.15) !important;
+}
+
+.grommetux-search-input {
+	transition: font-size 500ms ease-in-out;
+	-webkit-transition: font-size 500ms ease-in-out;
+	font-size: 0.5rem !important;
+}
+.grommetux-search-input__input {
+	padding-right: 0 !important;
+	border: none !important;
+}
+.grommetux-search-input__control {
+	right: 0 !important;
+}
+.grommetux-search-input__control > .grommetux-button__icon {
+	padding: 3px !important;
+}
+
 .hidden {
 	display: none;
 }
-/*
+
+
+
+.tag-menu {
+	overflow-x: hidden;
+	width: 100%;
+}
+.tag-item {
+	white-space: nowrap;
+}
+.tag-item::first-letter {
+	font-family: monospace;
+	font-size: 50px;
+	padding-right: 0.4ex;
+}
 .tags-bar-container {
 	transition: all 500ms ease-in-out;
 	-webkit-transition: all 500ms ease-in-out;
-	overflow: auto;
-	flex-basis: 256px;
-	max-width: 256px;
-	flex: 1;
+
+
+	position: fixed;
+	z-index: 100;
+	max-width: 50px;
 }
-.hidden-tags-bar {
-	flex: 0.0000001;
-	flex-basis: 1px;
-	max-width: 1px;
+.tags-bar-container:hover {
+	max-width: 50vw;
 }
-*/
-.tag-menu {
-	width: 100%;
+
+.content-container {
+	transition: all 500ms ease-in-out;
+	-webkit-transition: all 500ms ease-in-out;
+	margin-left: 50px;
 }
+.tags-bar-container:hover + .content-container {
+	opacity: 0.7;
+}
+
+
 
 .cover-tile {
 	padding: 1ex;

@@ -29,25 +29,19 @@ class MainBlock extends React.PureComponent {
 		console.log('render MainBlock');
 		return (
 			<App centered={false}>
-				<Box flex={true} direction="row" full={true}>
-					<Box flex={false} className={(this.props.isShownTagsBar ? "" : "hidden")}>
-						<TagsBar />
-					</Box>
-					<Box flex={true}>
-						<Article>
-							{(this.props.pathError) ? <Notification status="critical" message={this.props.pathError.message} /> : null}
-							<FilterBar />
-							<Breadcrumb />
+				<TagsBar />
+				<Article className="content-container">
+					{(this.props.pathError) ? <Notification status="critical" message={this.props.pathError.message} /> : null}
+					<FilterBar />
+					<Breadcrumb />
 
 
 
-							<CoverGrid />
+					<CoverGrid />
 
 
 
-						</Article>
-					</Box>
-				</Box>
+				</Article>
 			</App>
 		);
 	}
@@ -63,14 +57,12 @@ class MainBlock extends React.PureComponent {
 };
 
 MainBlock.propTypes = {
-	pathError: React.PropTypes.object,
-	isShownTagsBar: React.PropTypes.bool.isRequired
+	pathError: React.PropTypes.object
 };
 
 function mapStateToProps(state) {
 	return {
-		pathError: state.get('pathError'),
-		isShownTagsBar: state.get('ui').get('isShownTagsBar')
+		pathError: state.get('pathError')
 	};
 }
 

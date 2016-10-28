@@ -28,9 +28,3 @@ export function deleteCoverFilterTag(tag) {
 		tag
 	};
 };
-
-export function toggleTagsBar() {
-	return {
-		type: types.TOGGLE_TAGS_BAR
-	};
-};
