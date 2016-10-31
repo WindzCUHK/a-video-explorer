@@ -32,7 +32,10 @@ html {
 	display: none;
 }
 
-
+.tag-first-char {
+	background-color: #777;
+	border-radius: 50%;
+}
 
 .tag-menu {
 	overflow-x: hidden;

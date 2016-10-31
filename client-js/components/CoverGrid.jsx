@@ -63,7 +63,8 @@ class CoverGrid extends React.PureComponent {
 		const covers = [];
 		const files = [];
 		rawFiles.forEach((f) => {
-			if (imageFilter(f)) covers.push(f);
+			const hasCoveredVideos = f.get('coveredVideos') && f.get('coveredVideos').size > 0;
+			if (imageFilter(f) && hasCoveredVideos) covers.push(f);
 			else files.push(f);
 		});
 

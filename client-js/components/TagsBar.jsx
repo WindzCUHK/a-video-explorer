@@ -24,12 +24,11 @@ class TagsBar extends React.PureComponent {
 	onSearchInputChanged(event) {
 		this.props.action.changeTagFilter(event.target.value);
 	}
-	onTagClick(syntheticEvent) {
+	onTagClick(tag, syntheticEvent) {
 		syntheticEvent.preventDefault();
 		syntheticEvent.stopPropagation();
 
-		const targetTag = syntheticEvent.target.textContent;
-		this.props.action.addCoverFilterTag(targetTag);
+		this.props.action.addCoverFilterTag(tag);
 	}
 	render() {
 		console.log('render TagsBar');
@@ -43,9 +42,10 @@ class TagsBar extends React.PureComponent {
 						return (
 							<Anchor href="#" key={tag}
 								className={'tag-item ' + ((this.isFilteredTag.bind(this)(tag)) ? '' : 'hidden')}
-								onClick={this.onTagClick.bind(this)}
+								onClick={this.onTagClick.bind(this, tag)}
 							>
-								{tag}
+								<span className="tag-first-char">{tag.charAt(0)}</span>
+								<span>{tag.substring(1)}</span>
 							</Anchor>
 						);
 					})}
