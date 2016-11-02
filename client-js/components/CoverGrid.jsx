@@ -83,8 +83,20 @@ class CoverGrid extends React.PureComponent {
 						isShown={this.shouldCoverShown.bind(this)(cover)}
 					/>);
 				})}
-				{files.map((file) => {
-					return (<Item key={file.get('path')} file={file} />);
+
+
+				
+				{files.sort((a, b) => {
+					const aIsFile = a.get('isFile');
+					const bIsFile = b.get('isFile');
+					if (aIsFile !== bIsFile) {
+						if (aIsFile) {
+							// a is file, b is folder, b should be first
+							return 1;
+						} else return -1;
+					} else return a.get('path').localeCompare(b.get('path'));
+				}).map((file) => {
+					return (<Item key={file.get('path')} file={file} onChangeDir={this.props.action.changeDir} />);
 				})}
 			</Tiles>
 		);

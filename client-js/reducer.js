@@ -38,6 +38,16 @@ export default (state, action) => {
 			map2 = state.get('ui').set('filterTagSet', map3);
 			map1 = state.set('ui', map2);
 			return map1;
+		case types.TOGGLE_COVER_FILTER_TAG:
+			map3 = state.get('ui').get('filterTagSet');
+			if (map3.has(action.tag)) {
+				map3 = map3.delete(action.tag);
+			} else {
+				map3 = map3.add(action.tag);
+			}
+			map2 = state.get('ui').set('filterTagSet', map3);
+			map1 = state.set('ui', map2);
+			return map1;
 	}
 
 	return state;

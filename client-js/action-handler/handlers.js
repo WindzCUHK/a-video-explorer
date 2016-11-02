@@ -4,6 +4,13 @@ import path from 'path';
 import {shell} from 'electron';
 import { diffChars } from 'diff';
 
+import { setFfprobePath, ffprobe } from 'fluent-ffmpeg';
+
+setFfprobePath('C:\\myTools\\ffmpeg-20161101-60178e7-win64-static\\bin\\ffprobe.exe');
+ffprobe('C:\\Users\\Public\\Videos\\Sample Videos\\Wildlife.wmv', function(err, metadata) {
+	console.dir(metadata);
+});
+
 export function openCover(filePath) {
 	console.log(filePath);
 	console.log(shell.openItem(filePath));

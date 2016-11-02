@@ -28,3 +28,10 @@ export function deleteCoverFilterTag(tag) {
 		tag
 	};
 };
+
+export function toggleCoverFilterTag(tag) {
+	return {
+		type: types.TOGGLE_COVER_FILTER_TAG,
+		tag
+	};
+};

@@ -35,6 +35,7 @@
     "diff": "^3.0.0",
     "electron-prebuilt": "1.4.3",
     "electron-reload": "1.0.2",
+    "fluent-ffmpeg": "2.1.0",
     "font-awesome": "^4.6.3",
     "grommet": "0.6.12",
     "immutable": "^3.8.1",

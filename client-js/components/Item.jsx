@@ -16,9 +16,19 @@ export default class Thumbnail extends React.PureComponent {
 			return fileExtDict[file.get('ext')] || defaultIconName;
 		}
 	}
+	onClickFile(file) {
+		const isFile = file.get('isFile');
+		if (isFile) return;
+
+		const folderPath = file.get('path');
+		this.props.onChangeDir(folderPath);
+	}
 	render() {
 		return (
-			<div className="item-block file-block">
+			<div
+				className={'item-block file-block ' + ((this.props.file.get('isFile')) ? '' : 'folder-block')}
+				onClick={this.onClickFile.bind(this, this.props.file)}
+			>
 				<FontAwesome name={this.mapFileToIconName(this.props.file)} />
 				<span className="item-name">{this.props.file.get('name')}</span>
 			</div>

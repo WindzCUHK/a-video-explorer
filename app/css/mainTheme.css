@@ -32,11 +32,6 @@ html {
 	display: none;
 }
 
-.tag-first-char {
-	background-color: #777;
-	border-radius: 50%;
-}
-
 .tag-menu {
 	overflow-x: hidden;
 	width: 100%;
@@ -44,10 +39,14 @@ html {
 .tag-item {
 	white-space: nowrap;
 }
-.tag-item::first-letter {
-	font-family: monospace;
+.tag-first-char {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	line-height :40px;
 	font-size: 50px;
-	padding-right: 0.4ex;
+	text-align: center;
+	vertical-align: middle;
 }
 .tags-bar-container {
 	transition: all 500ms ease-in-out;
@@ -120,6 +119,28 @@ html {
 	-khtml-user-select: none;
 	-ms-user-select: none;
 }
+
+
+
+.item-block {
+	display: inline-block;
+	position: relative;
+}
+.file-block {
+	margin: 0.5ex;
+	padding: 0.5ex 0.5em;
+	height: 2em;
+	line-height: 1.5em;
+	border-radius:3em;
+	background-color: #a8a8a8;
+}
+.folder-block {
+	background-color: #8cc800;
+}
+.item-name {
+	margin-left: 1ex;
+}
+
 /*
 html, body {
 	position: relative;
@@ -139,19 +160,6 @@ html, body {
 	max-width: 256px;
 	max-height: 256px;
 	margin: 1ex;
-}
-
-.item-block {
-	display: inline-block;
-	position: relative;
-}
-.file-block {
-	margin: 0.5ex;
-	padding: 0.5ex;
-	border: 1px solid #333;
-}
-.item-name {
-	margin-left: 1ex;
 }
 
 .cover-name {
