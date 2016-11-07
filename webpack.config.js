@@ -36,7 +36,8 @@ module.exports = {
 			var IGNORES = [
 				'path',
 				'fs',
-				'electron'
+				'electron',
+				'fluent-ffmpeg'
 			];
 			return function (context, request, callback) {
 				if (IGNORES.indexOf(request) >= 0) {

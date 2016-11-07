@@ -5,28 +5,32 @@ html {
 	overflow: auto;
 }
 
-.tags-bar-container:hover .grommetux-search-input {
-	font-size: 1.5rem !important;
+.grommetux-header.overwrite {
+	overflow: hidden;
 }
-.tags-bar-container:hover .grommetux-search-input__input {
-	border: 1px solid rgba(0,0,0,.15) !important;
-}
-
-.grommetux-search-input {
+.grommetux-search-input.overwrite {
 	transition: font-size 500ms ease-in-out;
 	-webkit-transition: font-size 500ms ease-in-out;
-	font-size: 0.5rem !important;
+	font-size: 0.5rem;
 }
-.grommetux-search-input__input {
-	padding-right: 0 !important;
-	border: none !important;
+.grommetux-search-input.overwrite > .grommetux-search-input__input {
+	padding-right: 0;
+	border: none;
 }
-.grommetux-search-input__control {
-	right: 0 !important;
+.grommetux-search-input.overwrite > .grommetux-search-input__control {
+	right: 0;
 }
-.grommetux-search-input__control > .grommetux-button__icon {
-	padding: 3px !important;
+.grommetux-search-input.overwrite > .grommetux-search-input__control > .grommetux-button__icon {
+	padding: 3px;
 }
+.tags-bar-container:hover .grommetux-search-input.overwrite {
+	font-size: 1.5rem;
+}
+.tags-bar-container:hover .grommetux-search-input.overwrite > .grommetux-search-input__input {
+	border: 1px solid rgba(0,0,0,.15);
+}
+
+
 
 .hidden {
 	display: none;

@@ -4,19 +4,23 @@ import path from 'path';
 import {shell} from 'electron';
 import { diffChars } from 'diff';
 
-import { setFfprobePath, ffprobe } from 'fluent-ffmpeg';
+import { setFfmpegPath, setFfprobePath, ffprobe } from 'fluent-ffmpeg';
 
-setFfprobePath('C:\\myTools\\ffmpeg-20161101-60178e7-win64-static\\bin\\ffprobe.exe');
-ffprobe('C:\\Users\\Public\\Videos\\Sample Videos\\Wildlife.wmv', function(err, metadata) {
-	console.dir(metadata);
-});
+const ffprobePath = (navigator.platform === 'MacIntel') ? '/Users/windz/Downloads/CC' : 'C:\\myTools\\ffmpeg-20161101-60178e7-win64-static\\bin\\ffprobe.exe';
+setFfprobePath(ffprobePath);
+// ffprobe('C:\\Users\\Public\\Videos\\Sample Videos\\Wildlife.wmv', function(err, metadata) {
+// 	if (err) console.error(err);
+// 	console.dir(metadata);
+// });
+
+
 
 export function openCover(filePath) {
 	console.log(filePath);
 	console.log(shell.openItem(filePath));
 }
 
-export function changeDir(newPath) {
+export function changeDir(newPath, done) {
 
 	const IMAGE = "i";
 	const VIDEO = "v";
@@ -29,6 +33,12 @@ export function changeDir(newPath) {
 		"mp4": VIDEO,
 		"mkv": VIDEO,
 		"wmv": VIDEO
+	};
+
+	const resolutionDict = {
+		"HD": "HD",
+		"SD": "SD",
+		"GG": "GG"
 	};
 
 	function normalizeDirPath(targetPath) {
@@ -113,6 +123,7 @@ export function changeDir(newPath) {
 		const images = allSubFiles.filter( f => extDict[f.ext] === IMAGE );
 		const videos = allSubFiles.filter( f => extDict[f.ext] === VIDEO );
 
+		// start binding
 		images.forEach((image) => {
 			const coveredVideos = [];
 			videos.forEach((video) => {
@@ -187,6 +198,11 @@ export function changeDir(newPath) {
 		// });
 		// console.log(Object.keys(subDirPaths));
 
+
+
+		/*|================================================================|*/
+		/*|                        merge file tags                         |*/
+		/*|================================================================|*/
 		function mergeFileTags(files) {
 			if (!files) return [];
 			return Object.keys(files.map((f) => {
@@ -199,18 +215,66 @@ export function changeDir(newPath) {
 			}, {}));
 		}
 
-		return {
+		/*|================================================================|*/
+		/*|                         sum up results                         |*/
+		/*|================================================================|*/
+		const result = {
 			pathError: null,
 			currentPath: targetDirPath,
 			files: allSubFilesWithVideoMerged,
 			fileTags: mergeFileTags(allSubFilesWithVideoMerged)
 		};
+
+		/*|================================================================|*/
+		/*|                     read resolution info.                      |*/
+		/*|================================================================|*/
+
+		let readCount = 0;
+		const readComplete = (video) => {
+			readCount = readCount + 1;
+			// console.log('ffprobe', video.name, video.resolution, readCount);
+			if (readCount >= videos.length) {
+				done(result);
+			}
+		};
+		videos.forEach((video) => {
+
+			// TODO: get a callback from redux..., read call is async
+			ffprobe(video.path, function(err, metadata) {
+
+				if (err) {
+					video.resolution = resolutionDict.GG;
+					readComplete(video);
+					return;
+				}
+
+				const videoStreams = metadata.streams.filter((s) => {
+					return s.codec_type === 'video';
+				});
+				if (videoStreams.length > 0) {
+					// only consider the 1st video stream
+					const videoHeight = videoStreams[0].height;
+					video.resolution = (videoHeight >= 1000) ? resolutionDict.HD : resolutionDict.SD;
+				} else {
+					video.resolution = resolutionDict.GG;
+				}
+				readComplete(video);
+				return;
+			});
+			
+		});
+		// no video to process, call done directly (need set timeout to fake redux that the reducer does not dispatch event, i.e. no side effect)
+		if (videos.length === 0) setTimeout(done.bind(null, result), 100);
+
+		return result;
 	} catch (pathError) {
-		return {
+		const result = {
 			pathError,
 			currentPath: 'unknown path',
 			files: [],
 			fileTags: []
 		};
+		done(result);
+		return result;
 	}
 };

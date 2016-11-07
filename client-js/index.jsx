@@ -22,13 +22,18 @@ const store = createStore(reducer, Immutable.Map({
 		nameFilter: '',
 		tagFilter: '',
 		filterTagSet: Immutable.Set()
-	})
+	}),
+	currentPath: '/',
+	files: Immutable.List(),
+	fileTags: Immutable.List()
 }));
 
 const defaultDir = (navigator.platform === 'MacIntel') ? '/Users/windz/Downloads/CC' : 'C:/Users/windz.fan/Git/a-video-explorer/test-pic';
 store.dispatch(navigationActions.changeDir(defaultDir));
 
-
+export function getStore() {
+	return store;
+};
 
 /*|================================================================|*/
 /*|                         Rendering Main                         |*/

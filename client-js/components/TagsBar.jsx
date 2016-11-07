@@ -35,8 +35,8 @@ class TagsBar extends React.PureComponent {
 		console.log('render TagsBar');
 		return (
 			<Sidebar size="small" colorIndex="neutral-1" full={true} fixed={true} className="tags-bar-container">
-				<Header pad={{horizontal: "small"}}>
-					<SearchInput placeHolder="Search tag" onDOMChange={this.onSearchInputChanged.bind(this)} />
+				<Header className="overwrite" pad={{horizontal: "small"}}>
+					<SearchInput className="overwrite" placeHolder="Search tag" onDOMChange={this.onSearchInputChanged.bind(this)} />
 				</Header>
 				<Menu size="small" className="tag-menu">
 					{this.props.tags.map((tag) => {

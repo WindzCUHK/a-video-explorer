@@ -1,5 +1,6 @@
 
 export const CHANGE_DIR = 'CHANGE_DIR';
+export const CHANGE_DIR_DONE = 'CHANGE_DIR_DONE';
 export const OPEN_COVER = 'OPEN_COVER';
 
 export const CHANGE_COVER_NAME_FILTER = 'CHANGE_COVER_NAME_FILTER';

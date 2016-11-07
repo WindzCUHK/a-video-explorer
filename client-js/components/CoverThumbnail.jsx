@@ -10,22 +10,32 @@ import Header from 'grommet/components/Header';
 import Headline from 'grommet/components/Headline';
 import Image from 'grommet/components/Image';
 import Tile from 'grommet/components/Tile';
-import Tiles from 'grommet/components/Tiles';
+import Status from 'grommet/components/icons/Status';
 
 class VideoButton extends React.PureComponent {
 	render() {
 		const isEqual = this.props.coveredVideo.get('isEqual');
 		const episode = this.props.coveredVideo.get('episode');
 		const videoPath = this.props.coveredVideo.get('file').get('path');
+		const resolution = this.props.coveredVideo.get('file').get('resolution');
 		const openVideo = (event) => {
 			event.preventDefault();
 			this.props.openCover(videoPath);
 		};
 		const index = this.props.index;
 
+		const resolutionStatusDict = {
+			HD: 'ok',
+			SD: 'warning',
+			GG: 'unknown'
+		};
+
 		return (
 			<Box pad="small" full={false} flex="grow" align="center" justify="center" colorIndex={"neutral-" + (index % 3 + 1) + "-a"} onDoubleClick={openVideo} className="episode-button">
-				<span>{(isEqual) ? (<FontAwesome name='video-camera' />) : episode}</span>
+				<span>
+					<Status value={resolutionStatusDict[resolution]} />
+					{(isEqual) ? (<FontAwesome name='video-camera' />) : episode}
+				</span>
 			</Box>
 		);
 	}
