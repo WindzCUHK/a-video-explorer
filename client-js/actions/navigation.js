@@ -2,8 +2,6 @@
 import * as types from './TYPES.js';
 
 export function changeDir(newPath) {
-		console.log('action CHANGE_DIR', newPath);
-
 	return {
 		type: types.CHANGE_DIR,
 		newPath

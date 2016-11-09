@@ -6,7 +6,7 @@ import { diffChars } from 'diff';
 
 import { setFfmpegPath, setFfprobePath, ffprobe } from 'fluent-ffmpeg';
 
-const ffprobePath = (navigator.platform === 'MacIntel') ? '/Users/windz/Downloads/CC' : 'C:\\myTools\\ffmpeg-20161101-60178e7-win64-static\\bin\\ffprobe.exe';
+const ffprobePath = (navigator.platform === 'MacIntel') ? '/Users/windz/bin/ffprobe' : 'C:\\myTools\\ffmpeg-20161101-60178e7-win64-static\\bin\\ffprobe.exe';
 setFfprobePath(ffprobePath);
 // ffprobe('C:\\Users\\Public\\Videos\\Sample Videos\\Wildlife.wmv', function(err, metadata) {
 // 	if (err) console.error(err);
