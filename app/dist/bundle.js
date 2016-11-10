@@ -36694,41 +36694,42 @@
 				/*|                     read resolution info.                      |*/
 				/*|================================================================|*/
 	
-				var readCount = 0;
-				var readComplete = function readComplete(video) {
-					readCount = readCount + 1;
-					// console.log('ffprobe', video.name, video.resolution, readCount);
-					if (readCount >= videos.length) {
-						done(result);
-					}
-				};
-				videos.forEach(function (video) {
-	
-					// TODO: get a callback from redux..., read call is async
-					(0, _fluentFfmpeg.ffprobe)(video.path, function (err, metadata) {
-	
-						if (err) {
-							video.resolution = resolutionDict.GG;
-							readComplete(video);
-							return;
-						}
-	
-						var videoStreams = metadata.streams.filter(function (s) {
-							return s.codec_type === 'video';
-						});
-						if (videoStreams.length > 0) {
-							// only consider the 1st video stream
-							var videoHeight = videoStreams[0].height;
-							video.resolution = videoHeight >= 1000 ? resolutionDict.HD : resolutionDict.SD;
-						} else {
-							video.resolution = resolutionDict.GG;
-						}
-						readComplete(video);
-						return;
-					});
-				});
+				/*
+	   let readCount = 0;
+	   const readComplete = (video) => {
+	   	readCount = readCount + 1;
+	   	// console.log('ffprobe', video.name, video.resolution, readCount);
+	   	if (readCount >= videos.length) {
+	   		done(result);
+	   	}
+	   };
+	   videos.forEach((video) => {
+	   		// TODO: get a callback from redux..., read call is async
+	   	ffprobe(video.path, function(err, metadata) {
+	   			if (err) {
+	   			video.resolution = resolutionDict.GG;
+	   			readComplete(video);
+	   			return;
+	   		}
+	   			const videoStreams = metadata.streams.filter((s) => {
+	   			return s.codec_type === 'video';
+	   		});
+	   		if (videoStreams.length > 0) {
+	   			// only consider the 1st video stream
+	   			const videoHeight = videoStreams[0].height;
+	   			video.resolution = (videoHeight >= 1000) ? resolutionDict.HD : resolutionDict.SD;
+	   		} else {
+	   			video.resolution = resolutionDict.GG;
+	   		}
+	   		readComplete(video);
+	   		return;
+	   	});
+	   	
+	   });
+	   */
 				// no video to process, call done directly (need set timeout to fake redux that the reducer does not dispatch event, i.e. no side effect)
-				if (videos.length === 0) setTimeout(done.bind(null, result), 100);
+				// if (videos.length === 0) setTimeout(done.bind(null, result), 100);
+				setTimeout(done.bind(null, result), 100);
 	
 				return {
 					v: result

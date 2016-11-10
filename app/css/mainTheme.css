@@ -47,10 +47,10 @@ html {
 	display: inline-block;
 	width: 50px;
 	height: 50px;
-	line-height :40px;
+	line-height: 50px;
 	font-size: 50px;
 	text-align: center;
-	vertical-align: middle;
+	vertical-align: bottom;
 }
 .tags-bar-container {
 	transition: all 500ms ease-in-out;

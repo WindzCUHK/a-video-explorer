@@ -229,6 +229,7 @@ export function changeDir(newPath, done) {
 		/*|                     read resolution info.                      |*/
 		/*|================================================================|*/
 
+		/*
 		let readCount = 0;
 		const readComplete = (video) => {
 			readCount = readCount + 1;
@@ -263,8 +264,10 @@ export function changeDir(newPath, done) {
 			});
 			
 		});
+		*/
 		// no video to process, call done directly (need set timeout to fake redux that the reducer does not dispatch event, i.e. no side effect)
-		if (videos.length === 0) setTimeout(done.bind(null, result), 100);
+		// if (videos.length === 0) setTimeout(done.bind(null, result), 100);
+		setTimeout(done.bind(null, result), 100);
 
 		return result;
 	} catch (pathError) {
