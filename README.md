@@ -19,6 +19,9 @@
 | react | client lib for react |
 | react-dom | client lib for react |
 
+# example
+- https://github.com/sachinchoolur/lightgallery-desktop
+
 - something may be useful
     + https://github.com/sindresorhus/awesome-electron
     + https://www.npmjs.com/package/mocha-electron
