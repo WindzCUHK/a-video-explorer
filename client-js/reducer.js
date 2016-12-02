@@ -14,7 +14,7 @@ export default (state, action) => {
 	switch (action.type) {
 
 		case types.CHANGE_DIR:
-			const fakeResult = actionHandlers.changeDir(action.newPath, (result) => {
+			actionHandlers.changeDir(action.newPath, (result) => {
 				getStore().dispatch(navigationActions.changeDirDone(result));
 			});
 			return state;
