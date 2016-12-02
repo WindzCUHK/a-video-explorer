@@ -39,7 +39,8 @@ export function changeDir (newPath, done) {
 	const targetDirPath = normalizeDirPath(newPath);
 	recursiveLoadAllFAS(targetDirPath, (err, fileAttributes) => {
 
-		console.log(err, fileAttributes);
+		// console.log(err, fileAttributes);
+		// fileAttributes = [];
 
 		if (err) {
 			const result = {

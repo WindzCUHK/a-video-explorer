@@ -25,11 +25,16 @@ const CONSTANTS = {};
 	setFfprobePath(ffprobePath);
 
 	// CONSTANTS.DB
+	const dbDirPath = (navigator.platform === 'MacIntel') ? '/Users/windz/Code/a-video-explorer/db' : 'C:\\myTools\\xxxxxx';
+	// the path is useless, electron will save it in browser storage (filename = key to doc saving the whole DB)...
 	const dataStoreConfig = {
-		filename: __dirname + '/db/fileList.db',
-		autoload: true
+		filename: path.join(dbDirPath, 'fileList.db'),
+		autoload: false
 	};
 	CONSTANTS.DB = new DataStore(dataStoreConfig);
+	CONSTANTS.DB.loadDatabase((err) => {
+		if (err) console.error(err);
+	});
 
 	// CONSTANTS.IMAGE
 	const IMAGE = CONSTANTS.IMAGE = "i";
@@ -353,7 +358,12 @@ export default function recursiveLoadAllFAS (dirPath, loadAllDone) {
 		// when all sub directories done, concat their file attributes with fa of current directory
 		Promise.all(subDirs.map( fa => toSubDirPromise(fa.path) ))
 			.then((allSubDirFAS) => {
+
+				// persist to file first
+				CONSTANTS.DB.persistence.compactDatafile();
+
 				loadAllDone(null, flattenArray(dirFAS, allSubDirFAS));
+
 			})
 			.catch(loadAllDone);
 

@@ -43,6 +43,7 @@ class VideoButton extends React.PureComponent {
 
 class Tag extends React.PureComponent {
 	render() {
+		// console.log('render Tag');
 		return (<span className="tag">{this.props.tag}</span>);
 	}
 }
@@ -84,7 +85,7 @@ class CoverThumbnail extends React.PureComponent {
 		else return element.scrollWidth === element.scrollLeft + element.clientWidth;
 	}
 	render() {
-		console.log('render CoverThumbnail');
+		// console.log('render CoverThumbnail');
 		return (
 			<Tile align="center" justify="center" size="auto" className={"cover-tile" + " " + ((this.props.isShown) ? "" : "hidden")}>
 				<Article full="horizontal" align="center" justify="center">
