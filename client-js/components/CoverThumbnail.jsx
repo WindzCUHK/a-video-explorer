@@ -48,7 +48,7 @@ class Tag extends React.PureComponent {
 	}
 }
 
-class CoverThumbnail extends React.PureComponent {
+class CoverThumbnailContent extends React.PureComponent {
 	constructor(props) {
 		super(props);
 	}
@@ -85,48 +85,63 @@ class CoverThumbnail extends React.PureComponent {
 		else return element.scrollWidth === element.scrollLeft + element.clientWidth;
 	}
 	render() {
-		// console.log('render CoverThumbnail');
+		console.log('render CoverThumbnailContent');
 		return (
-			<Tile align="center" justify="center" size="auto" className={"cover-tile" + " " + ((this.props.isShown) ? "" : "hidden")}>
-				<Article full="horizontal" align="center" justify="center">
-					<Header float={true} basis="xsmall" size="small" align="center" justify="center" colorIndex="neutral-2" className="cover-title-block">
-						<Headline size="small" margin="none" align="center" className="cover-title">
-							{this.props.cover.get('name')}
-						</Headline>
-					</Header>
-					<Image
-						alt={this.props.cover.get('name')}
-						src={this.normalizeURI(this.props.cover.get('path'))}
-						size="large"
-						fit="contain"
-					/>
+			<Article full="horizontal" align="center" justify="center">
+				<Header float={true} basis="xsmall" size="small" align="center" justify="center" colorIndex="neutral-2" className="cover-title-block">
+					<Headline size="small" margin="none" align="center" className="cover-title">
+						{this.props.cover.get('name')}
+					</Headline>
+				</Header>
+				<Image
+					alt={this.props.cover.get('name')}
+					src={this.normalizeURI(this.props.cover.get('path'))}
+					size="large"
+					fit="contain"
+				/>
 
-					<Box full="horizontal" direction="row" onWheel={this.scrollEpisode.bind(this)} ref="episode-block" className="episode-block">
-						<Box direction="row" flex="grow" className="episode-arrow-block">
-							<div className="episode-arrow episode-arrow-left hidden" ref="episode-arrow-left">
-								<FontAwesome name='step-backward' />
-							</div>
-							<div className="episode-arrow episode-arrow-right hidden" ref="episode-arrow-right">
-								<FontAwesome name='step-forward' />
-							</div>
-							{this.props.cover.get('coveredVideos').map((cv, index) => {
-								const videoPath = cv.get('file').get('path');
-								return (<VideoButton key={videoPath} coveredVideo={cv} openCover={this.props.actions.openCover} index={index} />);
-							})}
-						</Box>
-					</Box>
-					<div className="tag-block">
-						{this.props.cover.get('tags').map((tag) => {
-							return (<Tag key={tag} tag={tag} />);
+				<Box full="horizontal" direction="row" onWheel={this.scrollEpisode.bind(this)} ref="episode-block" className="episode-block">
+					<Box direction="row" flex="grow" className="episode-arrow-block">
+						<div className="episode-arrow episode-arrow-left hidden" ref="episode-arrow-left">
+							<FontAwesome name='step-backward' />
+						</div>
+						<div className="episode-arrow episode-arrow-right hidden" ref="episode-arrow-right">
+							<FontAwesome name='step-forward' />
+						</div>
+						{this.props.cover.get('coveredVideos').map((cv, index) => {
+							const videoPath = cv.get('file').get('path');
+							return (<VideoButton key={videoPath} coveredVideo={cv} openCover={this.props.actions.openCover} index={index} />);
 						})}
-					</div>
-				</Article>
-			</Tile>
+					</Box>
+				</Box>
+				<div className="tag-block">
+					{this.props.cover.get('tags').map((tag) => {
+						return (<Tag key={tag} tag={tag} />);
+					})}
+				</div>
+			</Article>
 		);
 	}
 
 	componentDidMount() {
 		this.refs['episode-block'].props.onWheel(new WheelEvent('wheel'));
+	}
+}
+
+class CoverThumbnail extends React.PureComponent {
+	constructor(props) {
+		super(props);
+	}
+	render() {
+		// console.log('render CoverThumbnail');
+		return (
+			<Tile align="center" justify="center" size="auto" className={"cover-tile" + " " + ((this.props.isShown) ? "" : "hidden")}>
+				<CoverThumbnailContent
+					actions={this.props.actions}
+					cover={this.props.cover}
+				/>
+			</Tile>
+		);
 	}
 };
 

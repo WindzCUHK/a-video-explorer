@@ -100727,7 +100727,7 @@
 		_createClass(Tag, [{
 			key: 'render',
 			value: function render() {
-				// console.log('render Tag');
+				console.log('render Tag');
 				return _react2.default.createElement(
 					'span',
 					{ className: 'tag' },
@@ -100739,16 +100739,16 @@
 		return Tag;
 	}(_react2.default.PureComponent);
 	
-	var CoverThumbnail = function (_React$PureComponent3) {
-		_inherits(CoverThumbnail, _React$PureComponent3);
+	var CoverThumbnailContent = function (_React$PureComponent3) {
+		_inherits(CoverThumbnailContent, _React$PureComponent3);
 	
-		function CoverThumbnail(props) {
-			_classCallCheck(this, CoverThumbnail);
+		function CoverThumbnailContent(props) {
+			_classCallCheck(this, CoverThumbnailContent);
 	
-			return _possibleConstructorReturn(this, (CoverThumbnail.__proto__ || Object.getPrototypeOf(CoverThumbnail)).call(this, props));
+			return _possibleConstructorReturn(this, (CoverThumbnailContent.__proto__ || Object.getPrototypeOf(CoverThumbnailContent)).call(this, props));
 		}
 	
-		_createClass(CoverThumbnail, [{
+		_createClass(CoverThumbnailContent, [{
 			key: 'normalizeURI',
 			value: function normalizeURI(targetPath) {
 				return encodeURI(targetPath.indexOf('\\') >= 0 ? targetPath.replace(/\\/g, '/') : targetPath);
@@ -100788,57 +100788,53 @@
 			value: function render() {
 				var _this5 = this;
 	
-				// console.log('render CoverThumbnail');
+				console.log('render CoverThumbnailContent');
 				return _react2.default.createElement(
-					_Tile2.default,
-					{ align: 'center', justify: 'center', size: 'auto', className: "cover-tile" + " " + (this.props.isShown ? "" : "hidden") },
+					_Article2.default,
+					{ full: 'horizontal', align: 'center', justify: 'center' },
 					_react2.default.createElement(
-						_Article2.default,
-						{ full: 'horizontal', align: 'center', justify: 'center' },
+						_Header2.default,
+						{ float: true, basis: 'xsmall', size: 'small', align: 'center', justify: 'center', colorIndex: 'neutral-2', className: 'cover-title-block' },
 						_react2.default.createElement(
-							_Header2.default,
-							{ float: true, basis: 'xsmall', size: 'small', align: 'center', justify: 'center', colorIndex: 'neutral-2', className: 'cover-title-block' },
-							_react2.default.createElement(
-								_Headline2.default,
-								{ size: 'small', margin: 'none', align: 'center', className: 'cover-title' },
-								this.props.cover.get('name')
-							)
-						),
-						_react2.default.createElement(_Image2.default, {
-							alt: this.props.cover.get('name'),
-							src: this.normalizeURI(this.props.cover.get('path')),
-							size: 'large',
-							fit: 'contain'
-						}),
+							_Headline2.default,
+							{ size: 'small', margin: 'none', align: 'center', className: 'cover-title' },
+							this.props.cover.get('name')
+						)
+					),
+					_react2.default.createElement(_Image2.default, {
+						alt: this.props.cover.get('name'),
+						src: this.normalizeURI(this.props.cover.get('path')),
+						size: 'large',
+						fit: 'contain'
+					}),
+					_react2.default.createElement(
+						_Box2.default,
+						{ full: 'horizontal', direction: 'row', onWheel: this.scrollEpisode.bind(this), ref: 'episode-block', className: 'episode-block' },
 						_react2.default.createElement(
 							_Box2.default,
-							{ full: 'horizontal', direction: 'row', onWheel: this.scrollEpisode.bind(this), ref: 'episode-block', className: 'episode-block' },
+							{ direction: 'row', flex: 'grow', className: 'episode-arrow-block' },
 							_react2.default.createElement(
-								_Box2.default,
-								{ direction: 'row', flex: 'grow', className: 'episode-arrow-block' },
-								_react2.default.createElement(
-									'div',
-									{ className: 'episode-arrow episode-arrow-left hidden', ref: 'episode-arrow-left' },
-									_react2.default.createElement(_reactFontawesome2.default, { name: 'step-backward' })
-								),
-								_react2.default.createElement(
-									'div',
-									{ className: 'episode-arrow episode-arrow-right hidden', ref: 'episode-arrow-right' },
-									_react2.default.createElement(_reactFontawesome2.default, { name: 'step-forward' })
-								),
-								this.props.cover.get('coveredVideos').map(function (cv, index) {
-									var videoPath = cv.get('file').get('path');
-									return _react2.default.createElement(VideoButton, { key: videoPath, coveredVideo: cv, openCover: _this5.props.actions.openCover, index: index });
-								})
-							)
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'tag-block' },
-							this.props.cover.get('tags').map(function (tag) {
-								return _react2.default.createElement(Tag, { key: tag, tag: tag });
+								'div',
+								{ className: 'episode-arrow episode-arrow-left hidden', ref: 'episode-arrow-left' },
+								_react2.default.createElement(_reactFontawesome2.default, { name: 'step-backward' })
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'episode-arrow episode-arrow-right hidden', ref: 'episode-arrow-right' },
+								_react2.default.createElement(_reactFontawesome2.default, { name: 'step-forward' })
+							),
+							this.props.cover.get('coveredVideos').map(function (cv, index) {
+								var videoPath = cv.get('file').get('path');
+								return _react2.default.createElement(VideoButton, { key: videoPath, coveredVideo: cv, openCover: _this5.props.actions.openCover, index: index });
 							})
 						)
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'tag-block' },
+						this.props.cover.get('tags').map(function (tag) {
+							return _react2.default.createElement(Tag, { key: tag, tag: tag });
+						})
 					)
 				);
 			}
@@ -100846,6 +100842,33 @@
 			key: 'componentDidMount',
 			value: function componentDidMount() {
 				this.refs['episode-block'].props.onWheel(new WheelEvent('wheel'));
+			}
+		}]);
+	
+		return CoverThumbnailContent;
+	}(_react2.default.PureComponent);
+	
+	var CoverThumbnail = function (_React$PureComponent4) {
+		_inherits(CoverThumbnail, _React$PureComponent4);
+	
+		function CoverThumbnail(props) {
+			_classCallCheck(this, CoverThumbnail);
+	
+			return _possibleConstructorReturn(this, (CoverThumbnail.__proto__ || Object.getPrototypeOf(CoverThumbnail)).call(this, props));
+		}
+	
+		_createClass(CoverThumbnail, [{
+			key: 'render',
+			value: function render() {
+				// console.log('render CoverThumbnail');
+				return _react2.default.createElement(
+					_Tile2.default,
+					{ align: 'center', justify: 'center', size: 'auto', className: "cover-tile" + " " + (this.props.isShown ? "" : "hidden") },
+					_react2.default.createElement(CoverThumbnailContent, {
+						actions: this.props.actions,
+						cover: this.props.cover
+					})
+				);
 			}
 		}]);
 	
