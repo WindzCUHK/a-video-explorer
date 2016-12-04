@@ -36366,7 +36366,7 @@
 				if (map3.has(action.tag)) {
 					map3 = map3.delete(action.tag);
 				} else {
-					map3 = map3.add(action.tag);
+					map3 = map3.clear().add(action.tag);
 				}
 				map2 = state.get('ui').set('filterTagSet', map3);
 				map1 = state.set('ui', map2);
@@ -100727,7 +100727,7 @@
 		_createClass(Tag, [{
 			key: 'render',
 			value: function render() {
-				console.log('render Tag');
+				// console.log('render Tag');
 				return _react2.default.createElement(
 					'span',
 					{ className: 'tag' },
@@ -100788,7 +100788,7 @@
 			value: function render() {
 				var _this5 = this;
 	
-				console.log('render CoverThumbnailContent');
+				// console.log('render CoverThumbnailContent');
 				return _react2.default.createElement(
 					_Article2.default,
 					{ full: 'horizontal', align: 'center', justify: 'center' },

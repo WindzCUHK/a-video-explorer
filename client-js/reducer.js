@@ -50,7 +50,7 @@ export default (state, action) => {
 			if (map3.has(action.tag)) {
 				map3 = map3.delete(action.tag);
 			} else {
-				map3 = map3.add(action.tag);
+				map3 = map3.clear().add(action.tag);
 			}
 			map2 = state.get('ui').set('filterTagSet', map3);
 			map1 = state.set('ui', map2);

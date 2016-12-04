@@ -85,7 +85,7 @@ class CoverThumbnailContent extends React.PureComponent {
 		else return element.scrollWidth === element.scrollLeft + element.clientWidth;
 	}
 	render() {
-		console.log('render CoverThumbnailContent');
+		// console.log('render CoverThumbnailContent');
 		return (
 			<Article full="horizontal" align="center" justify="center">
 				<Header float={true} basis="xsmall" size="small" align="center" justify="center" colorIndex="neutral-2" className="cover-title-block">
