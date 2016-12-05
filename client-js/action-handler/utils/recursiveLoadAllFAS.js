@@ -1,8 +1,8 @@
 
 import fs from 'fs';
 import path from 'path';
+import { ipcRenderer } from 'electron';
 
-import DataStore from 'nedb';
 import { setFfmpegPath, setFfprobePath, ffprobe } from 'fluent-ffmpeg';
 
 
@@ -23,18 +23,6 @@ const CONSTANTS = {};
 	// const navigator = { platform: 'windows' };
 	const ffprobePath = (navigator.platform === 'MacIntel') ? '/Users/windz/bin/ffprobe' : 'C:\\myTools\\ffmpeg-20161101-60178e7-win64-static\\bin\\ffprobe.exe';
 	setFfprobePath(ffprobePath);
-
-	// CONSTANTS.DB
-	const dbDirPath = (navigator.platform === 'MacIntel') ? '/Users/windz/Code/a-video-explorer/db' : 'C:\\myTools\\xxxxxx';
-	// the path is useless, electron will save it in browser storage (filename = key to doc saving the whole DB)...
-	const dataStoreConfig = {
-		filename: path.join(dbDirPath, 'fileList.db'),
-		autoload: false
-	};
-	CONSTANTS.DB = new DataStore(dataStoreConfig);
-	CONSTANTS.DB.loadDatabase((err) => {
-		if (err) console.error(err);
-	});
 
 	// CONSTANTS.IMAGE
 	const IMAGE = CONSTANTS.IMAGE = "i";
@@ -283,24 +271,20 @@ function _parseDirAndUpsertDataStore (dirPath, loadDone) {
 		};
 
 		// insert/update to DB
-		const query = { _id: dirPath };
-		const options = { upsert: true }
-		CONSTANTS.DB.update(query, newDoc, options, function (err, numAffected, affectedDocuments, upsertFlag) {
-
+		!function () {
+			const { err } = ipcRenderer.sendSync('upsert', newDoc);
 			if (err) return loadDone(err);
-
-			// affectedDocuments is set, iff, upsertFlag = true or options.returnUpdatedDocs = true
-
-			// load finish
 			loadDone(null, fas);
-
-		});
+		}();
 	});
 }
 function loadDirFAS (dirPath, loadDone) {
 
 	// search directory doc by ID
-	CONSTANTS.DB.findOne({ _id: dirPath }, function (err, doc) {
+	const { err, doc } = ipcRenderer.sendSync('get', dirPath);
+
+	// originally is db calls callback
+	!function (err, doc) {
 
 		if (err) return loadDone(err);
 
@@ -312,7 +296,7 @@ function loadDirFAS (dirPath, loadDone) {
 		} else {
 			const stats = fs.lstatSync(dirPath);
 			// check if directory structure updated by its modification time
-			if (doc.mtime.getTime() === stats.mtime.getTime()) {
+			if ((new Date(doc.mtime)).getTime() === stats.mtime.getTime()) {
 				// found, unchanged
 				console.log(`[${dirPath}] load from DB`);
 				loadDone(null, doc.childs);
@@ -322,7 +306,7 @@ function loadDirFAS (dirPath, loadDone) {
 				_parseDirAndUpsertDataStore(dirPath, loadDone);
 			}
 		}
-	});
+	}(err, doc);
 }
 
 /*|================================================================|*/
@@ -360,7 +344,7 @@ export default function recursiveLoadAllFAS (dirPath, loadAllDone) {
 			.then((allSubDirFAS) => {
 
 				// persist to file first
-				CONSTANTS.DB.persistence.compactDatafile();
+				ipcRenderer.send('presist');
 
 				loadAllDone(null, flattenArray(dirFAS, allSubDirFAS));
 

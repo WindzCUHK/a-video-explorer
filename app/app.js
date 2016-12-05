@@ -1,12 +1,11 @@
 
 import path from 'path';
 
-import electron from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import electronReload from 'electron-reload';
 
 
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+
 electronReload(__dirname);
 
 const rootPath = `file://${__dirname}`;
@@ -46,6 +45,53 @@ app.on('activate', () => {
 	}
 });
 
-
-
 // console.log(app.getPath('home'));
+
+
+import os from 'os';
+import DataStore from 'nedb';
+!function () {
+
+	// if `nedb` run in render process, it will use browser's storage for the DB. Hence, nedb to declare in main process and use IPC to communicate
+	// the path is useless, electron will save it in browser storage (filename = key to doc saving the whole DB)...
+
+	// console.log('os:', os.platform());
+	const dbDirPath = (os.platform() !== 'win32') ? '/Users/windz/Code/a-video-explorer/db' : 'C:\\Users\\windz.fan\\Git\\a-video-explorer\\db';
+	const dataStoreConfig = {
+		filename: path.join(dbDirPath, 'fileList.db'),
+		autoload: false
+	};
+	const DB = new DataStore(dataStoreConfig);
+	DB.loadDatabase((err) => {
+		if (err) console.error(err);
+	});
+
+	/*|================================================================|*/
+	/*|                           IPC events                           |*/
+	/*|================================================================|*/
+	ipcMain.on('getAll', (event) => {
+		DB.find({}, (err, docs) => {
+			console.log(err, docs);
+		});
+	});
+	ipcMain.on('presist', (event) => {
+		DB.persistence.compactDatafile();
+	});
+	ipcMain.on('get', (event, id) => {
+		DB.findOne({ _id: id }, (err, doc) => {
+			event.returnValue = { err, doc };
+		});
+	});
+	ipcMain.on('upsert', (event, doc) => {
+
+		const query = { _id: doc._id };
+		const options = { upsert: true };
+
+		DB.update(query, doc, options, function (err, numAffected, affectedDocuments, upsertFlag) {
+			// affectedDocuments is set, iff, upsertFlag = true or options.returnUpdatedDocs = true
+			event.returnValue = { err };
+		});
+	});
+
+}();
+

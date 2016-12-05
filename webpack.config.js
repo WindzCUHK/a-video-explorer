@@ -34,6 +34,7 @@ module.exports = {
 	externals: [
 		(function () {
 			var IGNORES = [
+				'os',
 				'path',
 				'fs',
 				'electron',
