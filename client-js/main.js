@@ -27,3 +27,16 @@ injectTapEventPlugin();
 
 const thumbnailBlock = document.getElementById('content');
 renderMain(null, thumbnailBlock);
+
+import Perf from 'react-addons-perf'
+Perf.start()
+
+setTimeout(function () {
+	Perf.stop();
+	const measurements = Perf.getLastMeasurements();
+	Perf.printInclusive(measurements)
+	Perf.printExclusive(measurements)
+	Perf.printWasted(measurements)
+	Perf.printOperations(measurements)
+
+}, 10 * 1000);

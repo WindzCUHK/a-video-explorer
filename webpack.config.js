@@ -31,6 +31,12 @@ module.exports = {
 		path: DIST_DIR,
 		filename: 'bundle.js'
 	},
+	plugins: [
+		new webpack.DefinePlugin({
+			// 'process.env.NODE_ENV': '"production"'
+			'process.env.NODE_ENV': '"development"'
+		})
+	],
 	externals: [
 		(function () {
 			var IGNORES = [
