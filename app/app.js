@@ -66,6 +66,12 @@ import DataStore from 'nedb';
 		if (err) console.error(err);
 	});
 
+	// create index in DB (_id is automatically indexed)
+	// DB.ensureIndex({ fieldName: '_id', unique: true, sparse: false }, function (err) {
+	// 	if (err) console.error(err);
+	// 	else console.log('DB index created');
+	// });
+
 	/*|================================================================|*/
 	/*|                           IPC events                           |*/
 	/*|================================================================|*/
