@@ -3,8 +3,6 @@ import fs from 'fs';
 import path from 'path';
 import { ipcRenderer } from 'electron';
 
-import { setFfmpegPath, setFfprobePath, ffprobe } from 'fluent-ffmpeg';
-
 
 
 const arrayDiff = (a, b) => {
@@ -20,9 +18,6 @@ const CONSTANTS = {};
 (function declareConstants () {
 
 	// initialization
-	// const navigator = { platform: 'windows' };
-	const ffprobePath = (navigator.platform === 'MacIntel') ? '/Users/windz/bin/ffprobe' : 'C:\\myTools\\ffmpeg-20161101-60178e7-win64-static\\bin\\ffprobe.exe';
-	setFfprobePath(ffprobePath);
 
 	// CONSTANTS.IMAGE
 	const IMAGE = CONSTANTS.IMAGE = "i";
@@ -115,32 +110,29 @@ function _parseFileAttributes (filePath, parseDone) {
 
 		// check video file resolution
 		if (CONSTANTS.EXT_DICT[fileAttributes.ext] === CONSTANTS.VIDEO) {
-			ffprobe(filePath, function(err, metadata) {
 
-				if (err) {
-					fileAttributes.resolution = CONSTANTS.RESOLUTION_DICT.GG;
-					fileAttributes.resolutionError = err.toString();
-					parseDone(null, fileAttributes);
-					return;
-				}
+			const { err, metadata } = ipcRenderer.sendSync('getResolution', filePath);
 
-				const videoStreams = metadata.streams.filter((s) => {
-					return s.codec_type === 'video';
-				});
-				if (videoStreams.length > 0) {
-					// only consider the 1st video stream
-					const videoHeight = videoStreams[0].height;
-					fileAttributes.resolution = (videoHeight >= CONSTANTS.HD_VIDEO_HEIGHT) ? CONSTANTS.RESOLUTION_DICT.HD : CONSTANTS.RESOLUTION_DICT.SD;
-				} else {
-					fileAttributes.resolution = CONSTANTS.RESOLUTION_DICT.GG;
-				}
+			if (err) {
+				fileAttributes.resolution = CONSTANTS.RESOLUTION_DICT.GG;
+				fileAttributes.resolutionError = err.toString();
 				parseDone(null, fileAttributes);
 				return;
+			}
+
+			const videoStreams = metadata.streams.filter((s) => {
+				return s.codec_type === 'video';
 			});
-		} else {
-			parseDone(null, fileAttributes);
+			if (videoStreams.length > 0) {
+				// only consider the 1st video stream
+				const videoHeight = videoStreams[0].height;
+				fileAttributes.resolution = (videoHeight >= CONSTANTS.HD_VIDEO_HEIGHT) ? CONSTANTS.RESOLUTION_DICT.HD : CONSTANTS.RESOLUTION_DICT.SD;
+			} else {
+				fileAttributes.resolution = CONSTANTS.RESOLUTION_DICT.GG;
+			}
 		}
 
+		parseDone(null, fileAttributes);
 		return;
 	}
 
@@ -291,18 +283,18 @@ function loadDirFAS (dirPath, loadDone) {
 		// null if not found
 		if (!doc) {
 			// not found, parse and insert to data store
-			console.log(`[${dirPath}] not found in DB`);
+			console.log(`[DB 404]\t ${dirPath}`);
 			_parseDirAndUpsertDataStore(dirPath, loadDone);
 		} else {
 			const stats = fs.lstatSync(dirPath);
 			// check if directory structure updated by its modification time
 			if ((new Date(doc.mtime)).getTime() === stats.mtime.getTime()) {
 				// found, unchanged
-				console.log(`[${dirPath}] load from DB`);
+				console.log(`[DB 304]\t ${dirPath}`);
 				loadDone(null, doc.childs);
 			} else {
 				// found but changed, parse and update to data store
-				console.log(`[${dirPath}] structure updated, will update DB`);
+				console.log(`[modified]\t ${dirPath}`);
 				_parseDirAndUpsertDataStore(dirPath, loadDone);
 			}
 		}
@@ -322,8 +314,12 @@ export default function recursiveLoadAllFAS (dirPath, loadAllDone) {
 
 		if (err) return loadAllDone(err);
 
-		// add childs on the same level first
+		// add children on the same level first
 		dirFAS.push(fas);
+		console.log(`[load done]\t ${dirPath}`)
+
+		// persist to file first
+		ipcRenderer.send('presist');
 
 		// filter sub directories
 		const subDirs = fas.filter(directoryOnly);
@@ -342,9 +338,6 @@ export default function recursiveLoadAllFAS (dirPath, loadAllDone) {
 		// when all sub directories done, concat their file attributes with fa of current directory
 		Promise.all(subDirs.map( fa => toSubDirPromise(fa.path) ))
 			.then((allSubDirFAS) => {
-
-				// persist to file first
-				ipcRenderer.send('presist');
 
 				loadAllDone(null, flattenArray(dirFAS, allSubDirFAS));
 

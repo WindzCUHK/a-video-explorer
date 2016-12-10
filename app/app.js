@@ -95,3 +95,16 @@ import DataStore from 'nedb';
 
 }();
 
+import { setFfprobePath, ffprobe } from 'fluent-ffmpeg';
+!function () {
+
+	const ffprobePath = (os.platform() !== 'win32') ? '/Users/windz/bin/ffprobe' : 'C:\\myTools\\ffmpeg-20161101-60178e7-win64-static\\bin\\ffprobe.exe';
+	setFfprobePath(ffprobePath);
+
+
+	ipcMain.on('getResolution', (event, filePath) => {
+		ffprobe(filePath, function(err, metadata) {
+			event.returnValue = { err, metadata };
+		});
+	});
+}();
