@@ -47,7 +47,7 @@ app.on('activate', () => {
 
 // console.log(app.getPath('home'));
 
-
+import fs from 'fs';
 import os from 'os';
 import DataStore from 'nedb';
 !function () {
@@ -90,6 +90,24 @@ import DataStore from 'nedb';
 		DB.update(query, doc, options, function (err, numAffected, affectedDocuments, upsertFlag) {
 			// affectedDocuments is set, iff, upsertFlag = true or options.returnUpdatedDocs = true
 			event.returnValue = { err };
+		});
+	});
+
+	ipcMain.on('clearNonExist', (event) => {
+		DB.find({}, (err, docs) => {
+			console.log('--- clearNonExist() start ---');
+			const paths = docs.map( d => d._id );
+			paths.forEach((p) => {
+				try {
+					fs.accessSync(p);
+				} catch (err) {
+					console.log(`[path 404]\t ${p}`);
+					DB.remove({ _id: p }, { multi: false }, function (err, numRemoved) {
+						if (numRemoved !== 1) console.error(`[remove 500]\t ${p}`);
+						else console.log(`[remove 200]\t ${p}`);
+					});
+				}
+			});
 		});
 	});
 

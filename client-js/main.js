@@ -3,7 +3,11 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import renderMain from './index.jsx';
 
-
+import { ipcRenderer } from 'electron';
+const clearNonExist = () => {
+	ipcRenderer.send('clearNonExist');
+};
+document._clearNonExist = clearNonExist;
 
 /*|=======================================================|*/
 /*|         prevent electron open file directly           |*/
