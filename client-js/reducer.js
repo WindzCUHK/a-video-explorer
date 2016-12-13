@@ -1,5 +1,6 @@
 
 import Immutable from 'immutable';
+import Perf from 'react-addons-perf'
 
 import * as types from './actions/TYPES.js';
 import * as navigationActions from './actions/navigation.js';
@@ -46,6 +47,17 @@ export default (state, action) => {
 			map1 = state.set('ui', map2);
 			return map1;
 		case types.TOGGLE_COVER_FILTER_TAG:
+			// Perf.start();
+			// setTimeout(function () {
+			// 	Perf.stop();
+			// 	const measurements = Perf.getLastMeasurements();
+			// 	// Perf.printInclusive(measurements)
+			// 	// Perf.printExclusive(measurements)
+			// 	Perf.printWasted(measurements)
+			// 	// Perf.printOperations(measurements)
+
+			// }, 2000);
+
 			map3 = state.get('ui').get('filterTagSet');
 			if (map3.has(action.tag)) {
 				map3 = map3.delete(action.tag);
@@ -59,3 +71,11 @@ export default (state, action) => {
 
 	return state;
 };
+
+
+
+
+/*|================================================================|*/
+/*|                           React Perf                           |*/
+/*|================================================================|*/
+
