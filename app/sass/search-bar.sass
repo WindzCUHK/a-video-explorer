@@ -17,6 +17,7 @@ $search_bar_font_size: 30pt
 		width: 100%
 		height: $search_bar_wh
 		background-color: OliveDrab
+		transition: 1s ease
 
 		& span
 			display: inline-block
@@ -28,6 +29,12 @@ $search_bar_font_size: 30pt
 		left: 0
 		width: 100%
 		height: $search_bar_wh
+
+	&:hover &__header
+		transform: translateX(100%);
+
+	&:hover &__input .transparent-input__input
+		transform: translateX(0);
 
 
 .transparent-input
@@ -44,8 +51,11 @@ $search_bar_font_size: 30pt
 		height: 100%
 		font-size: inherit
 		background-color: Olive
+		transform: translateX(-100%);
+		transition: 1s ease
 		
 		&:focus
+			transform: translateX(0);
 			background: #fee
 			outline: none
 
