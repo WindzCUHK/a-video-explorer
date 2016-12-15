@@ -12,6 +12,8 @@ import * as uiActions from '../actions/ui.js';
 class FilterBar extends React.PureComponent {
 	constructor(props) {
 		super(props);
+
+		this.onTextChanged = this.onTextChanged.bind(this);
 	}
 	onTextChanged(proxy, text) {
 		this.props.action.changeCoverNameFilter(text);
@@ -29,7 +31,7 @@ class FilterBar extends React.PureComponent {
 					<Search />
 				</Box>
 				<Box flex={true}>
-					<TextField  hintText="Cover Name" floatingLabelText="Search" fullWidth={true} onChange={this.onTextChanged.bind(this)} />
+					<TextField  hintText="Cover Name" floatingLabelText="Search" fullWidth={true} onChange={this.props.onChange} />
 				</Box>
 				{this.props.filterTagSet.map((tag) => {
 					return (
