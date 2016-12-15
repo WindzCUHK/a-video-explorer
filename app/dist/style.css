@@ -1,0 +1,118 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: none; }
+
+.preload * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important; }
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: Plum; }
+
+.pull-down-nav {
+  position: relative;
+  width: 90vw;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 1;
+  min-height: 2rem;
+  max-height: 2rem; }
+  .pull-down-nav__bar {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    line-height: 2rem;
+    text-align: center;
+    background: CornflowerBlue; }
+  .pull-down-nav__content {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    top: 2rem;
+    transform: translateY(-100%);
+    transition: transform 200ms ease-in-out;
+    background: LightBlue; }
+  .pull-down-nav:hover .pull-down-nav__content {
+    transform: translateY(0); }
+
+.search-bar {
+  position: relative;
+  width: 90%;
+  height: 1em;
+  overflow: hidden;
+  font-size: 30pt;
+  background-color: Tomato;
+  margin: auto; }
+  .search-bar__header {
+    padding-left: 1em;
+    box-sizing: border-box;
+    width: 100%;
+    height: 1em;
+    background-color: OliveDrab; }
+    .search-bar__header span {
+      display: inline-block;
+      height: 100%; }
+  .search-bar__input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1em; }
+
+.transparent-input__input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-left: 1em solid transparent;
+  box-sizing: border-box;
+  display: block;
+  background: none;
+  width: 100%;
+  height: 100%;
+  font-size: inherit;
+  background-color: Olive; }
+  .transparent-input__input::before {
+    content: "xxx"; }
+  .transparent-input__input:focus {
+    background: #fee;
+    outline: none; }
+
+.transparent-input__label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 1em;
+  height: 1em; }
+
+.transparent-input__img {
+  width: 100%;
+  height: 100%;
+  padding: 3pt;
+  box-sizing: border-box; }
+
+html:root {
+  font-size: 15pt; }
+
+nav[role=navigation] {
+  border: 1px solid #ccc; }
+
+.nav__list {
+  border: 1px solid #ccc; }
+  .nav__list__item {
+    border: 1px solid #ccc; }
+
+.nav__link {
+  border: 1px solid #ccc; }
+  .nav__link--active {
+    border: 1px solid #ccc; }

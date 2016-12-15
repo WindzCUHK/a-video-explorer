@@ -1,0 +1,36 @@
+
+$base_z_index: 1
+$pull_down_bar_height: 2rem
+
+.pull-down-nav
+	position: relative
+	width: 90vw
+	left: 0
+	right: 0
+	margin: auto
+	z-index: $base_z_index
+	min-height: $pull_down_bar_height
+	max-height: $pull_down_bar_height
+
+	&__bar
+		position: absolute
+		z-index: $base_z_index + 2
+		top: 0
+		width: 100%
+		height: 100%
+		line-height: $pull_down_bar_height
+		text-align: center
+		background: CornflowerBlue
+
+	&__content
+		position: absolute
+		z-index: $base_z_index + 1
+		width: 100%
+		top: $pull_down_bar_height
+		transform: translateY(-100%)
+		transition: transform 200ms ease-in-out
+		background: LightBlue
+
+	&:hover &__content
+		transform: translateY(0)
+	

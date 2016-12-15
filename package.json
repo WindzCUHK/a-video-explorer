@@ -8,7 +8,9 @@
     "use": "electron . noDebug",
     "test": "mocha --compilers js:babel-register",
     "build": "webpack --progress --colors",
-    "build:watch": "npm run build -- --watch"
+    "build:watch": "npm run build -- --watch",
+    "sass": "node-sass -w --include-path app/sass app/sass/style.sass app/dist/style.css",
+    "css": "node renderSASS.js"
   },
   "keywords": [],
   "author": "Windz",

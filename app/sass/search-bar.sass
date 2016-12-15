@@ -1,0 +1,64 @@
+
+$search_bar_wh: 1em
+$search_bar_font_size: 30pt
+
+.search-bar
+	position: relative
+	width: 90%
+	height: $search_bar_wh
+	overflow: hidden
+	font-size: $search_bar_font_size
+	background-color: Tomato
+	margin: auto;
+
+	&__header
+		padding-left: $search_bar_wh
+		box-sizing: border-box;
+		width: 100%
+		height: $search_bar_wh
+		background-color: OliveDrab
+
+		& span
+			display: inline-block
+			height: 100%
+
+	&__input
+		position: absolute
+		top: 0
+		left: 0
+		width: 100%
+		height: $search_bar_wh
+
+
+.transparent-input
+
+	&__input
+		position: absolute
+		top: 0
+		left: 0
+		border-left: $search_bar_wh solid transparent
+		box-sizing: border-box
+		display: block
+		background: none
+		width: 100%
+		height: 100%
+		font-size: inherit
+		background-color: Olive
+		
+		&:focus
+			background: #fee
+			outline: none
+
+	&__label
+		position: absolute
+		top: 0
+		left: 0
+		display: block
+		width: $search_bar_wh
+		height: $search_bar_wh
+
+	&__img
+		width: 100%
+		height: 100%
+		padding: $search_bar_font_size / 10
+		box-sizing: border-box

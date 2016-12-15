@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>test css</title>
+	<link rel="stylesheet" href="./dist/style.css">
+</head>
+<body class="preload">
+	<div class="container">
+		<nav class="pull-down-nav">
+			<div class="pull-down-nav__bar">
+			 pull down
+			</div>
+			<div class="pull-down-nav__content">
+				xxx<br />
+				bbb<br />
+				123123123123123123123123<br />
+				666666<br />
+			</div>
+		</nav>
+		<main>
+			<p>main content main content main content main content main content</p>
+			<div class="search-bar">
+				<div class="search-bar__header">
+					<span>header</span>
+				</div>
+				<div class="search-bar__input">
+					<input class="transparent-input__input" type="search" />
+					<label class="transparent-input__label">
+						<img class="transparent-input__img" src="./assets/search.svg" />
+					</label>
+				</div>
+			</div>
+		</main>
+	</div>
+	<script type="text/javascript">
+		// prevent the transition animation before load
+		window.addEventListener('load', function () {
+			document.body.classList.remove('preload');
+		});
+	</script>
+</body>
+
+</html>
