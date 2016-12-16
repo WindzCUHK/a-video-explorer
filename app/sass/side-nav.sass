@@ -1,0 +1,92 @@
+
+$default_transition: .4s cubic-bezier(0.000, 0.795, 0.000, 1.000)
+$base_z_index: 10
+$sidebar_width: 50px
+$sidebar_expand_width: 300px
+
+.side-nav
+	position: absolute
+	z-index: $base_z_index
+	height: 100%
+	overflow-x: hidden
+	overflow-y: scroll
+	direction: rtl
+	// side bar
+	float: left
+	width: $sidebar_width
+	// transition
+	transition: width $default_transition
+	// test
+	font-size: 10pt
+	background: #700
+	height: 100%
+
+	&:hover
+		width: $sidebar_expand_width
+
+
+	&__content
+		// change scroll bar position
+		direction: ltr
+
+	&__content span
+		display: block
+
+	& + main
+		margin-left: $sidebar_width
+		height: 100%
+		// test
+		background: #070
+
+
+	&:hover &__search__input
+		border-bottom: 1px solid #BBB
+		padding-left: 0
+	&:hover &__search__icon
+		transform: translateX(-100%);
+
+	&__search
+		// scroll bar size
+		$icon_size: $sidebar_width - 16px
+		$container_padding: 5px
+
+		&__container
+			position: relative
+			display: inline-block
+			width: 100%
+			box-sizing: border-box
+			padding: $container_padding
+
+		&__icon
+			position: absolute
+			top: 0
+			bottom: 0
+			margin: auto
+			left: 0
+			display: block
+			width: 100%
+			max-width: $icon_size
+			box-sizing: border-box
+			padding: 5px
+			opacity: 0.4
+			transition: $default_transition
+
+			&:hover
+				opacity: 0.8
+
+		&__input
+			// reset
+			border: none
+			outline: none
+			background: none
+			// 
+			display: block
+			width: 100%
+			height: $icon_size
+			transition: $default_transition
+			//
+			font-size: 20pt
+			font-weight: 100
+			color: #FFF
+			padding-left: $icon_size
+
