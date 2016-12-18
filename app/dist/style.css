@@ -93,10 +93,10 @@ html, body {
     background-color: OliveDrab; }
     .search-bar__header::-webkit-scrollbar {
       display: none; }
-    .search-bar__header span {
-      display: inline-block;
-      height: 100%;
-      line-height: 30pt; }
+    .search-bar__header__content {
+      position: absolute;
+      top: 50%;
+      margin-top: -0.5em; }
   .search-bar__label {
     position: absolute;
     top: 0;
@@ -127,8 +127,9 @@ html, body {
     width: 300px; }
   .side-nav__content {
     direction: ltr; }
-  .side-nav__content span {
-    display: block; }
+    .side-nav__content span {
+      display: block;
+      white-space: nowrap; }
   .side-nav + main {
     margin-left: 50px;
     height: 100%;
@@ -137,7 +138,7 @@ html, body {
     border-bottom: 1px solid #BBB;
     padding-left: 0; }
   .side-nav:hover .side-nav__search__icon {
-    transform: translateX(-100%); }
+    left: -34px; }
   .side-nav__search__container {
     position: relative;
     display: inline-block;

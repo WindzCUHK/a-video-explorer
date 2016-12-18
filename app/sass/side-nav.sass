@@ -29,8 +29,9 @@ $sidebar_expand_width: 300px
 		// change scroll bar position
 		direction: ltr
 
-	&__content span
-		display: block
+		& span
+			display: block
+			white-space: nowrap
 
 	& + main
 		margin-left: $sidebar_width
@@ -38,16 +39,17 @@ $sidebar_expand_width: 300px
 		// test
 		background: #070
 
+	// search icon size
+	$icon_size: $sidebar_width - 16px
 
 	&:hover &__search__input
 		border-bottom: 1px solid #BBB
 		padding-left: 0
 	&:hover &__search__icon
-		transform: translateX(-100%);
+		left: -$icon_size
 
 	&__search
 		// scroll bar size
-		$icon_size: $sidebar_width - 16px
 		$container_padding: 5px
 
 		&__container
