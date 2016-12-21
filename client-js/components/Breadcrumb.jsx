@@ -5,15 +5,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Header from 'grommet/components/Header';
-import Button from 'grommet/components/Button';
-import NextIcon from 'grommet/components/icons/base/Next';
+import FontAwesome from 'react-fontawesome';
 
 import * as navigationActions from '../actions/navigation.js';
 
 class Breadcrumb extends React.PureComponent {
 	constructor(props) {
 		super(props);
+
+		this.onDirLinkClick = this.onDirLinkClick.bind(this);
 	}
 	getAllDirAndItsPath() {
 		const dirPaths = [];
@@ -36,27 +36,30 @@ class Breadcrumb extends React.PureComponent {
 
 		return dirPaths.reverse();
 	}
-	onDirLinkClick(dirPath, event) {
+	onDirLinkClick(event) {
+		event.preventDefault();
+		event.stopPropagation();
 		this.props.action.changeDir(dirPath);
 	}
+	
 	render() {
 		console.log('render Breadcrumb');
 		// console.log(JSON.stringify(this.getAllDirAndItsPath()));
 		const dirAndItsPaths = this.getAllDirAndItsPath();
 		return (
-			<Header pad={{horizontal: 'medium'}} size="medium">
+			<div>
 				{dirAndItsPaths.map((dirAndPath, index) => {
 					return (
-						<Button
-							plain={true}
-							key={dirAndPath.dirPath}
-							icon={<NextIcon size="small" />}
-							label={dirAndPath.dirName}
-							onClick={(index === dirAndItsPaths.length - 1) ? null : this.onDirLinkClick.bind(this, dirAndPath.dirPath)}
-						/>
+						<span key={dirAndPath.dirPath}>
+							<FontAwesome name='chevron-right' />
+							<a
+								href={dirAndPath.dirPath}
+								onClick={(index === dirAndItsPaths.length - 1) ? null : this.onDirLinkClick}
+							>{dirAndPath.dirName}</a>
+						</span>
 					);
 				})}
-			</Header>
+			</div>
 		);
 	}
 }
