@@ -2,3 +2,4 @@ node_modules/*
 *.sublime-workspace
 test-pic/*
 fileList.db
+app/dist/*
