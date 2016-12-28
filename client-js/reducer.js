@@ -47,16 +47,16 @@ export default (state, action) => {
 			map1 = state.set('ui', map2);
 			return map1;
 		case types.TOGGLE_COVER_FILTER_TAG:
-			Perf.start();
-			setTimeout(function () {
-				Perf.stop();
-				const measurements = Perf.getLastMeasurements();
-				// Perf.printInclusive(measurements)
-				// Perf.printExclusive(measurements)
-				Perf.printWasted(measurements)
-				// Perf.printOperations(measurements)
+			// Perf.start();
+			// setTimeout(function () {
+			// 	Perf.stop();
+			// 	const measurements = Perf.getLastMeasurements();
+			// 	// Perf.printInclusive(measurements)
+			// 	// Perf.printExclusive(measurements)
+			// 	Perf.printWasted(measurements)
+			// 	// Perf.printOperations(measurements)
 
-			}, 2000);
+			// }, 2000);
 
 			map3 = state.get('ui').get('filterTagSet');
 			if (map3.has(action.tag)) {

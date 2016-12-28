@@ -32,9 +32,16 @@ class MainBlock extends React.PureComponent {
 				<TagsBar />
 				<Article className="content-container">
 					{(this.props.pathError) ? <Notification status="critical" message={this.props.pathError.message} /> : null}
-					<FilterBar />
-					<Breadcrumb />
 
+					<div className="search-bar">
+						<FilterBar />
+						<div className="search-bar__header">
+							<Breadcrumb />
+						</div>
+						<label htmlFor="search-input" className="search-bar__label">
+							<img className="search-bar__icon" src="./assets/search.svg" />
+						</label>
+					</div>
 
 
 					<CoverGrid />

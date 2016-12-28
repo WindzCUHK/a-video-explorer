@@ -39,7 +39,7 @@ class Breadcrumb extends React.PureComponent {
 	onDirLinkClick(event) {
 		event.preventDefault();
 		event.stopPropagation();
-		this.props.action.changeDir(dirPath);
+		this.props.action.changeDir(event.target.getAttribute('href'));
 	}
 	
 	render() {
@@ -47,7 +47,7 @@ class Breadcrumb extends React.PureComponent {
 		// console.log(JSON.stringify(this.getAllDirAndItsPath()));
 		const dirAndItsPaths = this.getAllDirAndItsPath();
 		return (
-			<div>
+			<div className="search-bar__header__content">
 				{dirAndItsPaths.map((dirAndPath, index) => {
 					return (
 						<span key={dirAndPath.dirPath}>

@@ -16,6 +16,9 @@ class TagsBar extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
+
+		this.onSearchInputChanged = this.onSearchInputChanged.bind(this);
+		this.onTagClick = this.onTagClick.bind(this);
 	}
 	isFilteredTag(tag) {
 		const tagFilter = this.props.tagFilter.toLowerCase();
@@ -57,6 +60,37 @@ class TagsBar extends React.PureComponent {
 			</Sidebar>
 		);
 	}
+
+	
+	// onTagClick(event) {
+	// 	console.log(event.currentTarget.dataset, event.currentTarget);
+	// }
+	// render() {
+	// 	console.log('render TagsBar');
+	// 	return (
+	// 		<nav className="side-nav">
+	// 			<div className="side-nav__content">
+	// 				<div className="side-nav__search__container">
+	// 					<label>
+	// 						<img className="side-nav__search__icon" src="./assets/search.svg" />
+	// 						<input className="side-nav__search__input" type="search" placeholder="Search tag" onChange={this.onSearchInputChanged} />
+	// 					</label>
+	// 				</div>
+	// 				{this.props.tags.map((tag) => {
+	// 					return (
+	// 						<span key={tag} data-tag={tag} className="side-nav__menu-item" onClick={this.onTagClick}>
+	// 							<span className="side-nav__menu-item__first-char">{tag.charAt(0)}</span>
+	// 							<span>{tag.substring(1)}</span>
+	// 						</span>
+	// 					);
+	// 				})}
+	// 				<span>nav item</span>
+	// 				<span>nav item</span>
+	// 				<span>nav item</span>
+	// 			</div>
+	// 		</nav>
+	// 	);
+	// }
 }
 
 TagsBar.propTypes = {
