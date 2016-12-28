@@ -24,19 +24,34 @@ class VideoButton extends React.PureComponent {
 		};
 		const index = this.props.index;
 
-		const resolutionStatusDict = {
-			HD: 'ok',
-			SD: 'warning',
-			GG: 'unknown'
+		// const resolutionStatusDict = {
+		// 	HD: 'ok',
+		// 	SD: 'warning',
+		// 	GG: 'unknown'
+		// };
+
+		// return (
+		// 	<Box pad="small" full={false} flex="grow" align="center" justify="center" colorIndex={"neutral-" + (index % 3 + 1) + "-a"} onDoubleClick={openVideo} className="episode-button">
+		// 		<span>
+		// 			<Status value={resolutionStatusDict[resolution]} />
+		// 			{(isEqual) ? (<FontAwesome name='video-camera' />) : episode}
+		// 		</span>
+		// 	</Box>
+		// );
+
+		const resolutionIconDict = {
+			HD: 'check-circle',
+			SD: 'exclamation-circle',
+			GG: 'question-circle'
 		};
 
 		return (
-			<Box pad="small" full={false} flex="grow" align="center" justify="center" colorIndex={"neutral-" + (index % 3 + 1) + "-a"} onDoubleClick={openVideo} className="episode-button">
+			<div className="grid--single-row episode-button" onDoubleClick={openVideo}>
 				<span>
-					<Status value={resolutionStatusDict[resolution]} />
+					<FontAwesome name={resolutionIconDict[resolution]} />
 					{(isEqual) ? (<FontAwesome name='video-camera' />) : episode}
 				</span>
-			</Box>
+			</div>
 		);
 	}
 }
@@ -86,22 +101,55 @@ class CoverThumbnailContent extends React.PureComponent {
 	}
 	render() {
 		// console.log('render CoverThumbnailContent');
+		// return (
+		// 	<Article full="horizontal" align="center" justify="center">
+		// 		<Header float={true} basis="xsmall" size="small" align="center" justify="center" colorIndex="neutral-2" className="cover-title-block">
+		// 			<Headline size="small" margin="none" align="center" className="cover-title">
+		// 				{this.props.cover.get('name')}
+		// 			</Headline>
+		// 		</Header>
+		// 		<Image
+		// 			alt={this.props.cover.get('name')}
+		// 			src={this.normalizeURI(this.props.cover.get('path'))}
+		// 			size="large"
+		// 			fit="contain"
+		// 		/>
+
+		// 		<Box full="horizontal" direction="row" onWheel={this.scrollEpisode.bind(this)} ref="episode-block" className="episode-block">
+		// 			<Box direction="row" flex="grow" className="episode-arrow-block">
+		// 				<div className="episode-arrow episode-arrow-left hidden" ref="episode-arrow-left">
+		// 					<FontAwesome name='step-backward' />
+		// 				</div>
+		// 				<div className="episode-arrow episode-arrow-right hidden" ref="episode-arrow-right">
+		// 					<FontAwesome name='step-forward' />
+		// 				</div>
+		// 				{this.props.cover.get('coveredVideos').map((cv, index) => {
+		// 					const videoPath = cv.get('file').get('path');
+		// 					return (<VideoButton key={videoPath} coveredVideo={cv} openCover={this.props.actions.openCover} index={index} />);
+		// 				})}
+		// 			</Box>
+		// 		</Box>
+		// 		<div className="tag-block">
+		// 			{this.props.cover.get('tags').map((tag) => {
+		// 				return (<Tag key={tag} tag={tag} />);
+		// 			})}
+		// 		</div>
+		// 	</Article>
+		// );
 		return (
-			<Article full="horizontal" align="center" justify="center">
-				<Header float={true} basis="xsmall" size="small" align="center" justify="center" colorIndex="neutral-2" className="cover-title-block">
-					<Headline size="small" margin="none" align="center" className="cover-title">
+			<div className="grid__cell">
+				<div className="cover-title-block">
+					<div className="cover-title">
 						{this.props.cover.get('name')}
-					</Headline>
-				</Header>
-				<Image
+					</div>
+				</div>
+				<img
 					alt={this.props.cover.get('name')}
 					src={this.normalizeURI(this.props.cover.get('path'))}
-					size="large"
-					fit="contain"
 				/>
 
-				<Box full="horizontal" direction="row" onWheel={this.scrollEpisode.bind(this)} ref="episode-block" className="episode-block">
-					<Box direction="row" flex="grow" className="episode-arrow-block">
+				<div onWheel={this.scrollEpisode.bind(this)} ref="episode-block" className="episode-block">
+					<div className="episode-arrow-block">
 						<div className="episode-arrow episode-arrow-left hidden" ref="episode-arrow-left">
 							<FontAwesome name='step-backward' />
 						</div>
@@ -112,14 +160,14 @@ class CoverThumbnailContent extends React.PureComponent {
 							const videoPath = cv.get('file').get('path');
 							return (<VideoButton key={videoPath} coveredVideo={cv} openCover={this.props.actions.openCover} index={index} />);
 						})}
-					</Box>
-				</Box>
+					</div>
+				</div>
 				<div className="tag-block">
 					{this.props.cover.get('tags').map((tag) => {
 						return (<Tag key={tag} tag={tag} />);
 					})}
 				</div>
-			</Article>
+			</div>
 		);
 	}
 
