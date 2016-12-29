@@ -133,6 +133,7 @@ html, body {
   .side-nav + main {
     margin-left: 50px;
     height: 100%;
+    overflow: auto;
     background: #070; }
   .side-nav:hover .side-nav__search__input {
     border-bottom: 1px solid #BBB;
@@ -172,6 +173,30 @@ html, body {
     font-weight: 100;
     color: #FFF;
     padding-left: 34px; }
+  .side-nav__menu-item {
+    font-size: 15pt; }
+    .side-nav__menu-item__first-char {
+      width: 50px;
+      height: auto; }
+
+.grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  align-content: flex-start; }
+  .grid__cell {
+    align-self: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 25%; }
+  .grid:after {
+    content: "";
+    flex: auto; }
+  .grid--single-row {
+    flex-direction: row;
+    flex-wrap: nowrap; }
 
 html:root {
   font-size: 15pt; }

@@ -28,9 +28,9 @@ class MainBlock extends React.PureComponent {
 	render() {
 		console.log('render MainBlock');
 		return (
-			<App centered={false}>
+			<div className="container">
 				<TagsBar />
-				<Article className="content-container">
+				<main>
 					{(this.props.pathError) ? <Notification status="critical" message={this.props.pathError.message} /> : null}
 
 					<div className="search-bar">
@@ -48,8 +48,8 @@ class MainBlock extends React.PureComponent {
 
 
 
-				</Article>
-			</App>
+				</main>
+			</div>
 		);
 	}
 

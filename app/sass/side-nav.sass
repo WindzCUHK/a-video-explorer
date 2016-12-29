@@ -36,6 +36,7 @@ $sidebar_expand_width: 300px
 	& + main
 		margin-left: $sidebar_width
 		height: 100%
+		overflow: auto
 		// test
 		background: #070
 
@@ -91,4 +92,11 @@ $sidebar_expand_width: 300px
 			font-weight: 100
 			color: #FFF
 			padding-left: $icon_size
+
+	&__menu-item
+		font-size: 15pt
+
+		&__first-char
+			width: $sidebar_width
+			height: auto
 
