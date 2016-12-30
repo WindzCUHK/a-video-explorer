@@ -28,21 +28,28 @@ class MainBlock extends React.PureComponent {
 	render() {
 		console.log('render MainBlock');
 		return (
-			<App centered={false}>
+			<div className="container">
 				<TagsBar />
-				<Article className="content-container">
+				<main>
 					{(this.props.pathError) ? <Notification status="critical" message={this.props.pathError.message} /> : null}
-					<FilterBar />
-					<Breadcrumb />
 
+					<div className="search-bar">
+						<FilterBar />
+						<div className="search-bar__header">
+							<Breadcrumb />
+						</div>
+						<label htmlFor="search-input" className="search-bar__label">
+							<img className="search-bar__icon" src="./assets/search.svg" />
+						</label>
+					</div>
 
 
 					<CoverGrid />
 
 
 
-				</Article>
-			</App>
+				</main>
+			</div>
 		);
 	}
 

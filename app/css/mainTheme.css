@@ -2,9 +2,44 @@
 @import 'https://fonts.googleapis.com/css?family=Roboto';
 
 html {
-	overflow: auto;
+	font-family: Roboto;
 }
 
+img {
+	max-width: 300px;
+	max-height: 300px;
+}
+.hidden {
+	display: none !important;
+}
+
+
+.item-block {
+	display: inline-block;
+	position: relative;
+	font-size: 10pt;
+
+	width: 200px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.file-block {
+	margin: 0.5ex;
+	padding: 0.5ex 0.5em;
+	height: 2em;
+	line-height: 1.5em;
+	border-radius: 3em;
+	background-color: #a8a8a8;
+}
+.folder-block {
+	background-color: #8cc800;
+}
+.item-name {
+	margin-left: 1ex;
+}
+
+/*
 .grommetux-header.overwrite {
 	overflow: hidden;
 }
@@ -31,10 +66,6 @@ html {
 }
 
 
-
-.hidden {
-	display: none;
-}
 
 .tag-menu {
 	overflow-x: hidden;
@@ -92,12 +123,12 @@ html {
 	font-size: small;
 }
 .episode-block {
-	/* need to set this, so that can set scrollLeft */
+	// need to set this, so that can set scrollLeft
 	overflow: hidden;
 }
 .episode-arrow-block {
 	position: relative;
-	/* override grommet css */
+	// override grommet css
 	min-width: auto;
 }
 .episode-arrow {
@@ -116,7 +147,7 @@ html {
 }
 .episode-button {
 	white-space: nowrap;
-	/* override grommet css */
+	// override grommet css
 	min-width: auto;
 
 	user-select: none;
@@ -128,24 +159,25 @@ html {
 
 
 
-.item-block {
-	display: inline-block;
-	position: relative;
-}
-.file-block {
-	margin: 0.5ex;
-	padding: 0.5ex 0.5em;
-	height: 2em;
-	line-height: 1.5em;
-	border-radius:3em;
-	background-color: #a8a8a8;
-}
-.folder-block {
-	background-color: #8cc800;
-}
-.item-name {
-	margin-left: 1ex;
-}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 html, body {

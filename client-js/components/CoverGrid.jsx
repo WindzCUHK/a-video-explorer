@@ -2,7 +2,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Tiles from 'grommet/components/Tiles';
 
 import * as uiActions from '../actions/navigation.js';
 
@@ -13,6 +12,8 @@ import Item from './Item.jsx';
 class CoverGrid extends React.PureComponent {
 	constructor(props) {
 		super(props);
+
+		this.shouldCoverShown = this.shouldCoverShown.bind(this);
 	}
 	shouldCoverShown(cover) {
 
@@ -70,40 +71,75 @@ class CoverGrid extends React.PureComponent {
 
 		return { covers, files };
 	}
+	// render() {
+	// 	console.log('render CoverGrid');
+	// 	const { covers, files } = this.preRender();
+	// 	return (
+	// 		<Tiles fill={true} selectable={true}>
+	// 			{covers.map((cover) => {
+	// 				return (<CoverThumbnail
+	// 					key={cover.get('path')}
+	// 					actions={this.props.action}
+	// 					cover={cover}
+	// 					isShown={this.shouldCoverShown(cover)}
+	// 				/>);
+	// 			})}
+
+
+				
+	// 			{files.sort((a, b) => {
+	// 				const aIsFile = a.get('isFile');
+	// 				const bIsFile = b.get('isFile');
+	// 				if (aIsFile !== bIsFile) {
+	// 					if (aIsFile) {
+	// 						// a is file, b is folder, b should be first
+	// 						return 1;
+	// 					} else return -1;
+	// 				} else return a.get('path').localeCompare(b.get('path'));
+	// 			}).map((file) => {
+	// 				return (<Item key={file.get('path')} file={file} onChangeDir={this.props.action.changeDir} />);
+	// 			})}
+	// 		</Tiles>
+	// 	);
+	// }
 	render() {
 		console.log('render CoverGrid');
 		const { covers, files } = this.preRender();
 		return (
-			<Tiles fill={true} selectable={true}>
-				{covers.map((cover) => {
-					return (<CoverThumbnail
-						key={cover.get('path')}
-						actions={this.props.action}
-						cover={cover}
-						isShown={this.shouldCoverShown.bind(this)(cover)}
-					/>);
-				})}
+			<div className="grids_container">
+				<div className="grid">
+					{covers.map((cover) => {
+						return (<CoverThumbnail
+							key={cover.get('path')}
+							actions={this.props.action}
+							cover={cover}
+							currentDirTags={this.props.currentDirTags}
+							isShown={this.shouldCoverShown(cover)}
+						/>);
+					})}
+				</div>
 
-
-				
-				{files.sort((a, b) => {
-					const aIsFile = a.get('isFile');
-					const bIsFile = b.get('isFile');
-					if (aIsFile !== bIsFile) {
-						if (aIsFile) {
-							// a is file, b is folder, b should be first
-							return 1;
-						} else return -1;
-					} else return a.get('path').localeCompare(b.get('path'));
-				}).map((file) => {
-					return (<Item key={file.get('path')} file={file} onChangeDir={this.props.action.changeDir} />);
-				})}
-			</Tiles>
+				<div className="grid">
+					{files.sort((a, b) => {
+						const aIsFile = a.get('isFile');
+						const bIsFile = b.get('isFile');
+						if (aIsFile !== bIsFile) {
+							if (aIsFile) {
+								// a is file, b is folder, b should be first
+								return 1;
+							} else return -1;
+						} else return a.get('path').localeCompare(b.get('path'));
+					}).map((file) => {
+						return (<Item key={file.get('path')} file={file} onChangeDir={this.props.action.changeDir} />);
+					})}
+				</div>
+			</div>
 		);
 	}
 }
 
 CoverGrid.propTypes = {
+	// currentDirTags: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
 	// files: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
 
 	nameFilter: React.PropTypes.string.isRequired,
@@ -115,6 +151,7 @@ CoverGrid.propTypes = {
 
 function mapStateToProps(state) {
 	return {
+		currentDirTags: state.get('currentDirTags'),
 		files: state.get('files'),
 		filterTagSet: state.get('ui').get('filterTagSet'),
 		nameFilter: state.get('ui').get('nameFilter')

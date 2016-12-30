@@ -1,6 +1,6 @@
 
 import fs from 'fs';
-// import path from 'path';
+import path from 'path';
 import { shell } from 'electron';
 // import { diffChars } from 'diff';
 
@@ -34,6 +34,31 @@ export function changeDir (newPath, done) {
 			}, {}));
 		}
 
+
+		function getPathFragments (currentPath) {
+			const dirPaths = [];
+
+			do {
+				let nextPath = path.join(currentPath, '..');
+
+				const dirName = path.basename(currentPath);
+				dirPaths.push({
+					dirName: (dirName) ? dirName : currentPath,
+					dirPath: currentPath
+				});
+
+				// check if root dir reached
+				if (currentPath === nextPath) break;
+				else currentPath = nextPath;
+
+			} while (true);
+
+			// for windows...
+			dirPaths[dirPaths.length - 1].dirName = dirPaths[dirPaths.length - 1].dirName.replace(path.sep, '');
+
+			return dirPaths.reverse();
+		}
+
 		/*|================================================================|*/
 		/*|                           load files                           |*/
 		/*|================================================================|*/
@@ -46,7 +71,8 @@ export function changeDir (newPath, done) {
 			if (err) {
 				const result = {
 					pathError: err,
-					currentPath: 'unknown path',
+					currentDirTags: [],
+					currentPathFragments: ['unknown path'],
 					files: [],
 					fileTags: []
 				};
@@ -59,9 +85,11 @@ export function changeDir (newPath, done) {
 			const fileTags = arrayDiff(mergeFileTags(fileAttributes), targetDirTags);
 
 			// result
+			const pathFragments = getPathFragments(targetDirPath);
 			const result = {
-				pathError: null,
-				currentPath: targetDirPath,
+				pathError: undefined,
+				currentDirTags: pathFragments.map(pf => pf.dirName),
+				currentPathFragments: pathFragments,
 				files: fileAttributes,
 				fileTags: fileTags
 			};
@@ -73,7 +101,8 @@ export function changeDir (newPath, done) {
 		// normalizeDirPath() will throw error
 		const result = {
 			pathError: err,
-			currentPath: 'path not exist',
+			currentDirTags: [],
+			currentPathFragments: ['path not exist'],
 			files: [],
 			fileTags: []
 		};

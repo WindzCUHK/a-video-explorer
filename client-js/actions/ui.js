@@ -29,9 +29,9 @@ export function deleteCoverFilterTag(tag) {
 	};
 };
 
-export function toggleCoverFilterTag(tag) {
+export function toggleCoverFilterTag(tag, shouldClearOthers) {
 	return {
 		type: types.TOGGLE_COVER_FILTER_TAG,
-		tag
+		tag, shouldClearOthers
 	};
 };

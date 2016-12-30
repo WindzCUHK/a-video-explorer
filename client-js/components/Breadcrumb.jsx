@@ -1,68 +1,50 @@
 
-import path from 'path';
-
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Header from 'grommet/components/Header';
-import Button from 'grommet/components/Button';
-import NextIcon from 'grommet/components/icons/base/Next';
+import FontAwesome from 'react-fontawesome';
 
 import * as navigationActions from '../actions/navigation.js';
 
 class Breadcrumb extends React.PureComponent {
 	constructor(props) {
 		super(props);
+
+		this.onDirLinkClick = this.onDirLinkClick.bind(this);
 	}
-	getAllDirAndItsPath() {
-		const dirPaths = [];
-
-		let currentPath = this.props.currentPath;
-		do {
-			let nextPath = path.join(currentPath, '..');
-
-			const dirName = path.basename(currentPath);
-			dirPaths.push({
-				dirName: (dirName) ? dirName : currentPath,
-				dirPath: currentPath
-			});
-
-			// check if root dir reached
-			if (currentPath === nextPath) break;
-			else currentPath = nextPath;
-
-		} while (true);
-
-		return dirPaths.reverse();
+	onDirLinkClick(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		this.props.action.changeDir(event.target.getAttribute('href'));
 	}
-	onDirLinkClick(dirPath, event) {
-		this.props.action.changeDir(dirPath);
-	}
+	
 	render() {
 		console.log('render Breadcrumb');
-		// console.log(JSON.stringify(this.getAllDirAndItsPath()));
-		const dirAndItsPaths = this.getAllDirAndItsPath();
+		const pathFragments = this.props.currentPathFragments;
 		return (
-			<Header pad={{horizontal: 'medium'}} size="medium">
-				{dirAndItsPaths.map((dirAndPath, index) => {
+			<div className="search-bar__header__content">
+				{pathFragments.map((pathFragment, index) => {
+					const dirName = pathFragment.get('dirName');
+					const dirPath =  pathFragment.get('dirPath');
 					return (
-						<Button
-							plain={true}
-							key={dirAndPath.dirPath}
-							icon={<NextIcon size="small" />}
-							label={dirAndPath.dirName}
-							onClick={(index === dirAndItsPaths.length - 1) ? null : this.onDirLinkClick.bind(this, dirAndPath.dirPath)}
-						/>
+						<span key={dirPath} className="search-bar__header__content__fragment">
+							<FontAwesome name='chevron-right' className="search-bar__header__content__link-separator" />
+							<a
+								className="search-bar__header__content__link"
+								href={dirPath}
+								onClick={(index === pathFragments.length - 1) ? null : this.onDirLinkClick}
+							>{dirName}</a>
+						</span>
 					);
 				})}
-			</Header>
+			</div>
 		);
 	}
 }
 
 Breadcrumb.propTypes = {
-	currentPath: React.PropTypes.string.isRequired,
+	// currentPathFragments: React.PropTypes.string.isRequired,
 	action: React.PropTypes.shape({
 		changeDir: React.PropTypes.func.isRequired
 	})
@@ -70,7 +52,7 @@ Breadcrumb.propTypes = {
 
 function mapStateToProps(state) {
 	return {
-		currentPath: state.get('currentPath')
+		currentPathFragments: state.get('currentPathFragments')
 	};
 }
 function mapDispatchToProps(dispatch) {

@@ -1,8 +1,18 @@
 
+// color
+$bar_background: #0067AF
+$text_color: #EBEEF7
+$menu_item_selected_color: #6D9DD1
+$menu_item_hover_color: rgba(255,255,255,0.5)
+
 $default_transition: .4s cubic-bezier(0.000, 0.795, 0.000, 1.000)
 $base_z_index: 10
-$sidebar_width: 50px
+$scrollbar_width: 16px
+$sidebar_width: 60px
 $sidebar_expand_width: 300px
+
+// search icon size, also first char size
+$icon_size: $sidebar_width - $scrollbar_width
 
 .side-nav
 	position: absolute
@@ -14,12 +24,13 @@ $sidebar_expand_width: 300px
 	// side bar
 	float: left
 	width: $sidebar_width
+	background: $bar_background
+	color: $text_color
 	// transition
 	transition: width $default_transition
 	// test
-	font-size: 10pt
-	background: #700
-	height: 100%
+	// font-size: 10pt0
+	// height: 100%
 
 	&:hover
 		width: $sidebar_expand_width
@@ -29,22 +40,11 @@ $sidebar_expand_width: 300px
 		// change scroll bar position
 		direction: ltr
 
-		& span
-			display: block
-			white-space: nowrap
-
-	& + main
-		margin-left: $sidebar_width
-		height: 100%
-		// test
-		background: #070
-
-	// search icon size
-	$icon_size: $sidebar_width - 16px
+	
 
 	&:hover &__search__input
-		border-bottom: 1px solid #BBB
-		padding-left: 0
+		border-bottom: 1px solid rgba($text_color, 0.5)
+		padding-left: 1ch
 	&:hover &__search__icon
 		left: -$icon_size
 
@@ -69,7 +69,7 @@ $sidebar_expand_width: 300px
 			width: 100%
 			max-width: $icon_size
 			box-sizing: border-box
-			padding: 5px
+			padding: 1ch
 			opacity: 0.4
 			transition: $default_transition
 
@@ -81,14 +81,75 @@ $sidebar_expand_width: 300px
 			border: none
 			outline: none
 			background: none
-			// 
+			// block
 			display: block
 			width: 100%
 			height: $icon_size
 			transition: $default_transition
-			//
+			// font
 			font-size: 20pt
 			font-weight: 100
-			color: #FFF
+			color: $text_color
 			padding-left: $icon_size
+
+			&::-webkit-input-placeholder
+				color: rgba($text_color, 0.5)
+
+	&__menu-item
+		font-size: 13pt
+		background-color: transparent
+		transition: $default_transition
+		// truncate string
+		overflow: hidden;
+		white-space: nowrap
+		text-overflow: ellipsis;
+
+		&:hover
+			background-color: $menu_item_hover_color
+
+		&--selected
+			background-color: $menu_item_selected_color
+
+		&__first-char
+			$margin_size: 5px
+			// $border_size: 2px
+
+			display: inline-block
+			margin: $margin_size
+			width: $icon_size - $margin_size*2
+			height: $icon_size - $margin_size*2
+			line-height: $icon_size - $margin_size*2
+			// line-height: $icon_size - $margin_size*2 - $border_size*2
+			text-align: center
+			font-size: 150%
+			text-transform: uppercase
+			vertical-align: baseline
+			// border
+			// box-sizing: border-box
+			// border: $border_size solid $text_color
+			// border-radius: 50%
+			// border-left: 1px solid rgba(255,255,255,0.2)
+			// border-bottom: 1px solid rgba(255,255,255,0.2)
+
+		// http://www.colourlovers.com/digital-art/trends/branding/7880/Papeterie_Haute-Ville_Logo
+		$char_colors: #61AE24, #D0D102, #F18D05, #E54028, #D70060, #01A4A4, #00A1CB
+		$repeat: 7
+		@for $i from 1 through $repeat
+			&:nth-child(#{length($char_colors)}n+#{$i}) > &__first-char
+				// color: lighten(nth($char_colors, random(length($char_colors))), 20%)
+				background-color: darken(nth($char_colors, $i), 3%)
+				// background-color: nth($char_colors, $i)
+
+
+		&__remaining
+			padding-left: 1ch
+			opacity: 0.8
+		&:hover &__remaining
+			opacity: 1
+
+
+	& + main
+		margin-left: $sidebar_width
+		height: 100%
+		overflow: auto
 
