@@ -14,7 +14,7 @@ html, body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: Plum; }
+  background: white; }
 
 .pull-down-nav {
   position: relative;
@@ -51,29 +51,27 @@ html, body {
   height: 1em;
   overflow: hidden;
   font-size: 30pt;
-  background-color: Tomato;
-  margin: auto;
-  box-sizing: border-box;
+  margin: 0.5em auto;
   padding-left: 1em; }
   .search-bar__input {
-    box-sizing: border-box;
+    border: none;
     display: block;
+    background: none;
     width: 100%;
     height: 100%;
-    border: none;
-    font-size: 0;
     padding: 0;
+    font-size: 0;
+    color: #BBB;
     transition: 250ms ease-in;
-    background-color: Olive; }
+    box-sizing: border-box;
+    border-bottom: 1px solid #BBB; }
     .search-bar__input:focus {
-      font-size: 22.5pt;
-      padding: 7.5pt;
-      background: #fee;
+      font-size: 18pt;
+      padding: 12pt;
       outline: none; }
     .search-bar__input:hover {
-      font-size: 22.5pt;
-      padding: 7.5pt;
-      background: #fee;
+      font-size: 18pt;
+      padding: 12pt;
       outline: none; }
   .search-bar__input:focus + .search-bar__header {
     transform: translate(100%, -100%);
@@ -82,7 +80,6 @@ html, body {
     transform: translate(100%, -100%);
     font-size: 0; }
   .search-bar__header {
-    box-sizing: border-box;
     width: 100%;
     height: 100%;
     transform: translate(0, -100%);
@@ -90,13 +87,30 @@ html, body {
     white-space: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
-    background-color: OliveDrab; }
+    font-size: 50%;
+    background-color: white; }
     .search-bar__header::-webkit-scrollbar {
       display: none; }
     .search-bar__header__content {
       position: absolute;
       top: 50%;
-      margin-top: -0.5em; }
+      margin-top: -0.5em;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none; }
+      .search-bar__header__content__fragment:last-child .search-bar__header__content__link {
+        pointer-events: none;
+        cursor: default; }
+      .search-bar__header__content__link {
+        text-decoration: none;
+        color: #51AEE7; }
+        .search-bar__header__content__link:hover {
+          text-decoration: underline;
+          color: #7ec3ed; }
+      .search-bar__header__content__link-separator {
+        padding: 0 1ch;
+        color: #BBB; }
   .search-bar__label {
     position: absolute;
     top: 0;
@@ -107,8 +121,9 @@ html, body {
   .search-bar__icon {
     width: 100%;
     height: 100%;
-    padding: 3pt;
-    box-sizing: border-box; }
+    padding: 5pt;
+    box-sizing: border-box;
+    filter: invert(0.3); }
 
 .side-nav {
   position: absolute;
@@ -118,28 +133,19 @@ html, body {
   overflow-y: scroll;
   direction: rtl;
   float: left;
-  width: 50px;
-  transition: width 0.4s cubic-bezier(0, 0.795, 0, 1);
-  font-size: 10pt;
-  background: #700;
-  height: 100%; }
+  width: 60px;
+  background: #0067AF;
+  color: #EBEEF7;
+  transition: width 0.4s cubic-bezier(0, 0.795, 0, 1); }
   .side-nav:hover {
     width: 300px; }
   .side-nav__content {
     direction: ltr; }
-    .side-nav__content span {
-      display: block;
-      white-space: nowrap; }
-  .side-nav + main {
-    margin-left: 50px;
-    height: 100%;
-    overflow: auto;
-    background: #070; }
   .side-nav:hover .side-nav__search__input {
-    border-bottom: 1px solid #BBB;
-    padding-left: 0; }
+    border-bottom: 1px solid rgba(235, 238, 247, 0.5);
+    padding-left: 1ch; }
   .side-nav:hover .side-nav__search__icon {
-    left: -34px; }
+    left: -44px; }
   .side-nav__search__container {
     position: relative;
     display: inline-block;
@@ -154,9 +160,9 @@ html, body {
     left: 0;
     display: block;
     width: 100%;
-    max-width: 34px;
+    max-width: 44px;
     box-sizing: border-box;
-    padding: 5px;
+    padding: 1ch;
     opacity: 0.4;
     transition: 0.4s cubic-bezier(0, 0.795, 0, 1); }
     .side-nav__search__icon:hover {
@@ -167,17 +173,58 @@ html, body {
     background: none;
     display: block;
     width: 100%;
-    height: 34px;
+    height: 44px;
     transition: 0.4s cubic-bezier(0, 0.795, 0, 1);
     font-size: 20pt;
     font-weight: 100;
-    color: #FFF;
-    padding-left: 34px; }
+    color: #EBEEF7;
+    padding-left: 44px; }
+    .side-nav__search__input::-webkit-input-placeholder {
+      color: rgba(235, 238, 247, 0.5); }
   .side-nav__menu-item {
-    font-size: 15pt; }
+    font-size: 13pt;
+    background-color: transparent;
+    transition: 0.4s cubic-bezier(0, 0.795, 0, 1);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; }
+    .side-nav__menu-item:hover {
+      background-color: rgba(255, 255, 255, 0.5); }
+    .side-nav__menu-item--selected {
+      background-color: #6D9DD1; }
     .side-nav__menu-item__first-char {
-      width: 50px;
-      height: auto; }
+      display: inline-block;
+      margin: 5px;
+      width: 34px;
+      height: 34px;
+      line-height: 34px;
+      text-align: center;
+      font-size: 150%;
+      text-transform: uppercase;
+      vertical-align: baseline; }
+    .side-nav__menu-item:nth-child(7n+1) > .side-nav__menu-item__first-char {
+      background-color: #5aa121; }
+    .side-nav__menu-item:nth-child(7n+2) > .side-nav__menu-item__first-char {
+      background-color: #c1c202; }
+    .side-nav__menu-item:nth-child(7n+3) > .side-nav__menu-item__first-char {
+      background-color: #e28405; }
+    .side-nav__menu-item:nth-child(7n+4) > .side-nav__menu-item__first-char {
+      background-color: #e2351b; }
+    .side-nav__menu-item:nth-child(7n+5) > .side-nav__menu-item__first-char {
+      background-color: #c80059; }
+    .side-nav__menu-item:nth-child(7n+6) > .side-nav__menu-item__first-char {
+      background-color: #019595; }
+    .side-nav__menu-item:nth-child(7n+7) > .side-nav__menu-item__first-char {
+      background-color: #0095bc; }
+    .side-nav__menu-item__remaining {
+      padding-left: 1ch;
+      opacity: 0.8; }
+    .side-nav__menu-item:hover .side-nav__menu-item__remaining {
+      opacity: 1; }
+  .side-nav + main {
+    margin-left: 60px;
+    height: 100%;
+    overflow: auto; }
 
 .grid {
   display: flex;

@@ -4,33 +4,48 @@ $transition_timing_function: ease-in
 $search_bar_wh: 1em
 $search_bar_font_size: 30pt
 
+$text_color: #BBB
+$link_color: #51AEE7
+
 .search-bar
 	position: relative
 	width: 90%
 	height: $search_bar_wh
 	overflow: hidden
 	font-size: $search_bar_font_size
-	background-color: Tomato
-	margin: auto
-	box-sizing: border-box
+	margin: 0.5em auto
 	padding-left: $search_bar_wh
+	// box-sizing: border-box
+	// test
+	// background-color: Tomato
 
 	&__input
-		box-sizing: border-box
+		// reset
+		border: none
 		display: block
+		background: none
+		// block
 		width: 100%
 		height: 100%
-		border: none
-		font-size: 0
 		padding: 0
+		// font
+		font-size: 0
+		color: $text_color
 		transition: $transition_time $transition_timing_function
-		background-color: Olive
+		// border
+		box-sizing: border-box
+		border-bottom: 1px solid $text_color
+		// test
+		// background-color: Olive
 
 		=onFocus()
-			font-size: $search_bar_font_size * 0.75
-			padding: $search_bar_font_size * 0.25
-			background: #fee
+			$font_size_ratio: 0.6
+
+			font-size: $search_bar_font_size * $font_size_ratio
+			padding: $search_bar_font_size * (1 - $font_size_ratio)
 			outline: none
+			// test
+			// background: #fee
 		&:focus
 			+onFocus()
 		&:hover
@@ -45,7 +60,7 @@ $search_bar_font_size: 30pt
 		+onFocusForHeader()
 
 	&__header
-		box-sizing: border-box
+		// box-sizing: border-box
 		width: 100%
 		height: 100%
 		transform: translate(0, -100%)
@@ -53,7 +68,9 @@ $search_bar_font_size: 30pt
 		white-space: nowrap
 		overflow-x: auto
 		overflow-y: hidden
-		background-color: OliveDrab
+		font-size: 50%
+		// to hide the input below
+		background-color: white
 
 		&::-webkit-scrollbar
 			display: none
@@ -62,6 +79,25 @@ $search_bar_font_size: 30pt
 			position: absolute
 			top: 50%
 			margin-top: -0.5em
+			user-select: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+
+			&__fragment:last-child &__link
+				pointer-events: none
+				cursor: default
+			&__link
+				text-decoration: none
+				color: $link_color
+				&:hover
+					text-decoration: underline
+					color: lighten($link_color, 10%)
+			&__link-separator
+				padding: 0 1ch
+				color: $text_color
+
+
 
 	&__label
 		position: absolute
@@ -74,5 +110,6 @@ $search_bar_font_size: 30pt
 	&__icon
 		width: 100%
 		height: 100%
-		padding: $search_bar_font_size / 10
+		padding: $search_bar_font_size / 6
 		box-sizing: border-box
+		filter: invert(0.3)

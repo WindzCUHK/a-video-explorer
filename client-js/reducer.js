@@ -20,8 +20,11 @@ export default (state, action) => {
 			});
 			return state;
 		case types.CHANGE_DIR_DONE:
-			// state = { pathError, currentPath, files }
-			return state.merge(action.result);
+			// state = { pathError, currentPathFragments, files }
+			let newState = state.merge(action.result);
+			newState = newState.set('currentDirTags', newState.get('currentDirTags').toSet());
+			console.log('will render for dir change');
+			return newState;
 
 		case types.OPEN_COVER:
 			actionHandlers.openCover(action.filePath);
@@ -57,12 +60,14 @@ export default (state, action) => {
 			// 	// Perf.printOperations(measurements)
 
 			// }, 2000);
+			const { tag, shouldClearOthers } = action;
 
 			map3 = state.get('ui').get('filterTagSet');
-			if (map3.has(action.tag)) {
-				map3 = map3.delete(action.tag);
+			if (map3.has(tag)) {
+				map3 = map3.delete(tag);
 			} else {
-				map3 = map3.clear().add(action.tag);
+				if (shouldClearOthers) map3 = map3.clear().add(tag);
+				else map3 = map3.add(tag);
 			}
 			map2 = state.get('ui').set('filterTagSet', map3);
 			map1 = state.set('ui', map2);

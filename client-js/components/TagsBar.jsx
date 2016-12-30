@@ -3,13 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Sidebar from 'grommet/components/Sidebar';
-import Header from 'grommet/components/Header';
-import SearchInput from 'grommet/components/SearchInput';
-import Menu from 'grommet/components/Menu';
-import Box from 'grommet/components/Box';
-import Anchor from 'grommet/components/Anchor';
-
 import * as uiActions from '../actions/ui.js';
 
 class TagsBar extends React.PureComponent {
@@ -29,43 +22,13 @@ class TagsBar extends React.PureComponent {
 	onSearchInputChanged(event) {
 		this.props.action.changeTagFilter(event.target.value);
 	}
-	// onTagClick(tag, syntheticEvent) {
-	// 	syntheticEvent.preventDefault();
-	// 	syntheticEvent.stopPropagation();
-
-	// 	this.props.action.toggleCoverFilterTag(tag);
-	// }
-	// render() {
-	// 	console.log('render TagsBar');
-	// 	return (
-	// 		<Sidebar size="small" colorIndex="neutral-1" full={true} fixed={true} className="tags-bar-container">
-	// 			<Header className="overwrite" pad={{horizontal: "small"}}>
-	// 				<SearchInput className="overwrite" placeHolder="Search tag" onDOMChange={this.onSearchInputChanged.bind(this)} />
-	// 			</Header>
-	// 			<Menu size="small" className="tag-menu">
-	// 				{this.props.tags.map((tag) => {
-	// 					return (
-	// 						<Box key={tag} colorIndex={(this.props.filterTagSet.has(tag)) ? 'accent-2-t' : undefined }>
-	// 							<Anchor href="#"
-	// 								className={'tag-item ' + ((this.isFilteredTag.bind(this)(tag)) ? '' : 'hidden')}
-	// 								onClick={this.onTagClick.bind(this, tag)}
-	// 							>
-	// 								<span className="tag-first-char">{tag.charAt(0)}</span>
-	// 								<span>{tag.substring(1)}</span>
-	// 							</Anchor>
-	// 						</Box>
-	// 					);
-	// 				})}
-	// 				{/*<Anchor className='tag-item' href="#">#dummy tag</Anchor>*/}
-	// 			</Menu>
-	// 		</Sidebar>
-	// 	);
-	// }
-
-	
 	onTagClick(event) {
-		console.log(event.currentTarget.dataset, event.currentTarget);
+		console.log(event.currentTarget.dataset, event.currentTarget, event.ctrlKey);
+		const tag = event.currentTarget.dataset.tag;
+		const shouldClearOthers = !event.ctrlKey;
+		this.props.action.toggleCoverFilterTag(tag, shouldClearOthers);
 	}
+
 	render() {
 		console.log('render TagsBar');
 		return (
@@ -77,17 +40,20 @@ class TagsBar extends React.PureComponent {
 							<input className="side-nav__search__input" type="search" placeholder="Search tag" onChange={this.onSearchInputChanged} />
 						</label>
 					</div>
-					{this.props.tags.map((tag) => {
-						return (
-							<div key={tag} data-tag={tag}
-								onClick={this.onTagClick}
-								className={'side-nav__menu-item ' + ((this.isFilteredTag(tag)) ? '' : 'hidden') }
-							>
-								<span className="side-nav__menu-item__first-char">{tag.charAt(0)}</span>
-								<span>{tag.substring(1)}</span>
-							</div>
-						);
-					})}
+					{this.props.tags
+						.filter(tag => !this.props.currentDirTags.has(tag))
+						.map((tag) => {
+							return (
+								<div key={tag} data-tag={tag}
+									onClick={this.onTagClick}
+									className={'side-nav__menu-item'+' '+((this.isFilteredTag(tag)) ? '' : 'hidden')+' '+((this.props.filterTagSet.has(tag)) ? 'side-nav__menu-item--selected' : '')}
+								>
+									<span className="side-nav__menu-item__first-char">{tag.charAt(0)}</span>
+									<span className="side-nav__menu-item__remaining">{tag.substring(1)}</span>
+								</div>
+							);
+						})
+					}
 				</div>
 			</nav>
 		);
@@ -95,6 +61,7 @@ class TagsBar extends React.PureComponent {
 }
 
 TagsBar.propTypes = {
+	// currentDirTags: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
 	// tags: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
 	// filterTagSet: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
 
@@ -107,6 +74,7 @@ TagsBar.propTypes = {
 
 function mapStateToProps(state) {
 	return {
+		currentDirTags: state.get('currentDirTags'),
 		tags: state.get('fileTags'),
 		tagFilter: state.get('ui').get('tagFilter'),
 		filterTagSet: state.get('ui').get('filterTagSet')

@@ -1,6 +1,4 @@
 
-import path from 'path';
-
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -15,27 +13,6 @@ class Breadcrumb extends React.PureComponent {
 
 		this.onDirLinkClick = this.onDirLinkClick.bind(this);
 	}
-	getAllDirAndItsPath() {
-		const dirPaths = [];
-
-		let currentPath = this.props.currentPath;
-		do {
-			let nextPath = path.join(currentPath, '..');
-
-			const dirName = path.basename(currentPath);
-			dirPaths.push({
-				dirName: (dirName) ? dirName : currentPath,
-				dirPath: currentPath
-			});
-
-			// check if root dir reached
-			if (currentPath === nextPath) break;
-			else currentPath = nextPath;
-
-		} while (true);
-
-		return dirPaths.reverse();
-	}
 	onDirLinkClick(event) {
 		event.preventDefault();
 		event.stopPropagation();
@@ -44,18 +21,20 @@ class Breadcrumb extends React.PureComponent {
 	
 	render() {
 		console.log('render Breadcrumb');
-		// console.log(JSON.stringify(this.getAllDirAndItsPath()));
-		const dirAndItsPaths = this.getAllDirAndItsPath();
+		const pathFragments = this.props.currentPathFragments;
 		return (
 			<div className="search-bar__header__content">
-				{dirAndItsPaths.map((dirAndPath, index) => {
+				{pathFragments.map((pathFragment, index) => {
+					const dirName = pathFragment.get('dirName');
+					const dirPath =  pathFragment.get('dirPath');
 					return (
-						<span key={dirAndPath.dirPath}>
-							<FontAwesome name='chevron-right' />
+						<span key={dirPath} className="search-bar__header__content__fragment">
+							<FontAwesome name='chevron-right' className="search-bar__header__content__link-separator" />
 							<a
-								href={dirAndPath.dirPath}
-								onClick={(index === dirAndItsPaths.length - 1) ? null : this.onDirLinkClick}
-							>{dirAndPath.dirName}</a>
+								className="search-bar__header__content__link"
+								href={dirPath}
+								onClick={(index === pathFragments.length - 1) ? null : this.onDirLinkClick}
+							>{dirName}</a>
 						</span>
 					);
 				})}
@@ -65,7 +44,7 @@ class Breadcrumb extends React.PureComponent {
 }
 
 Breadcrumb.propTypes = {
-	currentPath: React.PropTypes.string.isRequired,
+	// currentPathFragments: React.PropTypes.string.isRequired,
 	action: React.PropTypes.shape({
 		changeDir: React.PropTypes.func.isRequired
 	})
@@ -73,7 +52,7 @@ Breadcrumb.propTypes = {
 
 function mapStateToProps(state) {
 	return {
-		currentPath: state.get('currentPath')
+		currentPathFragments: state.get('currentPathFragments')
 	};
 }
 function mapDispatchToProps(dispatch) {
