@@ -4,11 +4,7 @@
 html {
 	font-family: Roboto;
 }
-
-img {
-	max-width: 300px;
-	max-height: 300px;
-}
+	
 .hidden {
 	display: none !important;
 }

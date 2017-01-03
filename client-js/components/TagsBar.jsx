@@ -23,7 +23,7 @@ class TagsBar extends React.PureComponent {
 		this.props.action.changeTagFilter(event.target.value);
 	}
 	onTagClick(event) {
-		console.log(event.currentTarget.dataset, event.currentTarget, event.ctrlKey);
+		// console.log(event.currentTarget.dataset, event.currentTarget, event.ctrlKey);
 		const tag = event.currentTarget.dataset.tag;
 		const shouldClearOthers = !event.ctrlKey;
 		this.props.action.toggleCoverFilterTag(tag, shouldClearOthers);
@@ -53,6 +53,20 @@ class TagsBar extends React.PureComponent {
 								</div>
 							);
 						})
+					}
+					{
+						// ['dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy','dummy']
+						// .map((tag, i) => {
+						// 	return (
+						// 		<div key={tag + i} data-tag={tag}
+						// 			onClick={this.onTagClick}
+						// 			className={'side-nav__menu-item'+' '+((this.isFilteredTag(tag)) ? '' : 'hidden')+' '+((this.props.filterTagSet.has(tag)) ? 'side-nav__menu-item--selected' : '')}
+						// 		>
+						// 			<span className="side-nav__menu-item__first-char">{tag.charAt(0)}</span>
+						// 			<span className="side-nav__menu-item__remaining">{tag.substring(1)}</span>
+						// 		</div>
+						// 	);
+						// })
 					}
 				</div>
 			</nav>

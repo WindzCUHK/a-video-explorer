@@ -3,10 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Box from 'grommet/components/Box';
-import Search from 'grommet/components/icons/base/Search';
-import { TextField, Chip } from 'material-ui';
-
 import * as uiActions from '../actions/ui.js';
 
 class FilterBar extends React.PureComponent {
@@ -18,57 +14,37 @@ class FilterBar extends React.PureComponent {
 	onTextChanged(event) {
 		this.props.action.changeCoverNameFilter(event.target.value);
 	}
+	render() {
+		console.log('render FilterBar');
+		return (
+			<input id="search-input" className="search-bar__input" type="search" onChange={this.onTextChanged} />
+		);
+
+		// return (
+		// 	<Box pad={{horizontal: 'medium', vertical: 'none'}} direction="row">
+		// 		<Box align="center" justify="end" pad="small">
+		// 			<Search />
+		// 		</Box>
+		// 		<Box flex={true}>
+		// 			<TextField  hintText="Cover Name" floatingLabelText="Search" fullWidth={true} onChange={this.props.onChange} />
+		// 		</Box>
+		// 		{this.props.filterTagSet.map((tag) => {
+		// 			return (
+		// 				<Box key={tag} align="center" justify="center" pad="small">
+		// 					<Chip style={{"WebkitAppearance": "initial"}} onTouchTap={this.onDeleteTag.bind(this, tag)}>
+		// 						{tag}
+		// 					</Chip>
+		// 				</Box>
+		// 			);
+		// 		})}
+		// 	</Box>
+		// );
+	}
 	// onDeleteTag(tag, syntheticEvent) {
 	// 	syntheticEvent.preventDefault();
 	// 	syntheticEvent.stopPropagation();
 	// 	this.props.action.deleteCoverFilterTag(tag);
 	// }
-	// render() {
-	// 	console.log('render FilterBar');
-	// 	return (
-	// 		<Box pad={{horizontal: 'medium', vertical: 'none'}} direction="row">
-	// 			<Box align="center" justify="end" pad="small">
-	// 				<Search />
-	// 			</Box>
-	// 			<Box flex={true}>
-	// 				<TextField  hintText="Cover Name" floatingLabelText="Search" fullWidth={true} onChange={this.props.onChange} />
-	// 			</Box>
-	// 			{this.props.filterTagSet.map((tag) => {
-	// 				return (
-	// 					<Box key={tag} align="center" justify="center" pad="small">
-	// 						<Chip style={{"WebkitAppearance": "initial"}} onTouchTap={this.onDeleteTag.bind(this, tag)}>
-	// 							{tag}
-	// 						</Chip>
-	// 					</Box>
-	// 				);
-	// 			})}
-	// 		</Box>
-	// 	);
-	// }
-
-	render() {
-		console.log('render FilterBar');
-		return (
-			<input id="search-input" className="search-bar__input" type="search" onChange={this.onTextChanged} />
-			// <Box pad={{horizontal: 'medium', vertical: 'none'}} direction="row">
-			// 	<Box align="center" justify="end" pad="small">
-			// 		<Search />
-			// 	</Box>
-			// 	<Box flex={true}>
-			// 		<TextField  hintText="Cover Name" floatingLabelText="Search" fullWidth={true} onChange={this.props.onChange} />
-			// 	</Box>
-			// 	{this.props.filterTagSet.map((tag) => {
-			// 		return (
-			// 			<Box key={tag} align="center" justify="center" pad="small">
-			// 				<Chip style={{"WebkitAppearance": "initial"}} onTouchTap={this.onDeleteTag.bind(this, tag)}>
-			// 					{tag}
-			// 				</Chip>
-			// 			</Box>
-			// 		);
-			// 	})}
-			// </Box>
-		);
-	}
 }
 
 FilterBar.propTypes = {

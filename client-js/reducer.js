@@ -7,6 +7,19 @@ import * as navigationActions from './actions/navigation.js';
 import * as actionHandlers from './action-handler/handlers.js';
 import { getStore } from './index.jsx';
 
+function measurePref() {
+	Perf.start();
+	setTimeout(function () {
+		Perf.stop();
+		const measurements = Perf.getLastMeasurements();
+		// Perf.printInclusive(measurements)
+		Perf.printExclusive(measurements)
+		Perf.printWasted(measurements)
+		// Perf.printOperations(measurements)
+
+	}, 2000);
+}
+
 // react will not update, if the simply changing the object content, it needs a new object
 export default (state, action) => {
 
@@ -20,11 +33,18 @@ export default (state, action) => {
 			});
 			return state;
 		case types.CHANGE_DIR_DONE:
+			// measurePref();
 			// state = { pathError, currentPathFragments, files }
 			let newState = state.merge(action.result);
 			newState = newState.set('currentDirTags', newState.get('currentDirTags').toSet());
 			console.log('will render for dir change');
-			return newState;
+
+			// clear filter tag
+			map3 = newState.get('ui').get('filterTagSet').clear();
+			map2 = newState.get('ui').set('filterTagSet', map3);
+			map1 = newState.set('ui', map2);
+			
+			return map1;
 
 		case types.OPEN_COVER:
 			actionHandlers.openCover(action.filePath);
@@ -50,16 +70,6 @@ export default (state, action) => {
 			map1 = state.set('ui', map2);
 			return map1;
 		case types.TOGGLE_COVER_FILTER_TAG:
-			// Perf.start();
-			// setTimeout(function () {
-			// 	Perf.stop();
-			// 	const measurements = Perf.getLastMeasurements();
-			// 	// Perf.printInclusive(measurements)
-			// 	// Perf.printExclusive(measurements)
-			// 	Perf.printWasted(measurements)
-			// 	// Perf.printOperations(measurements)
-
-			// }, 2000);
 			const { tag, shouldClearOthers } = action;
 
 			map3 = state.get('ui').get('filterTagSet');

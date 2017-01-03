@@ -6,9 +6,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import { MuiThemeProvider, getMuiTheme } from 'material-ui/styles';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 
 import reducer from './reducer.js';
 import MainBlock from './components/MainBlock.jsx';
@@ -44,9 +41,7 @@ export default function renderMain(state, containerElement) {
 	// react root
 	render(
 		<Provider store={store}>
-			<MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-				<MainBlock />
-			</MuiThemeProvider>
+			<MainBlock />
 		</Provider>,
 		containerElement
 	);

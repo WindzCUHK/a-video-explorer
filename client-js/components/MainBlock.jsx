@@ -3,12 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import App from 'grommet/components/App';
-import Article from 'grommet/components/Article';
-import Box from 'grommet/components/Box';
-import Notification from 'grommet/components/Notification';
-import Split from 'grommet/components/Split';
-
 import * as navigationActions from '../actions/navigation.js';
 import * as uiActions from '../actions/ui.js';
 

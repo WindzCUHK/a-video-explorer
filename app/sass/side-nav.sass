@@ -29,7 +29,7 @@ $icon_size: $sidebar_width - $scrollbar_width
 	// transition
 	transition: width $default_transition
 	// test
-	// font-size: 10pt0
+	// font-size: 10pt
 	// height: 100%
 
 	&:hover
@@ -71,7 +71,7 @@ $icon_size: $sidebar_width - $scrollbar_width
 			box-sizing: border-box
 			padding: 1ch
 			opacity: 0.4
-			transition: $default_transition
+			transition: opacity $default_transition
 
 			&:hover
 				opacity: 0.8
@@ -95,10 +95,20 @@ $icon_size: $sidebar_width - $scrollbar_width
 			&::-webkit-input-placeholder
 				color: rgba($text_color, 0.5)
 
+
+	$char_icon_margin_size: 5px
+	&:hover &__menu-item__first-char
+		margin: $char_icon_margin_size
+		width: $icon_size - $char_icon_margin_size*2
+		height: $icon_size - $char_icon_margin_size*2
+		line-height: $icon_size - $char_icon_margin_size*2
+		// line-height: $icon_size - $margin_size*2 - $border_size*2
+
+
 	&__menu-item
 		font-size: 13pt
 		background-color: transparent
-		transition: $default_transition
+		transition: background-color $default_transition
 		// truncate string
 		overflow: hidden;
 		white-space: nowrap
@@ -111,15 +121,12 @@ $icon_size: $sidebar_width - $scrollbar_width
 			background-color: $menu_item_selected_color
 
 		&__first-char
-			$margin_size: 5px
+			margin: 0
+			width: $icon_size
+			height: $icon_size
+			line-height: $icon_size
 			// $border_size: 2px
-
 			display: inline-block
-			margin: $margin_size
-			width: $icon_size - $margin_size*2
-			height: $icon_size - $margin_size*2
-			line-height: $icon_size - $margin_size*2
-			// line-height: $icon_size - $margin_size*2 - $border_size*2
 			text-align: center
 			font-size: 150%
 			text-transform: uppercase
@@ -130,6 +137,8 @@ $icon_size: $sidebar_width - $scrollbar_width
 			// border-radius: 50%
 			// border-left: 1px solid rgba(255,255,255,0.2)
 			// border-bottom: 1px solid rgba(255,255,255,0.2)
+			// transition
+			// transition: $default_transition
 
 		// http://www.colourlovers.com/digital-art/trends/branding/7880/Papeterie_Haute-Ville_Logo
 		$char_colors: #61AE24, #D0D102, #F18D05, #E54028, #D70060, #01A4A4, #00A1CB

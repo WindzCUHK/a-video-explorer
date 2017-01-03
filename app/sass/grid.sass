@@ -15,12 +15,19 @@ $num_of_cells_in_row: 4
 		align-self: auto
 		flex-grow: 1
 		flex-shrink: 1
-		flex-basis: 100% / $num_of_cells_in_row
+		flex-basis: 100% / ($num_of_cells_in_row + 1)
 
 	&:after
 		content: ""
-		flex: auto
+		flex-grow: $num_of_cells_in_row * 2
+		flex-shrink: 1
+		flex-basis: 100% / ($num_of_cells_in_row + 1)
 
 	&--single-row
 		flex-direction: row
 		flex-wrap: nowrap
+
+	&--single-row:after
+		content: ""
+		flex: 0 0 0
+
