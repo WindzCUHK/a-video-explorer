@@ -129,6 +129,7 @@ class CoverEpisode extends React.PureComponent {
 					// move to boundary directly
 					if (isToLeft) element.style.transform = `translateX(${parent.clientWidth - element.clientWidth}px)`;
 					else element.style.transform = 'translateX(0px)';
+					showReverseScrollButton();
 					return true;
 				}
 			}
