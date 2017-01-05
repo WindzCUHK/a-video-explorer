@@ -15,6 +15,26 @@ import CoverGrid from './CoverGrid.jsx';
 // http://jaketrent.com/post/smart-dumb-components-react/
 // https://facebook.github.io/immutable-js/docs/#/Seq
 
+class LoadingBlock extends React.PureComponent {
+	constructor(props) {
+		super(props);
+	}
+	render() {
+		return (
+			<div className={((this.props.isLoading) ? '' : 'hidden')}>Loading...</div>
+		);
+	}
+}
+LoadingBlock.propTypes = {
+	isLoading: React.PropTypes.bool
+};
+const ConnectedLoadingBlock = connect((state) => {
+	return {
+		isLoading: state.get('ui').get('isLoading')
+	};
+})(LoadingBlock);
+
+
 class MainBlock extends React.PureComponent {
 	constructor(props) {
 		super(props);
@@ -37,7 +57,7 @@ class MainBlock extends React.PureComponent {
 						</label>
 					</div>
 
-
+					<ConnectedLoadingBlock />
 					<CoverGrid />
 
 

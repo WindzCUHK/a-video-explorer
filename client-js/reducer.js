@@ -28,10 +28,14 @@ export default (state, action) => {
 	switch (action.type) {
 
 		case types.CHANGE_DIR:
-			actionHandlers.changeDir(action.newPath, (result) => {
-				getStore().dispatch(navigationActions.changeDirDone(result));
-			});
-			return state;
+			setTimeout(() => {
+				actionHandlers.changeDir(action.newPath, (result) => {
+					getStore().dispatch(navigationActions.changeDirDone(result));
+				});
+			}, 50);
+			map2 = state.get('ui').set('isLoading', true);
+			map1 = state.set('ui', map2);
+			return map1;
 		case types.CHANGE_DIR_DONE:
 			// measurePref();
 			// state = { pathError, currentPathFragments, files }
@@ -41,7 +45,9 @@ export default (state, action) => {
 
 			// clear filter tag
 			map3 = newState.get('ui').get('filterTagSet').clear();
-			map2 = newState.get('ui').set('filterTagSet', map3);
+			map2 = newState.get('ui')
+				.set('filterTagSet', map3)
+				.set('isLoading', false);
 			map1 = newState.set('ui', map2);
 			
 			return map1;

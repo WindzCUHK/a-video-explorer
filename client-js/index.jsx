@@ -18,7 +18,8 @@ const store = createStore(reducer, Immutable.Map({
 	ui: Immutable.Map({
 		nameFilter: '',
 		tagFilter: '',
-		filterTagSet: Immutable.Set()
+		filterTagSet: Immutable.Set(),
+		isLoading: false
 	}),
 	currentDirTags: Immutable.Set(),
 	currentPathFragments: Immutable.List(),
