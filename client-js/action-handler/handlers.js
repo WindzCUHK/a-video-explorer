@@ -11,6 +11,8 @@ import recursiveLoadAllFAS, { arrayDiff, normalizeDirPath, getFileTags } from '.
 export function openCover (filePath) {
 	console.log(filePath);
 	console.log(shell.openItem(filePath));
+
+	// vlc movie.avi --start-time 240 --stop-time 560 --repeat
 }
 
 export function changeDir (newPath, done) {

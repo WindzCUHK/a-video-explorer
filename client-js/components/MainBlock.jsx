@@ -11,6 +11,7 @@ import TagsBar from './TagsBar.jsx';
 import FilterBar from './FilterBar.jsx';
 import Breadcrumb from './Breadcrumb.jsx';
 import CoverGrid from './CoverGrid.jsx';
+import CoverDetailView from './CoverDetailView.jsx';
 
 // http://jaketrent.com/post/smart-dumb-components-react/
 // https://facebook.github.io/immutable-js/docs/#/Seq
@@ -60,7 +61,7 @@ class MainBlock extends React.PureComponent {
 					<ConnectedLoadingBlock />
 					<CoverGrid />
 
-
+					<CoverDetailView />
 
 				</main>
 			</div>

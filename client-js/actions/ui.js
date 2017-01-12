@@ -35,3 +35,18 @@ export function toggleCoverFilterTag(tag, shouldClearOthers) {
 		tag, shouldClearOthers
 	};
 };
+
+
+
+export function selectCover(cover) {
+	return {
+		type: types.SELECT_COVER,
+		cover
+	};
+};
+
+export function unselectCover() {
+	return {
+		type: types.UNSELECT_COVER
+	};
+};
