@@ -481,6 +481,78 @@ html, body {
   .cover:nth-of-type(8n+8) .cover__episode-button:nth-of-type(8n+8) {
     background-color: #FCA44B; }
 
+.loading {
+  position: relative;
+  font-size: 13pt;
+  margin-bottom: 1.5em; }
+  .loading__text {
+    font-family: 'Actor', sans-serif;
+    color: #666;
+    letter-spacing: 0.3ex;
+    font-size: inherit;
+    font-weight: 200;
+    text-align: center;
+    margin: 0; }
+  .loading__bubblej {
+    display: inline-block;
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    left: 50%;
+    margin-left: -0.5em;
+    border-radius: 50%; }
+    .loading__bubblej:nth-of-type(1) {
+      background: #E84C3D;
+      animation: kiri 1.2s infinite ease-in; }
+    .loading__bubblej:nth-of-type(2) {
+      background: #F1C40F;
+      z-index: 100; }
+    .loading__bubblej:nth-of-type(3) {
+      background: #2FCC71;
+      animation: kanan 1.2s infinite ease-in; }
+
+@keyframes circle {
+  0% {
+    transform: translateX(2em); }
+  25% {
+    transform: translateX(0);
+    z-index: 110; }
+  50% {
+    transform: translateX(-2em); }
+  75% {
+    transform: translateX(0);
+    z-index: 90; }
+  100% {
+    transform: translateX(2em); } }
+
+@keyframes kanan {
+  0% {
+    transform: translateX(2em); }
+  50% {
+    transform: translateX(-2em); }
+  100% {
+    transform: translateX(2em);
+    z-index: 110; } }
+
+@keyframes kiri {
+  0% {
+    transform: translateX(-2em);
+    z-index: 110; }
+  50% {
+    transform: translateX(2em); }
+  100% {
+    transform: translateX(-2em); } }
+
+.modal-block {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  display: none; }
+
 html:root {
   font-size: 15pt; }
 

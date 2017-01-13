@@ -1,0 +1,72 @@
+
+.loading
+	
+	$load_bubble_base_z_index: 100
+	$load_bubble_z_index_levels: 10
+	$load_bubble_size: 1em
+
+	position: relative
+	font-size: 13pt
+	margin-bottom: 1.5em
+
+	&__text
+		font-family: 'Actor', sans-serif
+		color: #666
+		letter-spacing: 0.3ex
+		font-size: inherit
+		font-weight: 200
+		text-align: center
+		margin: 0
+
+	&__bubblej
+		display: inline-block
+		position: absolute
+		width: $load_bubble_size
+		height: $load_bubble_size
+		left: 50%
+		margin-left: -$load_bubble_size / 2
+		border-radius: 50%
+
+		&:nth-of-type(1)
+			background: #E84C3D
+			animation: kiri 1.2s infinite ease-in
+			// animation: circle 1.2s ease 0s infinite
+		&:nth-of-type(2)
+			background: #F1C40F
+			z-index: $load_bubble_base_z_index
+			// animation: circle 1.2s ease 0.4s infinite
+		&:nth-of-type(3)
+			background: #2FCC71
+			animation: kanan 1.2s infinite ease-in
+			// animation: circle 1.2s ease 0.8s infinite
+
+	@keyframes circle
+		0%
+			transform: translateX($load_bubble_size * 2)
+		25%
+			transform: translateX(0)
+			z-index: $load_bubble_base_z_index + $load_bubble_z_index_levels
+		50%
+			transform: translateX($load_bubble_size * -2)
+		75%
+			transform: translateX(0)
+			z-index: $load_bubble_base_z_index - $load_bubble_z_index_levels
+		100%
+			transform: translateX($load_bubble_size * 2)
+
+	@keyframes kanan
+		0%
+			transform: translateX($load_bubble_size * 2)
+		50%
+			transform: translateX($load_bubble_size * -2)
+		100%
+			transform: translateX($load_bubble_size * 2)
+			z-index: $load_bubble_base_z_index + $load_bubble_z_index_levels
+	@keyframes kiri
+		0%
+			transform: translateX($load_bubble_size * -2)
+			z-index: $load_bubble_base_z_index + $load_bubble_z_index_levels
+		50%
+			transform: translateX($load_bubble_size * 2)
+		100%
+			transform: translateX($load_bubble_size * -2)
