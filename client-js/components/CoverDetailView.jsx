@@ -11,12 +11,21 @@ class CoverDetailView extends React.PureComponent {
 
 		// this.onDirLinkClick = this.onDirLinkClick.bind(this);
 	}
+	normalizeURI(targetPath) {
+		return encodeURI((targetPath.indexOf('\\') >= 0) ? targetPath.replace(/\\/g, '/') : targetPath);
+	}
 	render() {
 		console.log('render CoverDetailView');
+		console.log(this.props.selectedCover);
 		// const pathFragments = this.props.currentPathFragments;
+		if (!this.props.selectedCover) return (<div className="modal-block hidden"></div>);
 		return (
-			<div className="modal-block">
-				<span>{this.props.selectCover}</span>
+			<div className="modal-block" onClick={this.props.action.unselectCover}>
+				<span>{this.props.selectedCover.get('name')}</span>
+				<img
+					alt={this.props.selectedCover.get('name')}
+					src={this.normalizeURI(this.props.selectedCover.get('path'))}
+				/>
 			</div>
 		);
 	}
@@ -34,7 +43,7 @@ CoverDetailView.propTypes = {
 
 function mapStateToProps(state) {
 	return {
-		selectedCover: state.get('selectedCover')
+		selectedCover: state.get('ui').get('selectedCover')
 	};
 }
 function mapDispatchToProps(dispatch) {

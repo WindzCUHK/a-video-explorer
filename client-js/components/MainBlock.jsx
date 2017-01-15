@@ -22,7 +22,7 @@ class LoadingBlock extends React.PureComponent {
 	}
 	render() {
 		return (
-			<div className={'loading'+' '+((this.props.isLoading) ? '' : '')}>
+			<div className={'loading'+' '+((this.props.isLoading) ? '' : 'hidden')}>
 				<h1 className="loading__text">LOADING</h1>
 				<span className="loading__bubble"></span>
 				<span className="loading__bubble"></span>

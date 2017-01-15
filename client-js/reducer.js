@@ -88,6 +88,16 @@ export default (state, action) => {
 			map2 = state.get('ui').set('filterTagSet', map3);
 			map1 = state.set('ui', map2);
 			return map1;
+
+		case types.SELECT_COVER:
+			const { cover } = action;
+			map2 = state.get('ui').set('selectedCover', cover);
+			map1 = state.set('ui', map2);
+			return map1;
+		case types.UNSELECT_COVER:
+			map2 = state.get('ui').set('selectedCover', null);
+			map1 = state.set('ui', map2);
+			return map1;
 	}
 
 	return state;

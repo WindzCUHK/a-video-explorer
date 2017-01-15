@@ -19,13 +19,13 @@ const store = createStore(reducer, Immutable.Map({
 		nameFilter: '',
 		tagFilter: '',
 		filterTagSet: Immutable.Set(),
-		isLoading: false
+		isLoading: false,
+		selectedCover: null
 	}),
 	currentDirTags: Immutable.Set(),
 	currentPathFragments: Immutable.List(),
 	files: Immutable.List(),
-	fileTags: Immutable.List(),
-	selectedCover: 'test'
+	fileTags: Immutable.List()
 }));
 
 const defaultDir = (navigator.platform === 'MacIntel') ? '/Users/windz/Downloads/CC' : 'C:/Users/windz.fan/Git/a-video-explorer/test-pic';

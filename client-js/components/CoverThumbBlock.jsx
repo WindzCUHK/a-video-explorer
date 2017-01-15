@@ -58,7 +58,7 @@ class CoverThumb extends React.PureComponent {
 	render() {
 		// console.log('render CoverThumb');
 		return (
-			<div className="cover__thumb-container">
+			<div className="cover__thumb-container" onClick={this.props.onSelectCover}>
 				<div className="cover__header">
 					<div className="cover__header__content">
 						{this.props.cover.get('name')}
@@ -238,6 +238,14 @@ class CoverEpisode extends React.PureComponent {
 }
 
 class CoverThumbBlock extends React.PureComponent {
+	constructor(props) {
+		super(props);
+
+		this.onSelectCover = this.onSelectCover.bind(this);
+	}
+	onSelectCover() {
+		this.props.action.selectCover(this.props.cover);
+	}
 	render() {
 		// console.log('render CoverThumbBlock');
 		return (
@@ -246,6 +254,7 @@ class CoverThumbBlock extends React.PureComponent {
 					action={this.props.action}
 					cover={this.props.cover}
 					currentDirTags={this.props.currentDirTags}
+					onSelectCover={this.onSelectCover}
 				/>
 				<CoverEpisode 
 					action={this.props.action}
