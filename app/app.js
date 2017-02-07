@@ -50,6 +50,7 @@ app.on('activate', () => {
 import fs from 'fs';
 import os from 'os';
 import DataStore from 'nedb';
+import { setFfprobePath, ffprobe } from 'fluent-ffmpeg';
 !function () {
 
 	// if `nedb` run in render process, it will use browser's storage for the DB. Hence, nedb to declare in main process and use IPC to communicate
@@ -117,18 +118,49 @@ import DataStore from 'nedb';
 		});
 	});
 
-}();
-
-import { setFfprobePath, ffprobe } from 'fluent-ffmpeg';
-!function () {
-
+	// ffprobe
 	const ffprobePath = (os.platform() !== 'win32') ? '/Users/windz/bin/ffprobe' : 'C:\\myTools\\ffmpeg-20161101-60178e7-win64-static\\bin\\ffprobe.exe';
 	setFfprobePath(ffprobePath);
 
-
 	ipcMain.on('getResolution', (event, filePath) => {
-		ffprobe(filePath, function(err, metadata) {
-			event.returnValue = { err, metadata };
+
+		function gotError(err) {
+			event.returnValue = { err };
+		}
+		function gotMetadata(shouldSave, stat, metadata) {
+			if (shouldSave) {
+				const doc = { stat, metadata };
+				const query = { _id: filePath };
+				const options = { upsert: true };
+				DB.update(query, doc, options, function (err, numAffected, affectedDocuments, upsertFlag) {
+					// affectedDocuments is set, iff, upsertFlag = true or options.returnUpdatedDocs = true
+					if (err) return gotError(err);
+					event.returnValue = { metadata };
+				});
+			} else event.returnValue = { metadata };
+		}
+		function readMeta(filePath, stat) {
+			ffprobe(filePath, function(err, metadata) {
+				if (err) return gotError(err);
+
+				gotMetadata(true, stat, metadata);
+			});
+		}
+
+		// find in DB
+		DB.findOne({ _id: filePath }, (err, doc) => {
+			if (err) return gotError(err);
+
+			const stat = fs.statSync(filePath);
+			// not found, save and reply
+			if (doc === null) {
+				readMeta(filePath, stat);
+			} else {
+				if (stat.mtime.getTime() !== (new Date(doc.stat.mtime)).getTime()) {
+					readMeta(filePath, stat);
+				} else gotMetadata(false, stat, doc.metadata);
+			}
 		});
 	});
+
 }();
