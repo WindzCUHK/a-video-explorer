@@ -129,7 +129,11 @@ import { setFfprobePath, ffprobe } from 'fluent-ffmpeg';
 		}
 		function gotMetadata(shouldSave, stat, metadata) {
 			if (shouldSave) {
-				const doc = { stat, metadata };
+				const doc = {
+					_id: filePath,
+					stat,
+					metadata
+				};
 				const query = { _id: filePath };
 				const options = { upsert: true };
 				DB.update(query, doc, options, function (err, numAffected, affectedDocuments, upsertFlag) {
