@@ -1,4 +1,5 @@
 
+import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import { shell } from 'electron';
@@ -6,11 +7,27 @@ import { shell } from 'electron';
 
 import recursiveLoadAllFAS, { arrayDiff, normalizeDirPath, getFileTags } from './utils/recursiveLoadAllFAS.js';
 
+export const PlayerTypes = {
+	DEFAULT: 'DEFAULT',
+	ALTERNATIVE: 'ALTERNATIVE',
+	FOLDER: 'FOLDER'
+}
 
-
-export function openCover (filePath) {
-	console.log(filePath);
-	console.log(shell.openItem(filePath));
+export function openCover (filePath, player) {
+	// console.log(filePath);
+	switch(player) {
+		case PlayerTypes.FOLDER:
+			shell.showItemInFolder(filePath);
+			break;
+		case PlayerTypes.ALTERNATIVE:
+			const childProcess = spawn('open', ['-a', 'MPlayerX', filePath], {
+				detached: true,
+				stdio: 'ignore'
+			});
+			break;
+		default:
+			shell.openItem(filePath);
+	}
 
 	// vlc movie.avi --start-time 240 --stop-time 560 --repeat
 }

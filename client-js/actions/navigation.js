@@ -14,9 +14,9 @@ export function changeDirDone(result) {
 	};
 };
 
-export function openCover(filePath) {
+export function openCover(filePath, player) {
 	return {
 		type: types.OPEN_COVER,
-		filePath
+		filePath, player
 	};
 };

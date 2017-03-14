@@ -3,6 +3,8 @@ import React from 'react';
 
 import FontAwesome from 'react-fontawesome';
 
+import { PlayerTypes } from '../action-handler/handlers.js';
+
 class VideoButton extends React.PureComponent {
 	render() {
 		const isEqual = this.props.coveredVideo.get('isEqual');
@@ -11,7 +13,15 @@ class VideoButton extends React.PureComponent {
 		const resolution = this.props.coveredVideo.get('file').get('resolution');
 		const openVideo = (event) => {
 			event.preventDefault();
-			this.props.openCover(videoPath);
+
+			const isAlternativePlayer = (event.ctrlKey || event.metaKey || event.altKey);
+			const isOpenFolder = event.shiftKey;
+
+			let player = PlayerTypes.DEFAULT;
+			if (isAlternativePlayer) player = PlayerTypes.ALTERNATIVE;
+			if (isOpenFolder) player = PlayerTypes.FOLDER;
+
+			this.props.openCover(videoPath, player);
 		};
 		const index = this.props.index;
 

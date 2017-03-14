@@ -53,7 +53,7 @@ export default (state, action) => {
 			return map1;
 
 		case types.OPEN_COVER:
-			actionHandlers.openCover(action.filePath);
+			actionHandlers.openCover(action.filePath, action.player);
 			return state;
 
 		case types.CHANGE_COVER_NAME_FILTER:

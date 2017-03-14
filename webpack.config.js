@@ -10,7 +10,7 @@ module.exports = {
 		reasons: true
 	},
 	devtool: 'source-map',
-
+	target: 'node',
 
 	entry: [
 		path.join(BUILD_DIR, 'main.js')
@@ -40,6 +40,7 @@ module.exports = {
 	externals: [
 		(function () {
 			var IGNORES = [
+				'child_process',
 				'os',
 				'path',
 				'fs',
