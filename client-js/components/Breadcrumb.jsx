@@ -25,6 +25,7 @@ class Breadcrumb extends React.PureComponent {
 		return (
 			<div className="search-bar__header__content">
 				{pathFragments.map((pathFragment, index) => {
+					if (pathFragment.get('error')) return console.log(pathFragment.get('error'));
 					const dirName = pathFragment.get('dirName');
 					const dirPath =  pathFragment.get('dirPath');
 					return (

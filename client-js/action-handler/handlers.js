@@ -121,7 +121,7 @@ export function changeDir (newPath, done) {
 		const result = {
 			pathError: err,
 			currentDirTags: [],
-			currentPathFragments: ['path not exist'],
+			currentPathFragments: [{ error: 'path not exist' }],
 			files: [],
 			fileTags: []
 		};

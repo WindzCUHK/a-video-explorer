@@ -51,7 +51,7 @@ class MainBlock extends React.PureComponent {
 			<div className="container">
 				<TagsBar />
 				<main>
-					{(this.props.pathError) ? <Notification status="critical" message={this.props.pathError.message} /> : null}
+					{(this.props.pathError) ? <div>{this.props.pathError.message}</div> : null}
 
 					<div className="search-bar">
 						<FilterBar />

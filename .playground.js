@@ -6,7 +6,7 @@ import DataStore from 'nedb';
 import { setFfmpegPath, setFfprobePath, ffprobe } from 'fluent-ffmpeg';
 
 
-
+let canProbeVideo = false;
 const arrayDiff = (a, b) => {
 	return a.filter( e => b.indexOf(e) < 0 );
 };
@@ -22,7 +22,11 @@ const CONSTANTS = {};
 	// initialization
 	const navigator = { platform: 'windows' };
 	const ffprobePath = (navigator.platform === 'MacIntel') ? '/Users/windz/bin/ffprobe' : 'C:\\myTools\\ffmpeg-20161101-60178e7-win64-static\\bin\\ffprobe.exe';
-	setFfprobePath(ffprobePath);
+	if (fs.existsSync(ffprobePath)) {
+		setFfprobePath(ffprobePath);
+		canProbeVideo = true;
+	}
+	
 
 	// CONSTANTS.DB
 	const dataStoreConfig = {
@@ -122,28 +126,30 @@ function _parseFileAttributes (filePath, parseDone) {
 
 		// check video file resolution
 		if (CONSTANTS.EXT_DICT[fileAttributes.ext] === CONSTANTS.VIDEO) {
-			ffprobe(filePath, function(err, metadata) {
+			const onError = (err) => {
+				fileAttributes.resolution = CONSTANTS.RESOLUTION_DICT.GG;
+				fileAttributes.resolutionError = err.toString();
+				parseDone(null, fileAttributes);
+			};
+			if (canProbeVideo) {
+				ffprobe(filePath, function(err, metadata) {
 
-				if (err) {
-					fileAttributes.resolution = CONSTANTS.RESOLUTION_DICT.GG;
-					fileAttributes.resolutionError = err.toString();
+					if (err) return onError(err);
+
+					const videoStreams = metadata.streams.filter((s) => {
+						return s.codec_type === 'video';
+					});
+					if (videoStreams.length > 0) {
+						// only consider the 1st video stream
+						const videoHeight = videoStreams[0].height;
+						fileAttributes.resolution = (videoHeight >= CONSTANTS.HD_VIDEO_HEIGHT) ? CONSTANTS.RESOLUTION_DICT.HD : CONSTANTS.RESOLUTION_DICT.SD;
+					} else {
+						fileAttributes.resolution = CONSTANTS.RESOLUTION_DICT.GG;
+					}
 					parseDone(null, fileAttributes);
 					return;
-				}
-
-				const videoStreams = metadata.streams.filter((s) => {
-					return s.codec_type === 'video';
 				});
-				if (videoStreams.length > 0) {
-					// only consider the 1st video stream
-					const videoHeight = videoStreams[0].height;
-					fileAttributes.resolution = (videoHeight >= CONSTANTS.HD_VIDEO_HEIGHT) ? CONSTANTS.RESOLUTION_DICT.HD : CONSTANTS.RESOLUTION_DICT.SD;
-				} else {
-					fileAttributes.resolution = CONSTANTS.RESOLUTION_DICT.GG;
-				}
-				parseDone(null, fileAttributes);
-				return;
-			});
+			} else onError(new Error('cannot find ff-probe on this machine...'));
 		} else {
 			parseDone(null, fileAttributes);
 		}

@@ -1,6 +1,4 @@
 
-import path from 'path';
-
 import { app, BrowserWindow, ipcMain } from 'electron';
 import electronReload from 'electron-reload';
 
@@ -47,6 +45,7 @@ app.on('activate', () => {
 
 // console.log(app.getPath('home'));
 
+import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import DataStore from 'nedb';
@@ -119,8 +118,9 @@ import { setFfprobePath, ffprobe } from 'fluent-ffmpeg';
 	});
 
 	// ffprobe
-	const ffprobePath = (os.platform() !== 'win32') ? '/Users/windz/bin/ffprobe' : 'C:\\myTools\\ffmpeg-20161101-60178e7-win64-static\\bin\\ffprobe.exe';
-	setFfprobePath(ffprobePath);
+	const ffprobePath = (os.platform() !== 'win32') ? '/Users/windz/bin/ffprobe' : 'C:\\myTools\\ffmpeg-20161101-60178e7-win64-static\\bin\\ffprobeeee.exe';
+	const canProbeVideo = fs.existsSync(ffprobePath);
+	if (canProbeVideo) setFfprobePath(ffprobePath);
 
 	ipcMain.on('getResolution', (event, filePath) => {
 
@@ -144,11 +144,13 @@ import { setFfprobePath, ffprobe } from 'fluent-ffmpeg';
 			} else event.returnValue = { metadata };
 		}
 		function readMeta(filePath, stat) {
-			ffprobe(filePath, function(err, metadata) {
-				if (err) return gotError(err);
+			if (canProbeVideo) {
+				ffprobe(filePath, function(err, metadata) {
+					if (err) return gotError(err);
 
-				gotMetadata(true, stat, metadata);
-			});
+					gotMetadata(true, stat, metadata);
+				});
+			} else return gotError(new Error('ffprobe not found'));
 		}
 
 		// find in DB
