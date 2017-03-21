@@ -5,5 +5,16 @@
 			"path": ".",
 			"folder_exclude_patterns": ["dist", "tmp", "node_modules"]
 		}
-	]
+	],
+    "build_systems":
+    [
+        {
+            "name": "run:windows",
+            "shell_cmd": "electron ."
+        },
+        {
+            "name": "build",
+            "shell_cmd": "npm run build:watch"
+        }
+    ]
 }
