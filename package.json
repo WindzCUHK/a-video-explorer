@@ -2,7 +2,7 @@
   "name": "a-video-explorer",
   "version": "1.0.0",
   "description": "Explorer for video using its cover.",
-  "main": "app-main.js",
+  "main": "index.js",
   "scripts": {
     "start": "electron .",
     "use": "electron . noDebug",

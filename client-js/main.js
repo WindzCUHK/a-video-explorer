@@ -14,11 +14,13 @@ document._clearNonExist = clearNonExist;
 /*|=======================================================|*/
 document.addEventListener('dragover', event => {
 	event.preventDefault();
+	event.stopPropagation();
 	return false;
 }, false);
 
 document.addEventListener('drop', event => {
 	event.preventDefault();
+	event.stopPropagation();
 	return false;
 }, false);
 

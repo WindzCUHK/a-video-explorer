@@ -1,10 +1,13 @@
 
-import { app, BrowserWindow, ipcMain } from 'electron';
-import electronReload from 'electron-reload';
+const path = require('path');
+const { app, BrowserWindow, ipcMain } = require('electron');
+const electronReload = require('electron-reload');
 
 
 
-electronReload(__dirname);
+electronReload(__dirname, {
+	electron: path.join(__dirname, '../node_modules', '.bin', 'electron')
+});
 
 const rootPath = `file://${__dirname}`;
 
@@ -25,7 +28,7 @@ function createWindow() {
 	});
 
 	// prevent window directly open the drag content
-	mainWindow.webContents.on('will-navigate', (event) => {
+	mainWindow.webContents.on('will-navigate', (event, url) => {
 		event.preventDefault();
 	});
 }
@@ -45,18 +48,17 @@ app.on('activate', () => {
 
 // console.log(app.getPath('home'));
 
-import path from 'path';
-import fs from 'fs';
-import os from 'os';
-import DataStore from 'nedb';
-import { setFfprobePath, ffprobe } from 'fluent-ffmpeg';
+const fs = require('fs');
+const os = require('os');
+const DataStore = require('nedb');
+const { setFfprobePath, ffprobe } = require('fluent-ffmpeg');
 !function () {
 
 	// if `nedb` run in render process, it will use browser's storage for the DB. Hence, nedb to declare in main process and use IPC to communicate
 	// the path is useless, electron will save it in browser storage (filename = key to doc saving the whole DB)...
 
 	// console.log('os:', os.platform());
-	const dbDirPath = (os.platform() !== 'win32') ? '/Users/windz/Code/a-video-explorer/db' : 'C:\\Users\\windz.fan\\Git\\a-video-explorer\\db';
+	const dbDirPath = (os.platform() !== 'win32') ? '/Users/windz/Code/a-video-explorer/db' : `${__dirname}\\..\\db`;
 	const dataStoreConfig = {
 		filename: path.join(dbDirPath, 'fileList.db'),
 		autoload: false
@@ -64,6 +66,7 @@ import { setFfprobePath, ffprobe } from 'fluent-ffmpeg';
 	const DB = new DataStore(dataStoreConfig);
 	DB.loadDatabase((err) => {
 		if (err) console.error(err);
+		else console.log('DB successfully loaded~');
 	});
 
 	// create index in DB (_id is automatically indexed)
@@ -125,6 +128,7 @@ import { setFfprobePath, ffprobe } from 'fluent-ffmpeg';
 	ipcMain.on('getResolution', (event, filePath) => {
 
 		function gotError(err) {
+			console.log('getResolution', err);
 			event.returnValue = { err };
 		}
 		function gotMetadata(shouldSave, stat, metadata) {
