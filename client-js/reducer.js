@@ -45,6 +45,16 @@ export default (state, action) => {
 
 			// clear filter tag
 			map3 = newState.get('ui').get('filterTagSet').clear();
+
+			newState.get('fileTags').some((v) => {
+				// select first tag
+				if (!newState.get('currentDirTags').has(v)) {
+					map3 = newState.get('ui').get('filterTagSet').add(v);
+					return true;
+				}
+				return false;
+			});
+
 			map2 = newState.get('ui')
 				.set('filterTagSet', map3)
 				.set('isLoading', false);
